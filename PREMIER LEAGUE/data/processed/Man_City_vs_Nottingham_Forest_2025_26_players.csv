@@ -1,0 +1,41 @@
+matchId,side,teamName,playerId,name,position,isFirstEleven
+1903429,home,Man City,262515,Gianluigi Donnarumma,GK,True
+1903429,home,Man City,394933,Matheus Nunes,DR,True
+1903429,home,Man City,313171,Rúben Dias,DC,True
+1903429,home,Man City,374631,Marc Guéhi,DC,True
+1903429,home,Man City,355401,Rayan Aït-Nouri,DL,True
+1903429,home,Man City,303139,Rodri,DMC,True
+1903429,home,Man City,386153,Rayan Cherki,MC,True
+1903429,home,Man City,136741,Bernardo Silva,MC,True
+1903429,home,Man City,331254,Phil Foden,MC,True
+1903429,home,Man City,357073,Antoine Semenyo,FW,True
+1903429,home,Man City,315227,Erling Haaland,FW,True
+1903429,home,Man City,388098,Jérémy Doku,Sub,False
+1903429,home,Man City,397821,Savinho,Sub,False
+1903429,home,Man City,493206,Abdukodir Khusanov,Sub,False
+1903429,home,Man City,394749,Omar Marmoush,Sub,False
+1903429,home,Man City,122945,Nathan Aké,Sub,False
+1903429,home,Man City,343382,Tijjani Reijnders,Sub,False
+1903429,home,Man City,422939,Nico González,Sub,False
+1903429,home,Man City,101374,John Stones,Sub,False
+1903429,home,Man City,404852,James Trafford,Sub,False
+1903429,away,Nottingham Forest,78386,Matz Sels,GK,True
+1903429,away,Nottingham Forest,315543,Ola Aina,DR,True
+1903429,away,Nottingham Forest,443545,Jair Cunha,DC,True
+1903429,away,Nottingham Forest,445424,Murillo,DC,True
+1903429,away,Nottingham Forest,319785,Nikola Milenkovic,DC,True
+1903429,away,Nottingham Forest,386969,Neco Williams,DL,True
+1903429,away,Nottingham Forest,334653,Nicolás Domínguez,MC,True
+1903429,away,Nottingham Forest,402596,Elliot Anderson,MC,True
+1903429,away,Nottingham Forest,328075,Ibrahim Sangaré,MC,True
+1903429,away,Nottingham Forest,397497,Igor Jesus,FW,True
+1903429,away,Nottingham Forest,332867,Morgan Gibbs-White,FW,True
+1903429,away,Nottingham Forest,281049,Taiwo Awoniyi,Sub,False
+1903429,away,Nottingham Forest,342830,Ryan Yates,Sub,False
+1903429,away,Nottingham Forest,350088,Callum Hudson-Odoi,Sub,False
+1903429,away,Nottingham Forest,376916,Morato,Sub,False
+1903429,away,Nottingham Forest,394888,Luca Netz,Sub,False
+1903429,away,Nottingham Forest,398414,Dan Ndoye,Sub,False
+1903429,away,Nottingham Forest,425576,James McAtee,Sub,False
+1903429,away,Nottingham Forest,430908,Omari Hutchinson,Sub,False
+1903429,away,Nottingham Forest,318896,Angus Gunn,Sub,False

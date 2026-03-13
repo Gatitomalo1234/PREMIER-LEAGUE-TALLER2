@@ -1,0 +1,41 @@
+matchId,side,teamName,playerId,name,position,isFirstEleven
+1903431,home,Newcastle,316858,Aaron Ramsdale,GK,True
+1903431,home,Newcastle,83078,Kieran Trippier,DR,True
+1903431,home,Newcastle,393355,Malick Thiaw,DC,True
+1903431,home,Newcastle,82277,Dan Burn,DC,True
+1903431,home,Newcastle,430294,Lewis Hall,DL,True
+1903431,home,Newcastle,201755,Joelinton,MC,True
+1903431,home,Newcastle,343501,Sandro Tonali,MC,True
+1903431,home,Newcastle,369813,Jacob Ramsey,MC,True
+1903431,home,Newcastle,413211,Anthony Elanga,FWR,True
+1903431,home,Newcastle,349669,Anthony Gordon,FW,True
+1903431,home,Newcastle,331382,Harvey Barnes,FWL,True
+1903431,home,Newcastle,416209,William Osula,Sub,False
+1903431,home,Newcastle,379732,Sven Botman,Sub,False
+1903431,home,Newcastle,342563,Joe Willock,Sub,False
+1903431,home,Newcastle,141486,Jacob Murphy,Sub,False
+1903431,home,Newcastle,296240,Yoane Wissa,Sub,False
+1903431,home,Newcastle,492690,Alex Murphy,Sub,False
+1903431,home,Newcastle,552461,Sean Neave,Sub,False
+1903431,home,Newcastle,105720,Nick Pope,Sub,False
+1903431,home,Newcastle,535754,Leo Shahar,Sub,False
+1903431,away,Man Utd,402184,Senne Lammens,GK,True
+1903431,away,Man Utd,349932,Noussair Mazraoui,DR,True
+1903431,away,Man Utd,437299,Leny Yoro,DC,True
+1903431,away,Man Utd,99487,Harry Maguire,DC,True
+1903431,away,Man Utd,118244,Luke Shaw,DL,True
+1903431,away,Man Utd,88526,Casemiro,DMC,True
+1903431,away,Man Utd,460260,Kobbie Mainoo,DMC,True
+1903431,away,Man Utd,353377,Bryan Mbeumo,AMR,True
+1903431,away,Man Utd,123761,Bruno Fernandes,AMC,True
+1903431,away,Man Utd,362758,Matheus Cunha,AML,True
+1903431,away,Man Utd,424191,Benjamin Sesko,FW,True
+1903431,away,Man Utd,383956,Joshua Zirkzee,Sub,False
+1903431,away,Man Utd,345303,Tyrell Malacia,Sub,False
+1903431,away,Man Utd,353418,Diogo Dalot,Sub,False
+1903431,away,Man Utd,408962,Manuel Ugarte,Sub,False
+1903431,away,Man Utd,386634,Amad Diallo,Sub,False
+1903431,away,Man Utd,361707,Altay Bayindir,Sub,False
+1903431,away,Man Utd,517341,Ayden Heaven,Sub,False
+1903431,away,Man Utd,563778,Tyler Fletcher,Sub,False
+1903431,away,Man Utd,547692,Godwill Kukonki,Sub,False
