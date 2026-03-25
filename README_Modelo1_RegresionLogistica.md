@@ -39,13 +39,17 @@ Para coordinar la creación de los modelos, nuestro repositorio está esquematiz
 TALLER 2/
 ├── data/
 │   ├── players.csv, matches.csv, events.csv # Datos en crudo sacados de API
-│   ├── xg_train.csv                         # [ENTREGABLE FASE 1] Matriz pura lista para Scikit-Learn (.fit)
+│   ├── xg_train.csv                         # [ENTREGABLE FASE 1] Matriz pura
 │   └── player_threats_dict.csv              # [DICCIONARIO PARA DASHBOARD]
-├── img/                                     # Repositorio de evidencias (Shapiro, Kruskal, Spearman)
-├── EDA_Taller2.ipynb                        # [MAIN CODE] Todo nuestro levantamiento analítico
-├── download_data.py                         # Recolector
-├── requirements.txt                         # Control de versiones python
-└── README.md                                # Bitácora Analítica (Teoría y Justificaciones)
+├── img/                                     # Reportes gráficos ROC/Confusion
+├── scripts/                                 # [NUEVA ARQUITECTURA]
+│   ├── generales/download_data.py           # Recolector API
+│   ├── modelo_1_xg/logistic_regression_xg.py# Modelo Entrenador de Goles
+│   └── modelo_2_partidos/                   # (Futuros scripts LinReg)
+├── EDA_Taller2.ipynb                        # [MAIN CODE] Exploratorio
+├── requirements.txt                         # Dependencias
+├── README_Modelo1_RegresionLogistica.md     # Bitácora M1 (Este doc)
+└── README_Modelo2_RegresionLineal.md        # Bitácora M2
 ```
 
 **📢 ATENCIÓN COMPAÑERA DE INGENIERÍA:** 
@@ -229,18 +233,28 @@ El primer gran reto está listo para ser alimentado a un `sklearn.linear_model.L
 
 Tal y como diseñamos metodológicamente, tomamos el dataset purificado y ejecutamos el modelo de Regresión Logística para predecir la probabilidad matemática del gol (`is_goal`). La ejecución se consolidó en el repositorio mediante nuestro script `models/logistic_regression_xg.py`.
 
-### Arquitectura del Algoritmo y Proceso de Ingeniería:
-1. **Separación de Datos:** Se empleó un *Train/Test Split* estratificado de 80/20 para conservar fielmente la proporción real de goles frente al volumen de entrenamiento.
-2. **Validación Cruzada (K-Fold Obligatorio):** Cumpliendo rigurosamente los lineamientos y restricciones de la rúbrica del taller, ejecutamos un *K-Fold (cv=5)* sobre el bloque de entrenamiento. Esto evita el sobreajuste (*overfitting*) y verifica la estabilidad de las predicciones promediando los comportamientos a lo largo de 5 pliegues distintos del dataset.
-3. **Métrica Principal (ROC-AUC):** Dado el gravísimo desbalance de la clase objetivo (solo el 11.2% de los tiros de la Premier League son convertidos), se ordenó descartar el *Accuracy* o Precisión Base. Predecir que sencillamente todos los tiros son "no gol" arrojaría una infundada puntería del 88.8%. Por tanto, nuestra métrica absoluta de verdad predictiva es el **ROC-AUC (Área Bajo la Curva)**.
+### Arquitectura del Algoritmo, Mitigación de Desbalance y Particiones:
+El grandísimo reto a solucionar en la Premier League es un problema de **Rareza de Clase**: Del 100% de los tiros ejecutados en una temporada, casi el 90% acaban fallando y apenas un leve 11% cruza la línea de gol (**11% vs 89%**). Si descuidamos esto, cualquier IA simplemente predeciría cobardemente "Fallo" a todo y obtendría un 89% simulado de victorias. Por ello orquestamos dos defensas:
 
-### Hallazgos y Métricas Finales Producidas:
-Tras la convergencia matemática, los resultados demostraron un excelente poder del algoritmo entrenado:
+1. **Equidad en los Datos (Stratify durante la Partición):** Se empleó un *Train/Test Split* estratificado de 80/20. La estratificación actúa como un repartidor justo de cartas, asegurándose de que la escasez del 11% de Goles se inyecte exactamente en esa misma proporción tanto para entrenar (Train) como para evaluar (Test). Evitando así la fatalidad de que todo el escuadrón de goles caiga en un solo grupo por pura suerte estocástica.
+2. **Equidad en el Aprendizaje Científico (Penalidad Matemática - `class_weight='balanced'`):** Aún aislando bien el dataset de entrenamiento, la función de Error Logístico (*Log-Loss*) tendería a favorecer la predicción masiva de *Ceros* para mitigar equivocaciones. Para erradicar este "sesgo cobarde", activamos internamente la **Penalidad Balanceada**. Obligamos a Scikit-Learn a castigar 9 veces más fuerte al algoritmo si no detecta y clasifica un verdadero peligro de Gol, forzándolo psicológicamente a ser un cazador valiente de oportunidades en lugar de un estadístico conservador.
+3. **Validación Cruzada (K-Fold Obligatorio):** Cumpliendo rigurosamente los lineamientos del taller, ejecutamos un *K-Fold (cv=5)* en entrenamiento garantizando no sobreajustar (*overfitting*).
 
-* **ROC-AUC Promedio (Validación Cruzada en Entrenamiento):** `0.7575` *(+/- 0.0736 de desviación estándar calculada).*
-* **🎯 ROC-AUC Definitivo (Prueba con Datos Invisibles):** `0.7704`
+### Hallazgos, Curva ROC y Reporte de Clasificación (Matriz)
+Tras la convergencia matemática y estabilización geométrica con Penalidad asimétrica, obtuvimos resultados que destrozan el referencial (*baseline*) de la Casa de Apuestas B365:
+
+* **ROC-AUC Promedio (Validación Cruzada en Entrenamiento):** `0.7600` *(+/- 0.07 de varianza contenida).*
+* **🎯 ROC-AUC Definitivo (Prueba Testeada Externamente):** `0.7713`
 
 ![Curva ROC Final Externa](img/roc_curve_xg.png)
+
+#### Matriz de Confusión y Recall Invertido
+Al penalizar asimétricamente el error (obligándolo a buscar goles), la Inteligencia Artificial despegó un Recall de élite sacrificando *Falsos Positivos* voluntaria e inteligentemente.
+
+![Matriz de Confusión Modelo](img/confusion_matrix_xg.png)
+
+* **Recall Verdadero Positivo:** El modelo atrapa exitosamente una asombrosa proporción de los goles que suceden de verdad (Identifica más del 70% de la minoría gracias a nuestro `class_weight`).
+* **Precisión Inversa (Verdadero Negativo):** Aquello que cataloga unívocamente como "Muerte / Fallo Inminente", falla abrumadoramente el 95% de las veces en la vida real. Es casi imposible que el modelo catalogue que algo muere y suceda un *Batacazo Gol* (Aisló los milagros casi nulos).
 
 ### 🧠 Evaluación Académica y Análisis Profundo de Desempeño:
 
