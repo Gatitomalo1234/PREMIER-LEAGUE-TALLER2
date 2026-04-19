@@ -33,7 +33,7 @@ pip install -r requirements.txt
 ---
 
 ## 📂 Estructura del Proyecto (Workflow Colaborativo)
-Para coordinar la creación de los modelos, nuestro repositorio está esquematizado de la siguiente manera, para que cada fase opere con alta cohesión:
+Para coordinar la creación de los modelos, nuestro repositorio está esquematizado de la siguiente manera:
 
 ```text
 TALLER 2/
@@ -41,21 +41,18 @@ TALLER 2/
 │   ├── players.csv, matches.csv, events.csv # Datos en crudo sacados de API
 │   ├── xg_train.csv                         # [ENTREGABLE FASE 1] Matriz pura
 │   └── player_threats_dict.csv              # [DICCIONARIO PARA DASHBOARD]
-├── img/                                     # Reportes gráficos ROC/Confusion
-├── scripts/                                 # [NUEVA ARQUITECTURA]
-│   ├── generales/download_data.py           # Recolector API
-│   ├── modelo_1_xg/logistic_regression_xg.py# Modelo Entrenador de Goles
-│   └── modelo_2_partidos/                   # (Futuros scripts LinReg)
+├── img/                                     # Reportes ROC/Confusion Matrices
+├── scripts/
+│   ├── generales/
+│   │   └── download_data.py                 # Descarga en crudo desde la API
+│   └── modelo_1_xg/
+│       ├── 1_logistic_regression_xg.py      # Modelo Entrenador y Clasificador
+│       └── laboratorio_exploratorio/        # Historial de investigación de Betas
 ├── EDA_Taller2.ipynb                        # [MAIN CODE] Exploratorio
-├── requirements.txt                         # Dependencias
+├── README.md                                # Bitácora Global
 ├── README_Modelo1_RegresionLogistica.md     # Bitácora M1 (Este doc)
 └── README_Modelo2_RegresionLineal.md        # Bitácora M2
-```
-
-**📢 ATENCIÓN COMPAÑERA DE INGENIERÍA:** 
-Ya está preparado el artefacto `data/xg_train.csv`. Cuenta con 7,198 tiros filtrados (is_shot), sus coordenadas Euclídeas, dummies de contexto (Penalty/BigChance) libres de multicolinealidad, y el `threat` de cada pateador. Tu única tarea sobre este modelo será entrenar la **Regresión Logística**, tirar la validación cruzada y obtener la curva ROC-AUC. ¡Suerte!
-
----   
+```   
 
 ## Descarga de los Datos
 
