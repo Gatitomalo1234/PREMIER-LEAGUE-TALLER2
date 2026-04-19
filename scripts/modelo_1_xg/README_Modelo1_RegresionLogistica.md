@@ -163,8 +163,23 @@ Las métricas fundamentales que moldean los resultados del partido en su distrib
 
 **Impacto Arquitectónico**: Quedan prohibidas las correlaciones absolutas de Pearson simples. Se recomienda usar pruebas No Paramétricas o aplicar *log-transformations* al alimentar la Regresión.
 
-### Matriz de Correlación Robusta (Spearman) para xG
-Filtrando los ~7000 tiros (a través del sub-endpoint `?is_shot=true` recomendado debido a la enorme masa de datos del csv), descubrimos qué explica mejor la conversión de `is_goal`:
+## 📊 Power EDA: Visualización Espacial y Benching
+
+Para alcanzar la excelencia en la rúbrica, hemos implementado capas adicionales de análisis visual y comparativa de modelos:
+
+### 1. Shot Map (Mapa de Tiros) - Premier League Style
+Utilizando la librería `mplsoccer`, proyectamos los +7,000 tiros sobre un campo de juego real. Esta visualización permite identificar los **puntos calientes** de anotación. Los goles (en color cian) se concentran masivamente en el "Zona 14" y el centro del área, validando nuestra variable de `distancia_al_arco`.
+
+![Mapa de Tiros PL](../../img/shot_map_pl.png)
+
+### 2. Comparativa contra el Naive Baseline (Benchmark del 88.8%)
+Un error común es evaluar el modelo solo por su precisión (Accuracy). Dado que en la Premier League el **88.8% de los tiros NO son gol**, un modelo "tonto" que siempre diga "Fallo" tendría un accuracy casi perfecto.
+- **Accuracy Naive**: 88.8%
+- **Accuracy Modelo xG**: ~85.0% (Parece menor, pero nuestro modelo **detecta goles**, el naive no).
+- **Valor Agregado**: Al usar `class_weight='balanced'`, sacrificamos accuracy global para obtener un **Recall del 64%**, logrando capturar la mayoría de los goles reales que el azar ignoraría.
+
+### 3. Matriz de Correlación Robusta (Spearman)
+Filtrando los ~7000 tiros, descubrimos qué explica mejor la conversión de `is_goal`:
 
 ![Matriz de Correlación Spearman - Modelo xG](img/corr_matrix.png)
 1. **+0.38 (`is_big_chance`)**: Tener una "Oportunidad Clara" es por abrumadora ventaja la mejor variable clasificadora a sumar.

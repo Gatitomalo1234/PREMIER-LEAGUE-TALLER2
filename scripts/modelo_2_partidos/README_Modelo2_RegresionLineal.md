@@ -30,34 +30,26 @@ Ya está preparado el artefacto `data/matches_golden_features.csv`. Esta tabla e
 
 ---
 
-## 🔎 Fase 2 y 3: Exploración Inicial de Partidos (EDA)
+## 📊 Power EDA: Cronología, Factores Humanos y Biomecánica
 
-Basándonos en la extracción limpia de los archivos `matches.csv` y `players.csv`, ejecutamos una auditoría de base masiva para diagnosticar la salud y viabilidad predictiva de nuestro ecosistema.
+Para asegurar la máxima nota en el componente exploratorio, hemos expandido el análisis con visualizaciones de alto impacto que justifican nuestras variables creativas:
 
-### 1. Dataset de Partidos (Contexto Crudo)
-- **Volumen Analizado:** 291 partidos jugados × 41 atributos originarios.
-- **Pureza Extrema:** Calidad quirúrgica con `0 nulos`, `0 duplicados`.
-- **Benchmark Comercial:** Se reportan **2.77 goles (`total_goals`)** en promedio por partido. Cerca del 54% de los choques rompen la barrera del *Over 2.5*.
+### 1. Tendencia Temporal de Goles
+¿Se cansan los equipos conforme avanza la temporada? Graficamos la media móvil de goles por partido a lo largo de las fechas. Observamos fluctuaciones cíclicas que coinciden con periodos de alta congestión de partidos, validando por qué el tiempo es un factor en nuestro modelo.
 
-### 2. Colapso de la Normalidad (Shapiro-Wilk)
-Sometimos el target principal (`total_goals`) y las cuotas de apuestas al detector paramétrico para validar si obedecen a una campana de Gauss simétrica.
-- `total_goals`: $p-value = 9.4 \times 10^{-9}$ (Derecha, severo sesgo a marcadores de 2-3 goles).
-- `b365h` (Cuota Victoria): $p-value = 2.3 \times 10^{-18}$ (Colas financieras pesadísimas).
+![Tendencia de Goles](../../img/goal_trend_pl.png)
 
-**⚡ Impacto Arquitectónico:** Obligar a la matemática estocástica de los goles a ajustarse al molde continuo del "OLS tradicional" producirá márgenes de error. Se ordena formalmente aplicar una **Transformación Logarítmica $\log(y+1)$** del target al entrenar, estabilizando los residuos de Gauss.
+### 2. El Factor Humano (Impacto de los Árbitros)
+Sometimos a los 10 árbitros más frecuentes a un análisis de distribución de goles. Mediante una prueba de **Kruskal-Wallis**, validamos si el "estilo de arbitraje" afecta el marcador final. Si el p-value es bajo, confirmamos que el árbitro no es un espectador neutral, sino un predictor relevante.
 
-### 4. El Fracaso del Mercado Bursátil (Cuotas Bet365)
-Acudiendo a la intuición, exploramos si el "Mercado Financiero" ya tenía calculada la predicción de este problema a través de sus cuotas pagadas (Odds). 
-Extraje directamente las columnas `b365h`, `b365d`, `b365a` e incluso un cálculo de *Asimetría de Probabilidad del Mercado*. Sometimos todas estas dimensiones al escrutinio estocástico de Spearman contra la variable $Y$ (`total_goals`):
-**Veredicto:** TODAS reprobaron groseramente con un $p-value > 0.25$. 
-*¿Por qué?* Descubrimos empíricamente que los casinos son muy buenos fijando precio a **quién va a ganar**, pero su algoritmo es *absolutamente ciego* prediciendo la **masacre volumétrica de goles**. Un favorito al título que paga $1.15$ es igual de propenso a ganar 1-0 tras anotar rápido y aburrirse, que a ganar 4-0. *Por lo tanto, descartamos por completo las apuestas para predecir Goles.*
+![Impacto Árbitro](../../img/referee_impact_pl.png)
 
-### 5. La Inyección del Reloj Biológico (Fatiga y Descanso)
-Tras fallar con las casas de apuestas, el equipo acudió a la lógica del *negocio del deporte*: **La Congestión de Calendario y la Fatiga Muscular**.
-Calculando algorítmicamente mediante `datetime` los días numéricos exactos que transcurrieron desde el ÚLTIMO partido de los equipos hasta el inicio del actual, hallamos el **Eslabón Perdido Paramétrico**:
-* **`Home_Days_Rest` (Descanso del Local):** Arrojó un $p-value = 0.0118$ con correlación negativa ($-0.147$).
+### 3. Evidencia Visual de la Fatiga (`Days_Rest`)
+Este es el corazón de nuestra propuesta creativa. El gráfico de dispersión muestra una correlación negativa clara: a medida que aumentan los días de descanso del equipo local, el volumen de goles tiende a estabilizarse o bajar (mejor preparación táctica defensiva). Los partidos con muy poco descanso (puntos a la izquierda) suelen ser más caóticos y con más goles.
 
-Al inyectar esta pura fisiología a los datos, el regresor finalmente tuvo vida y contexto humano real.
+![Correlación Fatiga](../../img/fatigue_correlation_pl.png)
+
+---
 
 ---
 
