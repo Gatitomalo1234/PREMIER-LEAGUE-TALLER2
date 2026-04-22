@@ -1,8 +1,0 @@
-ml_venv/
-.DS_Store
-*.pyc
-__pycache__/
-TALLER 1/
-fpl_data_2025_2026.json
-data/raw/whoscored/*.html
-!PREMIER LEAGUE/data/raw/whoscored/*.html
