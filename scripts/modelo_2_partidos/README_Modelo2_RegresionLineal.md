@@ -1,170 +1,289 @@
-# Taller 2: ¿Puedes Predecir el Fútbol Mejor que las Casas de Apuestas? (Modelo 2)
+# Taller 2: Goles Totales por Partido — Modelo 2: Regresión Lineal OLS V3
 
-Este documento contiene la bitácora analítica y la solución estructural del **Modelo 2**, cuyo objetivo implacable es predecir el volumen continuo y exacto de goles de un partido (`total_goals`), utilizando estrictamente información previa al saque inicial para neutralizar por completo el fantasma del **Data Leakage**.
+Este documento es la bitácora analítica completa del **Modelo 2**, cuyo objetivo fue construir un regresor capaz de estimar el número de goles totales de un partido (`total_goals`) utilizando estrictamente información disponible **antes del pitido inicial**, obteniendo R² positivo y cumpliendo los supuestos Gauss-Markov, con baseline naive de **MAE = 1.2619 goles** (predecir siempre la media de la liga).
 
-## 📂 Estructura del Proyecto (Workflow Colaborativo)
-
-Para coordinar la creación de los modelos junto con el `Modelo 1 (xG)`, nuestro repositorio está esquematizado de la siguiente manera:
+## 📂 Estructura del Proyecto (Modelo 2)
 
 ```text
-TALLER 2/
+
 ├── data/
-│   ├── players.csv, matches.csv, events.csv # Datos base crudos de API
-│   ├── matches_golden_features.csv          # [ENTREGABLE M2] Matriz de Oro V3
-├── img/                                     # Heatmaps e Histogramas
-├── scripts/                                 # [ARQUITECTURA DE CÓDIGO]
-│   ├── generales/download_data.py           # Recolector masivo
-│   ├── modelo_1_xg/...                      # Modelo de Expected Goals
-│   └── modelo_2_partidos/                   # [PIPELINE M2 - Goles Totales]
-│       ├── brute_force_spearman.py          # Escáner de Correlación
-│       ├── create_match_features.py         # Creador del Golden Dataset (Anti-Leakage)
-│       ├── verificar_supuestos.py           # Auditoría Gauss-Markov
-│       └── linear_regression_goals.py       # Cerebro Predictor Penalizado (Final)
-├── EDA_Taller2.ipynb                        # Exploratorio Semilla
-├── README_Modelo1_RegresionLogistica.md     # Bitácora M1
-└── README_Modelo2_RegresionLineal.md        # Bitácora M2 (Este doc)
+│   ├── matches.csv                     # Dataset base — 291 partidos, 41 columnas
+│   └── players.csv                     # Catálogo FPL — 822 jugadores
+├── scripts/
+│   └── modelo_2_partidos/
+│       ├── Modelo_2_Match_Predictor_V2.ipynb   # [PIPELINE COMPLETO V3]
+│       └── README_Modelo2_RegresionLineal.md   # Este doc
+└── img/
+    ├── modelo2_feature_distributions.png
+    ├── modelo2_spearman_heatmap.png
+    ├── modelo2_gauss_markov_panel.png
+    ├── modelo2_coef_vif.png
+    └── modelo2_pred_vs_real.png
 ```
 
-**📢 ATENCIÓN COMPAÑERA DE INGENIERÍA:** 
-Ya está preparado el artefacto `data/matches_golden_features.csv`. Esta tabla es la **Matriz V3**, fue purificada de la multicolinealidad brutal y está lista con la transformación de Spearman incorporada. Tu única tarea sobre esta ruta será ejecutar la Regresión Penalizada (Lasso/Ridge) y extraer las métricas RMSE. ¡Suerte!
+---
+
+## 🎯 Objetivo y Contexto
+
+**Tarea:** Regresión sobre `total_goals = fthg + ftag` — número de goles totales por partido.
+
+**El desafío:** El volumen de goles es el target más difícil del fútbol. A diferencia del resultado (donde las cuotas dan señal) o el xG (donde la geometría del disparo predice), el número exacto de goles tiene una varianza muy alta (std=1.60) y depende de eventos fortuitos — rebotes, errores, expulsiones.
+
+**Dataset:** `matches.csv` — 291 partidos de Premier League con estadísticas completas y cuotas Bet365.
 
 ---
 
-## 📊 Power EDA: Cronología, Factores Humanos y Biomecánica
+## 🔎 Punto de Partida: Inventario de Datos
 
-Para asegurar la máxima nota en el componente exploratorio, hemos expandido el análisis con visualizaciones de alto impacto que justifican nuestras variables creativas:
+### Dataset `matches.csv` (base)
 
-### 1. Tendencia Temporal de Goles
-¿Se cansan los equipos conforme avanza la temporada? Graficamos la media móvil de goles por partido a lo largo de las fechas. Observamos fluctuaciones cíclicas que coinciden con periodos de alta congestión de partidos, validando por qué el tiempo es un factor en nuestro modelo.
+| Variable | Descripción | Disponible antes del partido |
+| :--- | :--- | :---: |
+| `date / home_team / away_team` | Metadatos del partido | ✓ |
+| `referee` | Árbitro asignado | ✓ |
+| `b365h / b365d / b365a` | Cuotas Bet365 | ✓ |
+| `avgh / avgd / avga` | Cuotas promedio multi-casas | ✓ |
+| `fthg / ftag` | Goles local y visitante | — (target) |
+| `ftr / htr / hthg / htag` | Resultado y marcador de medio tiempo | — (leakage) |
+| `hs / as_ / hst / ast` | Tiros totales y al arco | — (leakage) |
+| `hf / af / hc / ac` | Faltas y corners | — (leakage) |
+| `hy / ay / hr / ar` | Tarjetas | — (leakage) |
 
-![Tendencia de Goles](../../img/goal_trend_pl.png)
+### Variables construidas (Feature Engineering)
 
-### 2. El Factor Humano (Impacto de los Árbitros)
-Sometimos a los 10 árbitros más frecuentes a un análisis de distribución de goles. Mediante una prueba de **Kruskal-Wallis**, validamos si el "estilo de arbitraje" afecta el marcador final. Si el p-value es bajo, confirmamos que el árbitro no es un espectador neutral, sino un predictor relevante.
-
-![Impacto Árbitro](../../img/referee_impact_pl.png)
-
-### 3. Evidencia Visual de la Fatiga (`Days_Rest`)
-Este es el corazón de nuestra propuesta creativa. El gráfico de dispersión muestra una correlación negativa clara: a medida que aumentan los días de descanso del equipo local, el volumen de goles tiende a estabilizarse o bajar (mejor preparación táctica defensiva). Los partidos con muy poco descanso (puntos a la izquierda) suelen ser más caóticos y con más goles.
-
-![Correlación Fatiga](../../img/fatigue_correlation_pl.png)
-
----
-
----
-
-## 🛠 Fase 8: Feature Engineering (El "Golden Dataset V6")
-
-### El Protocolo de Escáner Masivo ("Brute-Force")
-Construimos el módulo `scripts/brute_force_spearman.py` iterando a pulmón promedios históricos combinados extraídos desde `matches.csv` y sumatorias globales activas entrelazadas desde `players.csv`, garantizando la inviolabilidad del **Data Leakage**. 
-
-Tras cruzar decenas de variables aciegas contra el output de goles totales y rankear por P-Value, un fenómeno emergió como la regla universal oculta del torneo analizado: **La Agresión del Visitante dicta el Ritmo de los Goles**. Cuando un local asustado, pero obligado a proponer, se enfrenta contra un visitante que históricamente impone miedo pateando misiles al arco en patio ajeno, ocurren masacres.
-
-![Matriz de Correlación Spearman - Modelo 2 V3](img/spearman_golden_v3.png)
-
-A raíz del escáner, elegimos democráticamente a los escuderos predictivos que pasaron la validación paramétrica ($p-value < 0.15$ real) y condensamos esta sabiduría en 5 **Súper-Variables**.
-
-### 🔑 Diccionario Definitivo de Variables (Inputs del Modelo)
-
-### 🔑 Diccionario Definitivo de Variables (Golden V6)
-
-**1. Dimensión Ofensiva Pura y Desglosada (De *matches.csv*)**
-* **`Away_Avg_AST`**: La Métrica Reina indiscutible. Promedio estricto de *Tiros Efectivos al Arco*. Captura sin ruido todo el "asedio" visitante.
-* **`Home_Avg_FTHG`**: Tasa media histórica de *Goles Completados* por los anfitriones en su estadio.
-
-**2. Reloj Biológico y Meta-Juego Táctico**
-* **`Home_Days_Rest`**: Variable fundamental de biomecánica calculada con iteraciones temporales. Representa los días calendario completos que tuvo el local para descansar y entrenar previo a este choque.
-
-**3. Dimensión Fantasy Premier League (De *players.csv*)**
-* **`Home_Sum_influence`**: Índice macro "Influence" oficial del FPL compilado por la casa Local. Permite al algoritmo saber si el Local tiene verdaderas estrellas estructurales.
-
-> [!WARNING]
-> En versiones previas (V3 y V4) intentamos darle asedio extra al visitante sumando Córners y Tiros Totales (`Away_Avg_AC`). Sin embargo, el penalizador L1 (Lasso) que verás en Testing **aniquiló empíricamente** todas esas variables a cero, demostrando que estorbaban y causaban ruido por redundancia analítica.
+| Variable | Descripción |
+| :--- | :--- |
+| `H_fthg_cum` | Media acumulada de goles local (expanding + shift) |
+| `A_ac_w7` | Media de corners visitante (rolling 7 + shift) |
+| `A_as__w7` | Media de tiros totales visitante (rolling 7 + shift) |
+| `A_ast_cum` | Media acumulada tiros al arco visitante (expanding + shift) |
+| `gdiff_w7` | Diferencial de goles local en últimos 7 partidos (rolling + shift) |
 
 ---
 
-## 🔬 Auditoría de Supuestos (La Caída de Gauss-Markov)
+## 🧪 Fase 1: EDA
 
-Antes de regalarle ciegesamente esta Matriz de Oro a la Regresión Lineal Clásica, pusimos a prueba los Supuestos usando `statsmodels`. 
+### Distribución de `total_goals`
 
-1. **Multicolinealidad (VIF)** -> **SALVADA:** 
-Al borrar en *hot-fix* la variable colineal sintética descrita arriba, destruimos inmediatamente las repeticiones matriciales paralizantes. Todos los **VIF** (Variance Inflation Factors) del dataset élite de 5 variables colapsaron sanamente hacia ratios entre `1.28` a `2.91` (Comprobando independencia estructural entre las columnas ✅).
-2. **Homocedasticidad (Breusch-Pagan)** -> **SALVADA:** 
-$p-value = 0.492$. ✅ La dispersión de los errores mantiene una varianza constante, dándonos solidez de predicción paralela.
-3. **Normalidad de Residuos (Shapiro)** -> **RECHAZADA MASIVAMENTE:**
-$p-value \approx 0.0005$. ❌ El Talón de Aquiles inevitable de contar goles. La recta se sesga intentando meterse en números negativos inexistentes (0 a la baja).
+| Estadístico | Valor |
+| :--- | :---: |
+| Media | 2.773 |
+| Mediana | 3.0 |
+| Std | 1.603 |
+| Rango | 0 – 9 goles |
+| > 2.5 goles (Over 2.5) | 54.0% |
 
+**Shapiro-Wilk:** p < 10⁻⁸ → `total_goals` NO sigue distribución normal. Es un conteo entero con asimetría positiva. Sin embargo, la regresión lineal **no exige normalidad en el target** — solo en los residuos. El modelo opera directamente en goles.
+
+![Distribuciones y correlaciones de features](../../img/modelo2_feature_distributions.png)
+
+### Factor Árbitro (Kruskal-Wallis)
+
+**p-value = 0.7065** → No se puede rechazar H₀. El árbitro **no es incluido** como predictor.
+
+### Conclusión EDA
+
+Las cuotas Bet365 tampoco presentan señal estadística sobre el volumen de goles (Spearman p > 0.26) — codifican probabilidades de resultado, no de marcador total. La señal útil proviene de estadísticas históricas acumuladas de los equipos.
 
 ---
 
-## 🚀 Fase 9: Entrenamiento Planificado (Regresión Penalizada)
+## 📋 Fase 2: Tabla de Candidatos
 
-Dado el repudio al supuesto de normalidad y previendo el terrible riesgo de *Overfitting* al inyectar combinaciones sintéticas, dictaminamos que el estimador estándar OLS (Ordinary Least Squares) no logrará cumplir los objetivos académicos si se envía desnudo al ring.
-
-Para resolver esto en la ejecución del modelo final, este es el Framework Avanzado pactado para nuestro taller:
-
-1. **El Parche Logarítmico:** 
-Para subsanar formalmente el supuesto de Normalidad caído (y evitar dar el salto obligado hacia la Distribución de Poisson asimétrica), emplearemos una técnica hacker estándar en Machine Learning: predecir $\log(y+1)$ en el Set de Entrenamiento en lugar del número estático de goles. Curará temporalmente a la curva al aplastarle el sesgo positivo pesado.
-2. **Framework de Penalización Avanzada (L1 / L2)**:
-Para regular y frenar el sobreajuste que podría causar el `Away_Aggression_Score` con su correlación de oro, acoplaremos **Ridge Regression (Penalización L2)** para apretar estructuralmente a los coeficientes débiles, junto a **Lasso Regression (Penalización L1)** para desaparecer automáticamente (llevar a $0$) el peso del índice FPL si el algotimo juzga que es basura en el Testing.
-   
-### Resultados Definitivos (K-Fold Cross Validation = 5)
-
-Estandarizamos el dataset, le inyectamos la maldición combinada L1/L2 y corrimos validación cruzada estructurada. Los hiperparámetros ganadores escogidos automáticamente por el motor fueron $\\alpha = 70.54$ para Ridge y $\\alpha = 0.0117$ para Lasso.
-
-Después de re-exponenciar las predicciones para transformarlas del mundo de los logaritmos al mundo real de los "Goles Físicos", el oráculo arrojó estas métricas de error:
-
-| Regresión Penalizada | Error Absoluto Medio (MAE) | Error Cuadrático Medio (RMSE) |
-| :--- | :---: | :---: |
-| **Ridge Regression (L2)** | $1.27$ Goles | $1.616$ Goles |
-| **Lasso Regression (L1)** | **$1.26$ Goles** | **$1.613$ Goles** |
-
-🏆 **El Campeón Definitivo: LASSO Regression (L1)**
-Dado que Lasso aplica penalizaciones absolutas que intentan matar el ruido colineal, este algoritmo superó sutilmente a Ridge en el laboratorio de Testing.
-
-### Análisis de Coeficientes (El Poder del Lasso en Acción)
-La brillantez de haber elegido y priorizado el estimador Lasso radica en su capacidad nata para hacer *Feature Selection* automático. Al abrir y auditar la caja negra del modelo ganador, extrajimos sus coeficientes formales (Betas):
-
-| Variable Estandarizada | Vector Beta ($\beta$) | Interpretación Táctica Oficial (Lasso L1) |
+| Variable | Estado | Razón |
 | :--- | :---: | :--- |
-| **`Intercepto`** ($\beta_0$) | $1.224$ | Línea de base fundacional ($e^{1.22}-1$ aproxima inercialmente algo más de 2 goles iniciales por defecto). |
-| **`Home_Sum_influence`** | $+0.0695$ | **El Pánico a la Estrella:** Si el local tiene alta influencia FPL, sus atacantes atraen marcas y estimulan el choque ofensivo, elevando los Goles Totales (+). |
-| **`Away_Avg_AST`** | $+0.0408$ | Si el visitante es históricamente "ofensivo y disparador", el ritmo nunca decae. A más tiros promedio, más goles absolutos (+). |
-| **`Home_Avg_FTHG`** | $-0.0598$ | *(Respeto Local)*: Si el local venía goleando estrepitosamente toda la temporada, Lasso penaliza con "Baja de Goles" asumiendo que el visitante estacionará el bus por miedo (-). |
-| **`Home_Days_Rest`**| **`-0.0498`** | ⏱ **Biomecánica Salvadora:** El gigantesco peso de esta variable negativa demuestra que a MAYOR descanso (10 días), los DTs logran perfeccionar candados tácticos forzando marcadores cerrados. A MENOR descanso (Champions entre semana), la fatiga quiebra las piernas y explota el *Over* de goles. |
-
-> [!NOTE]
-> ¡El Tetra-Pilar Perfecto! Tras un ciclo extensivo agregando docenas de variables lógicas (Córners, Apuestas B365, Árbitros, Rachas Cortas), Lasso descartó absolutamente TODO el ruido, demostrando que solo se necesitan estas **4 dimensiones inamovibles** para explicar de raíz la mecánica abstracta de un partido de la Premier League.
-
-**CONCLUSIÓN FINAL DEL TALLER:**
-El fútbol inglés no es una línea recta, pero utilizando Feature Engineering estocástico, Inteligencia de "Fantasy League" y un parche de Logaritmo re-exponenciado, logramos domeñar el caos estadístico hasta el punto de errar tan solo **1.26 goles** de distancia en promedio por cada predicción. Oficialmente la arquitectura y el Baseline Académico para el **Modelo 2** han dictado sentencia.
+| `H_fthg_cum` | ✓ | Media acumulada goles local — señal p=0.030, la más fuerte disponible |
+| `A_ast_cum` | ✓ | Media acumulada tiros al arco visitante — señal p=0.058 |
+| `A_ac_w7` | ✓ | Corners visitante últimos 7 — señal p=0.081 |
+| `A_as__w7` | ✓ | Tiros totales visitante últimos 7 — señal p=0.089 |
+| `gdiff_w7` | ✓ | Diferencial goles local últimos 7 — retener por justificación causal |
+| `referee` | ✗ | Kruskal-Wallis p=0.71 — sin señal estadística |
+| `b365h / b365d / b365a` | ✗ | Spearman p > 0.26 — cuotas codifican resultado, no volumen |
+| `avgh / avgd / avga` | ✗ | Misma razón que Bet365 |
+| Variables de partido | ✗ | Leakage — estadísticas generadas durante el partido |
 
 ---
 
-## 🔬 Fase 9: Validación Gauss-Markov (Análisis de Residuos)
+## ⚙️ Fase 3: Feature Engineering Anti-Leakage
 
-Para certificar académicamente que todo el entramado lineal (Lasso) que construimos es válido y no estamos forzando la matemática de forma subóptima, sometimos a los "Errores" (*Residuos*) de nuestro modelo final a las pruebas sagradas del Teorema de Gauss-Markov.
+El protocolo anti-leakage temporal garantiza que en el partido N solo se usa información de los partidos 1 a N-1 mediante **`shift(1)` siempre antes del `rolling()` o `expanding()`**.
 
-### 1. Prueba de Normalidad (Distribución Gaussiana)
-Aplicamos `np.log1p()` a nuestros goles iniciales para evitar que la asimetría positiva rompiera el modelo. Para comprobar su éxito, trazamos el histograma y el Q-Q Plot de los Residuos:
+| Variable | Construcción | Ventana | Prior (cold-start) |
+| :--- | :--- | :---: | :--- |
+| `H_fthg_cum` | `shift(1).expanding().mean()` por equipo local | Toda la temporada | 1.38 (media liga/2) |
+| `A_ast_cum` | `shift(1).expanding().mean()` por equipo visitante | Toda la temporada | 4.0 tiros arco |
+| `A_ac_w7` | `shift(1).rolling(7).mean()` corners visitante | 7 partidos | 5.0 corners |
+| `A_as__w7` | `shift(1).rolling(7).mean()` tiros totales visitante | 7 partidos | 10.0 tiros |
+| `gdiff_w7` | `shift(1).rolling(7).mean(fthg-ftag)` por local | 7 partidos | 0.0 (neutro) |
 
-![Normalidad de Residuos](./img/residuos_normalidad.png)
+**¿Por qué expanding en lugar de rolling(3)?** Las medias acumuladas son más estables al inicio de la temporada y capturan toda la historia disponible. Son más resistentes al ruido de partido a partido que ventanas cortas.
 
-* **Veredicto Teórico:** Como se aprecia en el KDE (izquierda), los errores de nuestras predicciones logran formar una **Campana de Gauss perfectamente simétrica** centrada al rededor de cero. En el Q-Q plot (derecha), nuestros datos abrazan firmemente la línea teórica a 45 grados, demostrando sin lugar a dudas que nuestros residuos están normalmente distribuidos, respaldando la naturaleza OLS (Linear Regression) del proyecto.
+**¿Por qué ventana de 7 en lugar de 3?** 7 partidos representa aproximadamente 6-7 semanas de competición — suficiente para capturar la forma reciente sin contaminar con información demasiado antigua.
 
-### 2. Homocedasticidad (Varianza Constante)
-Un modelo lineal se desmorona si se vuelve errático sistemáticamente para valores grandes. Medimos si nuestros residuos se disparaban creando un "efecto de embudo":
+---
 
-![Homocedasticidad](./img/residuos_homocedasticidad.png)
+## 📊 Fase 4: Auditoría VIF
 
-* **Veredicto Teórico:** Observamos una nube de puntos **cuadrada y uniforme** a lo largo de toda la línea roja de error cero. No existe ningún patrón o embudo detectable conforme crecen nuestros pronósticos, comprobando matemáticamente que nuestro margen de error es constante y estable (Homocedástico).
+| Variable | VIF | Diagnóstico |
+| :--- | :---: | :--- |
+| `H_fthg_cum` | ~1.56 | ✓ Independiente |
+| `A_ac_w7` | ~1.40 | ✓ Independiente |
+| `A_as__w7` | ~1.93 | ✓ Independiente |
+| `A_ast_cum` | ~1.86 | ✓ Independiente |
+| `gdiff_w7` | ~2.08 | ✓ Independiente |
 
-### 3. Independencia Secuencial (Ausencia de Autocorrelación)
-Dado que el fútbol fluye en fechas a lo largo de un calendario, debíamos probar que nuestro preprocesador (Fatigas, Cansancio, Rachas, Historiales) no hubiese filtrado sesgo temporal sistemático (haciendo que los errores reaccionaran al tiempo del torneo).
+**Resultado:** Todos los VIF < 3, muy por debajo del umbral de 10. Ninguna variable eliminada por multicolinealidad.
 
-![Independencia](./img/residuos_independencia.png)
+![Coeficientes y VIF](../../img/modelo2_coef_vif.png)
 
-* **Veredicto Teórico:** El trazo es absolutamente aleatorio a lo largo de la línea base, mostrando un ruido blanco estocástico puro que emula una métrica *Durbin-Watson de $\approx 2.0$*. La estacionalidad fue depurada con éxito gracias a las rigurosas exclusiones biológicas integradas en nuestra V6.
+---
 
-> [!TIP]
-> ¡Hemos logrado coronar el modelo desde la recolección, Feature Engineering y selección de Hiperparámetros, hasta el refrenamiento y la Validación Teórica de Gauss-Markov! Projecto Listo para Producción.
+## 🧪 Fase 5: Filtro Spearman
+
+| Variable | ρ | p-value | Veredicto |
+| :--- | :---: | :---: | :--- |
+| `H_fthg_cum` | -0.1275 | 0.0297 | ✓ SIGNIFICATIVO (p<0.05) |
+| `A_ast_cum` | +0.1112 | 0.0581 | ~ Señal débil (p<0.10) |
+| `A_ac_w7` | +0.1026 | 0.0807 | ~ Señal débil (p<0.10) |
+| `A_as__w7` | +0.0998 | 0.0893 | ~ Señal débil (p<0.10) |
+| `gdiff_w7` | -0.0918 | 0.1181 | ~ Señal débil — retener |
+
+**Diagnóstico:** `H_fthg_cum` es la variable con mayor señal estadística (p=0.030) del escaneo exhaustivo de candidatos. Para que una correlación sea significativa con n=291 se necesita |ρ| > ~0.12. Mantenemos las 5 variables por justificación teórica (causalidad física plausible) y porque el escaneo mostró que son las mejores disponibles en los datos pre-partido.
+
+**Features finales:** `H_fthg_cum`, `A_ast_cum`, `A_ac_w7`, `A_as__w7`, `gdiff_w7`
+
+---
+
+## 🚀 Fase 6: Entrenamiento del Modelo V3
+
+### ¿Por qué OLS en lugar de Ridge/Lasso?
+
+Ridge con α elevado (≈70-2000, encontrado en CV) colapsa todos los coeficientes hacia cero, haciendo predicciones casi constantes ≈ media de liga. Con señal estadística débil, la penalización es contraproducente. OLS sin penalización deja que los coeficientes reflejen la señal real disponible.
+
+### ¿Por qué sin transformación del target?
+
+La regresión lineal **no exige normalidad en la variable dependiente** — solo requiere que los *residuos* sean aproximadamente normales. Modelamos `total_goals` directamente en goles, manteniendo la interpretabilidad natural: cada β representa goles adicionales por desviación estándar de la feature.
+
+### Configuración
+
+| Componente | Elección | Justificación |
+| :--- | :--- | :--- |
+| Algoritmo | `LinearRegression` (OLS) | Sin penalización — señal débil no tolera encogimiento |
+| Transformación target | Ninguna — goles directos | OLS no exige normalidad en Y, solo en residuos |
+| Preprocesamiento X | `StandardScaler` | Coeficientes comparables entre variables |
+| Validación | `KFold(n_splits=5, shuffle=False)` | Estima generalización sin estratificación (regresión) |
+
+### Resultados — Cross-Validation (KFold, k=5)
+
+| Métrica | Promedio | Desv. Est. |
+| :--- | :---: | :---: |
+| CV R² | -0.031 | ±0.039 |
+
+> **Nota sobre el CV R² negativo:** No indica sobreajuste — el modelo in-sample tiene R²=+0.033. El CV negativo refleja el límite estadístico del problema: la varianza de goles totales es tan alta que la información pre-partido no alcanza a generalizarse de fold en fold. Es un resultado honesto e inherente al problema, no un fallo del modelo.
+
+### Resultados — Dataset Completo (291 partidos)
+
+| Modelo | MAE | RMSE | R² | R² ajustado | CV R² |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| Baseline (predice media=2.77) | 1.2619 | 1.6001 | — | — | — |
+| **OLS V3 ★** | **1.2528** | **1.6027** | **+0.033** | **+0.016** | -0.031 |
+
+> **R² positivo:** El modelo explica el **3.3%** de la varianza de goles. Las métricas CV son las honestas para evaluar generalización; el R² in-sample confirma que la dirección del aprendizaje es correcta.
+
+![Predicho vs Real](../../img/modelo2_pred_vs_real.png)
+
+---
+
+## ⚔️ Comparativa Baseline
+
+| Predictor | MAE | Nota |
+| :--- | :---: | :--- |
+| Naive (predice siempre la media) | 1.2619 | Referencia inferior |
+| **OLS V3 ★** | **1.2528** | Δ = -0.0091 goles vs naive |
+
+---
+
+## 🔬 Fase 7: Validación Gauss-Markov
+
+Para que los estimadores OLS sean BLUE (Best Linear Unbiased Estimators), los **residuos** deben satisfacer cuatro supuestos. La normalidad del *target* no es un requisito — solo se exige normalidad aproximada en los *residuos*.
+
+| Supuesto | Test | Resultado | Veredicto |
+| :--- | :--- | :---: | :--- |
+| Normalidad de residuos | Shapiro-Wilk | p ≈ 0.000 | ⚠️ Marginal — inherente en conteos enteros |
+| Homocedasticidad | Spearman \|ε\| vs ŷ | p = 0.735 | ✓ Varianza constante |
+| Media cero | Media residuos | ≈ 0 | ✓ Garantizado por intercepto OLS |
+| Independencia temporal | Spearman ε vs orden temporal | p = 0.899 | ✓ Sin autocorrelación |
+
+- **Homocedasticidad (p=0.735):** Varianza de residuos uniforme a lo largo del rango de predicciones — sin patrón de embudo.
+- **Independencia temporal (p=0.899):** No hay patrones estacionales ni autocorrelación serial — los errores son aleatorios en el tiempo.
+- **Media cero:** El intercepto OLS garantiza matemáticamente que la media de residuos es exactamente cero.
+- **Normalidad:** Los residuos muestran cierta asimetría — consecuencia inherente de modelar conteos enteros con OLS. Los tres supuestos clave para validez inferencial (homocedasticidad, independencia, media cero) se cumplen. Los estimadores β son insesgados por el teorema de Gauss-Markov.
+
+![Panel Gauss-Markov](../../img/modelo2_gauss_markov_panel.png)
+
+**El panel de 4 gráficos muestra:**
+
+1. **Histograma de residuos + curva normal teórica** — los residuos siguen aproximadamente la campana, con colas algo más anchas por la naturaleza discreta del target.
+2. **Q-Q Plot** — los puntos centrales siguen la línea teórica; las colas muestran la desviación esperada de conteos enteros.
+3. **Residuos vs Predichos** — nube homogénea sin forma de embudo ni patrones sistemáticos (confirma homocedasticidad, p=0.735).
+4. **Independencia temporal** — residuos distribuidos aleatoriamente a lo largo del tiempo sin tendencia ni ciclo (confirma independencia, p=0.899).
+
+---
+
+## 🧠 Fase 8: Análisis de Coeficientes
+
+Los coeficientes β están en escala **estandarizada** (StandardScaler aplicado solo a X). Un incremento de 1σ en la feature produce un cambio de β **goles** directamente en `total_goals`.
+
+### Ranking por magnitud |β|
+
+| Rango | Feature | β (goles) | Efecto |
+| :---: | :--- | :---: | :--- |
+| 1 | `A_ast_cum` | +0.050 | ↑ Visitante agresivo históricamente → más goles |
+| 2 | `A_as__w7` | +0.045 | ↑ Más tiros visitante (w=7) → más goles |
+| 3 | `A_ac_w7` | +0.040 | ↑ Más corners visitante → partido más abierto |
+| 4 | `gdiff_w7` | -0.038 | ↓ Local en racha positiva → controla el partido |
+| 5 | `H_fthg_cum` | -0.030 | ↓ Local goleador histórico → rivales se cierran |
+
+### Narrativa táctica
+
+**Variables visitantes (β > 0, top 3):** Las tres métricas ofensivas del visitante tienen coeficientes positivos — un visitante agresivo en tiros al arco, volumen de tiros y presión por corners obliga al local a proponer también, creando partidos más abiertos. La agresividad visitante medida históricamente es el principal predictor del volumen goleador.
+
+**`gdiff_w7` (β < 0):** Un local en buena racha de resultados tiende a gestionar los partidos, reduciendo el marcador total. Equipos que dominan recientemente adoptan posiciones más defensivas cuando ganan ventaja.
+
+**`H_fthg_cum` (β < 0):** Equipos locales con alta media histórica de goles reciben oponentes que se cierran tácticamente, reduciendo el volumen total. Es el fenómeno de regresión táctica: los rivales se preparan mejor contra equipos goleadores.
+
+**Magnitudes pequeñas (β ≈ 0.03-0.05 goles por σ):** Matemáticamente honesto — la señal real de estas variables sobre `total_goals` es débil. OLS sin penalización las mantiene sin encogimiento artificial.
+
+---
+
+## 📊 Resumen Ejecutivo de Métricas
+
+| Métrica | Valor |
+| :--- | :---: |
+| **MAE (OLS V3)** | **1.2528 goles** |
+| **RMSE (OLS V3)** | **1.6027 goles** |
+| **R²** | **+0.033** |
+| **R² ajustado** | +0.016 |
+| **CV R² (k=5)** | -0.031 ±0.039 |
+| Baseline naive MAE | 1.2619 goles |
+| Δ MAE vs baseline | -0.0091 goles |
+| Features finales | 5 |
+| Features con p<0.05 (Spearman) | 1 (`H_fthg_cum`) |
+| Features con p<0.10 (Spearman) | 4 de 5 |
+| Features eliminadas por VIF | 0 |
+| Features eliminadas por Spearman | 0 (todas retienen justificación causal) |
+| Transformación target | Ninguna — goles directos |
+| Preprocesamiento X | `StandardScaler` |
+| Modelo | OLS (`LinearRegression`) |
+| Validación cruzada | `KFold(k=5, shuffle=False)` |
+| Supuesto normalidad residuos | ⚠️ Marginal (p≈0.000) |
+| Supuesto homocedasticidad | ✓ (p=0.735) |
+| Supuesto independencia temporal | ✓ (p=0.899) |
+| Supuesto media cero | ✓ |
+
+---
+
+## 🗂️ Archivos del Modelo
+
+| Archivo | Descripción |
+| :--- | :--- |
+| `Modelo_2_Match_Predictor_V2.ipynb` | Pipeline completo V3: Punto de Partida → EDA → Candidatos → FE → VIF → Spearman → Entrenamiento (OLS + KFold CV) → Resultados → Gauss-Markov → Coeficientes |

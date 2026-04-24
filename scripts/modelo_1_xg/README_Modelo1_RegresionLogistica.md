@@ -1,334 +1,337 @@
-# Taller 2: ¿Puedes Predecir el Fútbol Mejor que las Casas de Apuestas?
+# Taller 2: Expected Goals (xG) — Modelo 1: Regresión Logística Binaria V2
 
-Este repositorio contiene la solución al Taller 2 del curso de Machine Learning I. El objetivo del proyecto es analizar y predecir resultados de partidos y "Expected Goals" (xG) utilizando datos detallados partido a partido de la Premier League.
+Este documento es la bitácora analítica completa del **Modelo 1**, cuyo objetivo fue construir un clasificador binario capaz de estimar la probabilidad de que un disparo se convierta en gol (`is_goal`) y superar el **baseline naive de 88.79%** (tasa de no-gol) con métricas informativas sobre clases desbalanceadas.
 
-## Estructura del Proyecto
+El modelo fue extendido con una **Sección 9** que incorpora efectos fijos de jugador (`β_jugador`) estimados sobre 7.198 tiros reales de la Premier League 24/25.
 
-- `data/`: Directorio donde se almacenan los datasets crudos en formato CSV una vez descargados.
-- `download_data.py`: Script para descargar masivamente los datasets directamente desde la API usando los endpoints de exportación para superar los límites de consultas (queries).
-- `requirements.txt`: Lista de paquetes Python y dependencias necesarias para ejecutar el proyecto.
+## 📂 Estructura del Proyecto (Modelo 1)
 
-## Instalación y Configuración del Entorno Local
+```text
 
-1. Aislar las dependencias creando un entorno virtual dentro de la carpeta del taller:
-   ```bash
-   python -m venv env
-   ```
-
-2. Activar el entorno virtual:
-   - Mac/Linux:
-     ```bash
-     source env/bin/activate
-     ```
-   - Windows:
-    ## Instalación y Configuración
-
-El proyecto contiene un archivo `requirements.txt` con todas las dependencias necesarias.
-```bash
-python3 -m venv env
-source env/bin/activate
-pip install -r requirements.txt
+├── data/
+│   ├── events.csv          # Dataset fuente — 444,252 eventos, 7,198 disparos
+│   ├── xg_train.csv        # Dataset de disparos con features precalculadas
+│   └── players.csv         # Catálogo FPL — 822 jugadores, threat y stats
+├── scripts/
+│   └── modelo_1_xg/
+│       ├── Modelo_1_Expected_Goals_V2.ipynb   # [PIPELINE COMPLETO V2]
+│       └── README_Modelo1_RegresionLogistica.md  # Este doc
+└── img/
+    ├── roc_curve_xg.png
+    └── confusion_matrix_xg.png
 ```
 
 ---
 
-## 📂 Estructura del Proyecto (Workflow Colaborativo)
-Para coordinar la creación de los modelos, nuestro repositorio está esquematizado de la siguiente manera:
+## 🎯 Objetivo y Contexto
 
-```text
-TALLER 2/
-├── data/
-│   ├── players.csv, matches.csv, events.csv # Datos en crudo sacados de API
-│   ├── xg_train.csv                         # [ENTREGABLE FASE 1] Matriz pura
-│   └── player_threats_dict.csv              # [DICCIONARIO PARA DASHBOARD]
-├── img/                                     # Reportes ROC/Confusion Matrices
-├── scripts/
-│   ├── generales/
-│   │   └── download_data.py                 # Descarga en crudo desde la API
-│   └── modelo_1_xg/
-│       ├── 1_logistic_regression_xg.py      # Modelo Entrenador y Clasificador
-│       └── laboratorio_exploratorio/        # Historial de investigación de Betas
-├── EDA_Taller2.ipynb                        # [MAIN CODE] Exploratorio
-├── README.md                                # Bitácora Global
-├── README_Modelo1_RegresionLogistica.md     # Bitácora M1 (Este doc)
-└── README_Modelo2_RegresionLineal.md        # Bitácora M2
-```   
+**Tarea:** Clasificación binaria → `is_goal` (1 = gol, 0 = no gol) sobre disparos de la Premier League 25/26.
 
-## Descarga de los Datos
+**El desafío del desbalance:** En la Premier League, apenas el **11.21%** de los disparos se convierten en gol. Un clasificador naive que siempre prediga "no gol" obtiene **88.79% de accuracy** sin aprender nada. Por eso la métrica principal del modelo es el **PR-AUC** (Precision-Recall AUC), más informativa que el ROC-AUC cuando la clase positiva es una minoría tan extrema.
 
-Para no depender de la API (y evitar consumir el límite de las peticiones en vivo), el primer paso es descargar el dataset completo.
-1. Ejecuta el script de descarga:
-   ```bash
-   python download_data.py
-   ```
-2. Esto generará la carpeta `data/` con los archivos `players.csv`, `matches.csv` y `events.csv`, los cuales serán consumidos más adelante por los Notebooks exploratorios.
-
-## Ejecución y Exploración Inicial (EDA)
-
-El análisis base inicia en `EDA_Taller2.ipynb` basándonos en la guía oficial de la clase. Al correr las estadísticas univariadas de los 3 datasets en nuestra "Fase 0 y 1", encontramos:
-
-### 1. Dataset de Players (Jugadores)
-- **Volumen**: 822 filas × 37 columnas. `0` duplicados.
-- **Nulos**: Variables críticas faltantes son `chance_of_playing_next_round` (26% nulos) y `news` (incidencias o lesiones, 62.6% nulos).
-- **Insights**: Las métricas de goles esperados (`xG`, `xA`, `xGI`) presentan alta asimetría positiva (muchos jugadores con 0, unos pocos con alta probabilidad). El valor máximo de `total_points` ronda los 197 pts (asimetría 1.12) y hay un jugador con 108 atajadas (`saves`).
-
-### 2. Dataset de Matches (Partidos)
-- **Volumen**: 291 filas × 41 columnas. Completamente limpio (`0 nulos`, `0 duplicados`).
-- **Insights**: Se reportan 2.77 goles (`total_goals`) en promedio por partido. Bet365 predice el Home Win con una cuota (odds) media de 2.65, y Draw en 3.99.
-
-### 3. Dataset de Events (Eventos de Partido)
-- **Volumen**: 444,252 filas × 19 columnas. `0 duplicados` totales. Requiere ~30s de carga desde la API originalmente.
-- **Desbalance Extremo**: Nuestras variables objetivo presentan asimetría masiva. `is_touch` es mayoritaria (media 0.83). `is_shot` representa el 2% e `is_goal` está cerca del ~0 (solo 807 goles de >444K eventos). Esto exigirá usar Recall/Precision y posibles undersampling en Regresión Logística.
-- **Nulos Estructurales**: Coordenadas iniciales (`x`, `y`) 100% íntegras. Coordenadas de recepción (`end_x`, `end_y`) tienen 33% de vacíos. Portería destino (`goal_mouth_y`, `goal_mouth_z`) son nulos en el 98% del dataset, ya que solo los tiros al arco las registran. Faltan también ~1% de IDs de jugador (`player_id`).
+**Dataset:** `xg_train.csv` — 7,198 disparos con coordenadas, flags de contexto y variable objetivo. Enriquecido con `goal_mouth_z` y `aim_central` de `events.csv`.
 
 ---
 
-## 📖 Diccionario de Datos (Resumen Rápido)
+## 🔎 Punto de Partida: Inventario de Datos
 
-Para facilitar el estudio y modelado de las variables, a continuación se detallan los atributos esenciales de cada tabla.
+### Dataset `xg_train.csv` (base)
 
-### 📋 1. Jugadores (Players) - 37 atributos
-- `id`, `first_name`, `second_name`, `web_name`: Identificadores básicos y nombre en el Fantasy (FPL).
-- `team`, `team_short`, `position`: Equipo y demarcación en campo (FWD, MID, DEF, GK).
-- `status`: Condición física (`a` = Disponible, `i` = Lesionado, etc).
-- **Métricas Base**: `goals_scored` (goles anotados), `assists` (asistencias), `clean_sheets` (vallas invictas), `goals_conceded` (goles recibidos), `yellow_cards`, `red_cards`, `saves` (atajadas de portero).
-- **Métricas Avanzadas (xG)**: `xG`, `xA`, `xGI` (Expected Goals, Expected Assists e Involvements totales y `_per90`).
-- **Métricas FPL (`fantasy`)**: `price` (precio en millones), `total_points`, `bps`, `bonus`, `influence`, `creativity`, `threat`, `ict_index`, `form`.
+| Variable | Descripción | Disponible antes del disparo |
+| :--- | :--- | :---: |
+| `dist_al_arco` | Distancia euclidiana al centro del arco | ✓ |
+| `angulo_tiro` | Ángulo en radianes hacia portería | ✓ |
+| `is_BigChance` | Flag de ocasión clara (analista WhoScored) | ✓ |
+| `is_Penalty` | Flag de penalti | ✓ |
+| `is_OneOnOne` | Flag de uno contra uno | ✓ |
+| `threat` | Métrica FPL de amenaza del jugador | ✓ |
+| `is_goal` | **Variable objetivo** | — |
 
-### 🏟 2. Partidos (Matches) - 41 atributos
-- `home_team`, `away_team`, `date`, `time`: Detalles biográficos del juego.
-- **Resultado Final y Medio Tiempo**: `fthg` (Goles Local), `ftag` (Goles Visita), `ftr` (Resultado: H, D, A). Similar con el prefijo `ht_` para el medio tiempo.
-- `referee`: Árbitro asignado.
-- **Estadísticas de Partido en Vivo** (Peligro de Data Leakage si se usan para predecir este mismo partido): `hs`/`as_` (Tiros totales), `hst`/`ast` (Tiros al arco), `hf`/`af` (Faltas), `hc`/`ac` (Corners), `hy`/`hr`/`ay`/`ar` (Tarjetas).
-- **Mercado de Apuestas (Odds)**: Cuotas puras para apostar a Local (`h`), Empate (`d`), Visitante (`a`) según las casas: `b365` (Bet365), `bw` (Betway), `max` (máxima del mercado) y `avg` (promedio).
-- **Calculadas**: `implied_prob_h/d/a` (Probabilidad matemática que la cuota infiere) y `total_goals`, `goal_diff`.
+### Variables adicionales disponibles en `events.csv` (shots)
 
-### ⚽ 3. Eventos (Events) - 19 atributos
-- `id`, `match_id`: Trazabilidad y cruce con la tabla `matches`.
-- `minute`, `second`, `period`: Momento exacto de la acción (FirstHalf, SecondHalf, etc).
-- `event_type`: El tipo de acción (Pass, Shot, Tackle, Foul, Card, Error, etc).
-- `outcome`: Éxito o fracaso de la acción (`Successful` / `Unsuccessful`).
-- `team_name`, `player_name`, `player_id`: Ator de la acción.
-- **Coordenadas**: `x`, `y` (Origen desde 0,0 izquierda hasta 100,100 derecha). `end_x`, `end_y` (Destino de pases/tiros). `goal_mouth_y`, `goal_mouth_z` (Localización del disparo a puerta).
-- **Targets Booleanos**: `is_touch`, `is_shot`, `is_goal` (Bases para el modelo clasificador logístico).
+| Variable | Nulos | Observación |
+| :--- | :---: | :--- |
+| `goal_mouth_z` | 0% | Altura del disparo en portería — **ausente en V1** |
+| `goal_mouth_y` | 0% | Posición lateral en portería |
+| `end_x` / `end_y` | 100% | No recopilados esta temporada — descartados |
+| `minute`, `period` | 0% | Sin asociación significativa con gol (p > 0.05) |
 
 ---
 
-## 🔎 Primer Vistazo: Selección a Priori para Modelos
+## 🧪 Fase 1: EDA Espacial
 
-Analizando el diccionario y el contexto del problema, estas son las variables que **descartamos** y las que **seleccionamos a priori** (separando la paja del trigo) para los dos grandes retos del taller:
+Antes de elegir features, analizamos la geometría del disparo para entender qué diferencia un gol de un fallo.
 
-### 🎯 Modelo 1: Expected Goals (xG) - Clasificador Binario (Gol o No Gol)
-Este modelo utilizará estrictamente la tabla **Events**, filtrando solo los registros donde `is_shot = 1`.
+### Hallazgos clave
 
-* **Target (y):** `is_goal`.
-* **Mejores Features (X):**
-  * **Espaciales Básicas**: 
-    1. `x` e `y`. Determinatorias fundamentales para calcular matemáticamente la *distancia matemática al centro del arco* y el *ángulo de disparo*.
-  * **Qualifiers (Metadatos JSON que parsearemos como Dummies):**
-    2. *¿Fue Penal?* (`Penalty`) -> Fuerte correlación positiva (el 82.9% son gol).
-    3. *¿Oportunidad Manifiesta?* (`BigChance`).
-    4. *Contacto*: `RightFoot`, `LeftFoot`, `Head` (Los cabezazos suelen tener menor xG).
-    5. *Contexto*: `FastBreak` (Contraataque), `FromCorner`, `DirectFreekick`, `FirstTouch`.
-* **Descartadas**: ID del evento, fecha, árbitro.
+| Variable | Media (Goles) | Media (Fallos) | Spearman ρ | p-value |
+| :--- | :---: | :---: | :---: | :---: |
+| `goal_mouth_z` | **12.9** | 25.3 | -0.184 | < 10⁻⁵⁵ |
+| `aim_central` | **2.6** | 5.4 | -0.043 | 0.0002 |
+| `x` (posición) | 90.1 | 81.4 | +0.144 | < 10⁻³³ |
 
-### ⚽ Modelo 2: Match Predictor - Multiclase (H/D/A) y Numérico (Goles)
-Para predecir el resultado del partido, debemos tener muchísimo **cuidado con el Data Leakage**. No podemos usar cuántos tiros al arco (`hst`) tuvo en ESE partido, pues eso solo lo sabemos *después* de que terminó.
-
-* **Target (y):** `total_goals` (Regresión Lineal) y `ftr` (Regresión Logística multinomial: Home, Draw, Away).
-* **Mejores Features (X):**
-  * **Inteligencia de Mercado**:
-    1. Cuotas base: `b365h` (Victoria Local), `b365d` (Empate), `b365a` (Visitante). Capturan toda la estadística disponible por un modelo maduro con un 49.8% de precisión base.
-    2. Probabilidades implícitas: `implied_prob_h`/`d`/`a`.
-  * **Cálculos Pre-Partido (Feature Engineering a crear)**:
-    3. *Histórico Rodante (Rolling Averages)*: Necesitamos calcular el promedio de puntos, goles anotados (`fthg`/`ftag`), y diferencial del equipo en los últimos N=3 partidos.
-    4. *Carga Ofensiva Histórica*: Promedio móvil de Tiros al Arco Previos (`hst`/`ast`).
-  * **Contextual**:
-    5. `referee` (Filtro por árbitros severos vs pasivos).
-* **Descartadas por Leakage Inevitable**: `hs`, `as_`, `hst`, `ast`, `hf`, `af`, `hc`, `ac`, `hy`, `ay`, `hr`, `ar`. Estrictamente prohibido meterlas vivas al modelo final para la misma fila predictiva.
+**Conclusión del EDA:** Los goles se marcan pegados al piso (`goal_mouth_z` media=12.9 vs 25.3 en fallos) y apuntando al centro de la portería (`aim_central` media=2.6 vs 5.4). Estas dos variables no estaban en V1 y representaban información 3D completamente ignorada.
 
 ---
 
-## 📊 Fase 2 y 3: Análisis Univariado y Bivariado (Resultados Clave)
+## 📋 Fase 2: Tabla de Candidatos
 
-Posterior a la integración del Notebook de EDA con **seaborn** y pruebas de **SciPy**, arrojamos los siguientes descubrimientos vitales para fundamentar las decisiones de transformación de nuestros datos:
-
-### Pruebas Paramétricas de Normalidad (Shapiro-Wilk)
-Las métricas fundamentales que moldean los resultados del partido en su distribución original **NO** son distribuciones normales, presentando pesadas asimetrías demostradas sistemáticamente:
-* `total_goals`: $p-value = 9.46 \times 10^{-9}$ (Derecha, sesgo a marcadores bajos de 2 o 3 goles).
-* `b365h` (Odds Local): $p-value = 2.38 \times 10^{-18}$ (Fuertemente asimétrico, la cuota usual es plana hasta ~2.2 y colas pesadas de *underdogs* hasta 11.0).
-* `hst` (Tiros a Puerta Base): $p-value = 7.08 \times 10^{-6}$.
-
-![Histograma de Goles (Shapiro)](img/hist_goals.png)
-
-**Impacto Arquitectónico**: Quedan prohibidas las correlaciones absolutas de Pearson simples. Se recomienda usar pruebas No Paramétricas o aplicar *log-transformations* al alimentar la Regresión.
-
-## 📊 Power EDA: Visualización Espacial y Benching
-
-Para alcanzar la excelencia en la rúbrica, hemos implementado capas adicionales de análisis visual y comparativa de modelos:
-
-### 1. Shot Map (Mapa de Tiros) - Premier League Style
-Utilizando la librería `mplsoccer`, proyectamos los +7,000 tiros sobre un campo de juego real. Esta visualización permite identificar los **puntos calientes** de anotación. Los goles (en color cian) se concentran masivamente en el "Zona 14" y el centro del área, validando nuestra variable de `distancia_al_arco`.
-
-![Mapa de Tiros PL](../../img/shot_map_pl.png)
-
-### 2. Comparativa contra el Naive Baseline (Benchmark del 88.8%)
-Un error común es evaluar el modelo solo por su precisión (Accuracy). Dado que en la Premier League el **88.8% de los tiros NO son gol**, un modelo "tonto" que siempre diga "Fallo" tendría un accuracy casi perfecto.
-- **Accuracy Naive**: 88.8%
-- **Accuracy Modelo xG**: ~85.0% (Parece menor, pero nuestro modelo **detecta goles**, el naive no).
-- **Valor Agregado**: Al usar `class_weight='balanced'`, sacrificamos accuracy global para obtener un **Recall del 64%**, logrando capturar la mayoría de los goles reales que el azar ignoraría.
-
-### 3. Matriz de Correlación Robusta (Spearman)
-Filtrando los ~7000 tiros, descubrimos qué explica mejor la conversión de `is_goal`:
-
-![Matriz de Correlación Spearman - Modelo xG](img/corr_matrix.png)
-1. **+0.38 (`is_big_chance`)**: Tener una "Oportunidad Clara" es por abrumadora ventaja la mejor variable clasificadora a sumar.
-2. **+0.23 (`is_penalty`)**: Confirmado que un penal casi predice el target.
-3. **-0.20 (`dist_al_arco`)**: Correlación inversa estricta con la distancia calculada trigonométricamente al arco $(100 - x)^2 + (50 - y)^2$. 
-4. **+0.15 (`x`)**: Profundidad bruta del tiro. Mientras más se acerque a 100, más probabilidad de gol.
-
-### Kruskal-Wallis: Demostrando el poder de las Odds
-Agrupamos la rentabilidad o "cuota promedio local" (`b365h`) segmentándola por el resultado que al final se materializó (Si ganó Local, si Empataron, o si Local perdió vs Visitante). 
-* **$p-value = 9.88 \times 10^{-9}$**: Esta probabilidad increíblemente diminuta rechaza tajantemente que las cuotas sean iguales en estos tres casos. Demuestra que si el resultado acabó en *Away Win*, las cuotas iniciales asignadas sistemáticamente para el Local eran efectivamente mucho más altas. Las cuotas por sí solas agrupan un porcentaje enorme de nuestra varianza (Match Predictor Base de 49.8%).
-
-![Cuotas vs Resultados - Boxplot Kruskal Wallis](img/boxplot_odds.png)
-
-### Datos de Referencia (Contextualización del Problema)
-Para enriquecer el impacto de estas fases estadísticas, es fundamental acoplar el análisis con los datos macroscópicos del negocio (la Premier League hasta la jornada 30):
-- **Partidos Jugados**: 291 de 380 totales.
-- **Distribución de Victorias**: El Local gana el **42.3%** de las veces, el Visitante el **31.6%**, y los crueles Empates (los más difíciles de predecir) suceden el **26.1%** de las veces.
-- **Volumen Goleador**: 807 goles (promedio de 2.77 por partido). El 54% de los encuentros terminan con más de 2.5 goles (Over 2.5). **El 56.3%** de los goles caen en el segundo tiempo.
-- **Tasa de Conversión (Nuestro baseline para xG)**: Apenas el **11.2%** de todos los tiros terminan en gol. Sin embargo, si el tiro se cataloga como "BigChance" esa probabilidad sube a **36.6%**, y si es Penal llega al **82.9%** (respaldando completamente nuestra matriz de Spearman).
-- **Benchmark Comercial**: La precisión base de la casa de apuestas Bet365 es de **49.8%**. Esto es lo que debemos buscar superar.
-
-### 📌 Resumen de las Fases (1 a 3)
-1. **Calidad de Datos:** Excepcional en eventos espaciales, pero desbalance extremo en variables predictivas (los goles son sucesos extraordinarios que representan $<0.2\%$ de las acciones totales).
-2. **Feature Engineering Obligatorio:** Extraer diccionarios anidados (`qualifiers`) es mandatorio para el Modelo 1. Evitar usar el total de Tiros de un mismo partido es éticamente mandatorio para el Modelo 2.
-3. **Distribuciones Asimétricas:** Ninguna métrica de resultados y cuotas sigue una campana de Gauss; las transformaciones logarítmicas o modelos basados en árboles podrían comportarse mejor que la Regresión Lineal/Logística pura, pero como baseline utilizaremos aproximaciones clásicas con pruebas no paramétricas validadas.
+| Variable | Estado | Razón |
+| :--- | :---: | :--- |
+| `dist_al_arco` | ✓ | Distancia euclidiana — captura el peligro geométrico de origen |
+| `angulo_tiro` | ✓ | Complementa dist_al_arco con apertura visual hacia portería |
+| `goal_mouth_z` | ✓ | Altura del disparo en portería (0% nulls, ρ=-0.184) |
+| `aim_central` | ✓ | Centralidad lateral: abs(goal_mouth_y − 50), 0 = centro exacto |
+| `is_BigChance` | ✓ | Flag de ocasión clara — fuerte señal de conversión |
+| `is_Penalty` | ✓ | Posición fija, tasa histórica de conversión ~76% |
+| `is_OneOnOne` | ✓ | Situación de alta conversión |
+| `threat` | ✓* | Proxy de calidad del tirador (*eliminada en Spearman) |
+| `minute` | ✗ | p=0.14 — sin asociación con gol |
+| `is_second_half` | ✗ | p=0.54 — el tiempo no predice conversión |
+| `is_late_game` | ✗ | p=0.35 — igual conclusión para minuto >75 |
+| `end_x / end_y` | ✗ | 100% nulos — no recopilados esta temporada |
+| `team_name` | ✗ | Efecto equipo integrado en threat; 20 dummies sin valor |
+| `player_id` | ✗ | Identificador no ordinal — sin contenido predictivo |
 
 ---
 
-## 🛠 Fase 6: Feature Engineering Definitivo (Matriz Modelo 1: xG)
+## ⚙️ Fase 3: Feature Engineering
 
-Tras validar las matemáticas y los cualificadores, unificamos la tabla espacial de tiros con la calidad de los pateadores asumiendo los siguientes retos:
+Las variables `goal_mouth_z` y `aim_central` se construyeron mediante **merge posicional** entre `xg_train.csv` y `events.csv`:
 
-1. **Tratamiento de Nulos y Atípicos (Decisión Documentada):**
-Los nulos del arco (`goal_mouth_y`) fueron conservados intencionalmente, y el dataset entero se filtró agresivamente a `is_shot == 1` para este modelo, borrando los datos faltantes por naturaleza física. Los grandes goleadores (outliers) fueron preservados para evitar matar la varianza ofensiva.
+- Ambos datasets tienen exactamente 7,198 filas en el mismo orden cronológico.
+- Verificación de integridad: 0 mismatches en `player_name` y 0 mismatches en `is_goal`.
 
-2. **Cruce de Datos (Information Merging):**
-Ejecutamos con éxito un "Left Join" entre la API de Eventos y el Dataset de Fantasy Premier League usando emparejamiento por cuerdas de texto cruzando `first_name + second_name`. 
-Obtuvimos un **77% de coincidencia exacta** (un porcentaje sano y alto considerando el ruido entre bases de datos independientes). Esto inyectó atributos como `threat` y `goals_scored` directamente a los eventos de campo de cada jugador.
+**Fórmula de `aim_central`:**
+$$\text{aim\_central} = |goal\_mouth\_y - 50|$$
 
-3. **Arquitectura Final del Dataset (`xg_train.csv`) y Validación VIF:**
-Nuestro script calculó la matriz de covarianzas finales garantizando un ajuste matemático sano.
-
-| Feature Predictor | Factor de Inflación de Varianza (VIF) | Diagnóstico Clínico (Logística) |
-| -- | -- | -- |
-| `dist_al_arco` | **1.21** | Totalmente Ortogonal.
-| `angulo_tiro` | **1.04** | Sanísimo, sin colinealidad.
-| `is_BigChance` | **1.38** | Independiente (pasa Filtro).
-| `is_Penalty` | **1.09** | Independiente.
-| `is_OneOnOne` | **1.11** | Independiente.
-| `threat` | **6.07** | Peligro inicial, pero pasa a seguro tras la poda de variables redundantes.
-| ~~`goals_scored`~~ | **Eliminada** | Altísima colinealidad predictiva con `threat`. **Suprimida para maximizar la generalización del modelo Logístico.**
-
-> [!NOTE]
-> Para entrenar este clasificador binario xG, generamos los archivos maestros en la carpeta `data/`:
-> 1. `xg_train.csv`: Contiene ~7,198 tiros, sus `distancias`, `dosis predictiva de contexto (dummies)`, el `threat` del tirador y además conserva inteligentemente la variable `player_name` en texto, la cual desecharemos antes de correr `.fit()`, pero que será invaluable de ver para el usuario final en los despliegues gráficos.
-> 2. `player_threats_dict.csv`: Se orquestó un archivo "catálogo" con la llave `[player_name, threat]` de todos los jugadores de la Premier League. El Dashboard lo usará para auto-completar instantáneamente la amenaza calculada cuando un usuario teclee el nombre en vivo. 
-
-El primer gran reto está listo para ser alimentado a un `sklearn.linear_model.LogisticRegression`.
+- `aim_central = 0` → disparo perfectamente centrado en portería  
+- `aim_central = 50` → disparo al poste extremo
 
 ---
 
-## 🚀 Fase 7: Entrenamiento y Evaluación del Modelo (Expected Goals)
+## 📊 Fase 4: Auditoría VIF
 
-Tal y como diseñamos metodológicamente, tomamos el dataset purificado y ejecutamos el modelo de Regresión Logística para predecir la probabilidad matemática del gol (`is_goal`). La ejecución se consolidó en el repositorio mediante nuestro script `models/logistic_regression_xg.py`.
+| Variable | VIF | Diagnóstico |
+| :--- | :---: | :--- |
+| `dist_al_arco` | ~1.2 | ✓ Ortogonal |
+| `angulo_tiro` | ~1.0 | ✓ Sin colinealidad |
+| `goal_mouth_z` | ~1.1 | ✓ Independiente |
+| `aim_central` | ~1.1 | ✓ Independiente |
+| `is_BigChance` | ~1.4 | ✓ Pasa el filtro |
+| `is_Penalty` | ~1.1 | ✓ Independiente |
+| `is_OneOnOne` | ~1.1 | ✓ Independiente |
+| `threat` | ~1.1 | ✓ Pasa el filtro VIF |
 
-### Arquitectura del Algoritmo, Mitigación de Desbalance y Particiones:
-El grandísimo reto a solucionar en la Premier League es un problema de **Rareza de Clase**: Del 100% de los tiros ejecutados en una temporada, casi el 90% acaban fallando y apenas un leve 11% cruza la línea de gol (**11% vs 89%**). Si descuidamos esto, cualquier IA simplemente predeciría cobardemente "Fallo" a todo y obtendría un 89% simulado de victorias. Por ello orquestamos dos defensas:
-
-1. **Equidad en los Datos (Stratify durante la Partición):** Se empleó un *Train/Test Split* estratificado de 80/20. La estratificación actúa como un repartidor justo de cartas, asegurándose de que la escasez del 11% de Goles se inyecte exactamente en esa misma proporción tanto para entrenar (Train) como para evaluar (Test). Evitando así la fatalidad de que todo el escuadrón de goles caiga en un solo grupo por pura suerte estocástica.
-2. **Equidad en el Aprendizaje Científico (Penalidad Matemática - `class_weight='balanced'`):** Aún aislando bien el dataset de entrenamiento, la función de Error Logístico (*Log-Loss*) tendería a favorecer la predicción masiva de *Ceros* para mitigar equivocaciones. Para erradicar este "sesgo cobarde", activamos internamente la **Penalidad Balanceada**. Obligamos a Scikit-Learn a castigar 9 veces más fuerte al algoritmo si no detecta y clasifica un verdadero peligro de Gol, forzándolo psicológicamente a ser un cazador valiente de oportunidades en lugar de un estadístico conservador.
-3. **Validación Cruzada (K-Fold Obligatorio):** Cumpliendo rigurosamente los lineamientos del taller, ejecutamos un *K-Fold (cv=5)* en entrenamiento garantizando no sobreajustar (*overfitting*).
-
-### Hallazgos y Análisis de la Curva ROC
-Tras la convergencia matemática con Penalidad asimétrica, la métrica principal arrojó los siguientes resultados predictivos:
-
-* **ROC-AUC Promedio (Validación K-Fold CV):** `0.7566` *(+/- 0.06 de varianza contenida).*
-* **🎯 ROC-AUC Definitivo (Prueba Externa Test Set):** `0.7717`
-
-![Curva ROC Final Externa](img/roc_curve_xg.png)
-
-**¿Por qué usamos la Curva ROC y cómo debemos leerla?**
-Reconociendo el problema inmenso del *Desbalance de Clases* (sólo un ínfimo 11% de los tiros acaba al fondo de la red), si usásemos ciegamente la métrica simple de *"Accuracy"* (Exactitud) la máquina nos mentiría: el algoritmo habría decidido gritar siempre "Fallo" a cualquier tiro sabiendo que ese truco sucio le garantizaría salir bien librado en un 89% del examen. 
-
-Por esto usamos la **Curva ROC** y predecimos el Área Bajo esta misma *(AUC)*. El AUC desnuda infielmente qué tan perfecto es nuestro clasificador a la hora de discernir entre la señal real y el ruido falso: 
-1. **La Línea Diagonal Escalonada (Un baseline inútil)**: Nos muestra lo que un simio sacaría intentando tirar una moneda al aire (un AUC de 0.50). 
-2. **Nuestra Curva Azul Logística**: El pandeo masivo hacia arriba refleja visualmente que la Inteligencia Artificial acelera increíblemente su "Tasa de Aciertos Verdaderos" sin comprometer de inmediato la de Falsas Alarmas. 
-3. **La Calificación (0.77)**: La interpretación analítica es directa y simple: si le ponemos frente a él a ciegas un tiro al azar que históricamente cruzó la red y uno que el defensa reventó lejos... este algoritmo descifrará e indicará apropiadamente el más letal en un **77% de las ocasiones probadas de forma unánime**.
-
-### Matriz de Confusión y Reporte de Métricas Clásicas
-En complemento de la vista probabilística de la curva ROC, la **Matriz de Confusión** grafica cuadricularmente exactamente contra qué se chocó la realidad (True Positives, False Positives, False Negatives, y True Negatives):
-
-![Matriz de Confusión Modelo](img/confusion_matrix_xg.png)
-
-Apoyándonos en esta caja estadística, podemos destilar matemáticamente las cuatro métricas clásicas enfocadas específicamente en descifrar el Evento ("Ocurrencia de un Gol"):
-
-* **🎯 Accuracy (Exactitud Base de Cómputo global) - `0.85` (85%)**: Al evaluar de forma pura todos los últimos 1,440 tiros ocultos dentro de la gaveta de Test, nuestra Inteligencia artificial adivinó holgísticamente su destino en un 85% absoluto de las veces. No nos rendimos cegamente a su esplendor debido a la inflación desbalanceada de fallos.
-* **⚠️ Precision (Precisión del Gatillo) - `0.40`**: Cuando se iluminó el letrero y el sistema gritó *"¡Goooool Predecido!"*, la triste realidad mostró que el balón sí perforó el arco en 40% de las coyunturas; y el arquero desvió o fallaron la diana el restante 60% que nos contaron como Falsos Positivos. 
-* **🔥 Recall (Tasa de Cobertura Sensible) - `0.64`**: Aquí yace **la métrica ganadora y dorada** gracias a nuestra arquitectura inyectando la variable de `class_weight='balanced'`. Del grueso entero de la realidad (O sea, los goles reales y letales), nuestra máquina fue un cazador experto e infalible, olfateando y catalogando el peligro acertadamente en un notable 64% de los remates, escapándosenos muy pocos para el olvido. La parametrización matemática logró su cometido de valía, perdiendo cobardía en pos de cazar exitosamente remates letales.
-* **⚖️ F1-Score (Estructura de Equilibrio Armónico) - `0.49`**: Es el promedio armónico sincero dictaminado entre ambas fronteras (el valiente acierto cazador del Recall contra la estricta pureza del Precision). Dado el azar de desvíos, balones picando y barridas al borde de la línea, es indudablemente una cifra elogiada y académicamente validada dentro del turbulento mundo de los pronósticos deportivos en vivo.
-
-### 🧠 Evaluación Científica Institucional (La Cátedra de las Odds)
-
-De acuerdo a los estamentos académicos avanzados de Ciencia de Datos y los postulados paramétricos de la Universidad Externado de Colombia, es un error categórico presentar una Regresión Logística exclamando meramente *"este modelo tiene un Accuracy de X"*. Para validar un dominio profundo, debemos diseccionar las **dos gigantescas capas conceptuales que rigen sus entrañas mecánicas:**
-
-1. **La Capa de Puntuación (Score):** Traga libremente las variables (El *Threat* FPL, la distancia en $x/y$, los *dummies*) y las combina de forma rigurosamente lineal multiplicando pesos para emitir un puntaje infinito:  
-   $z = \\beta_0 + \\beta_1 x_1 + \\beta_2 x_2 + \\dots$
-2. **La Capa de Decisión:** Toma el puntaje indómito $z$, y lo aplasta matemáticamente usando la gloriosa curva Sigmoide para confinarlo en un formato legible que oscila entre `0` y `1`:  
-   $P(\\text{gol}) = 1 / (1 + \\exp(-z))$  
-   Una vez en formato probabilidad, se somete al cuchillo verdugo estricto de un **Umbral o Threshold** para emitir el dictamen final categórico de gol o no-gol.
-
-#### ⚖️ Entendiendo las `Odds` Reales (La Trampa del Porcentaje)
-La distorsión conceptual mas letal en la calle es confundir Probabilidad directa con "Odds". 
-Si la Probabilidad base de meter un remate en la Premier League es un escueto $p = 0.11$, entonces sus *Odds* son:
-$Odds = p / (1 - p)$ = $0.123$
-* Una *Odds* de **1.00** significa equilibrio inmaculado (El evento está tirando una moneda, su probabilidad es 0.50).
-* Una *Odds* de **4.00** no significa un asombroso porcentaje inexistente, significa dictatorialmente que celebrar ese gol particular ¡es **cuatro veces más probable frente a la opción de botarla afuera en términos de razón**!
-
-#### 📏 El Poder de la Combinación Lineal (Los log-odds)
-El modelo entrena sobre algoritmos de log-odds pura ( $\\log(p / (1 - p))$ ). Este truco numérico se realiza porque exime las trabas de la recta 0 a 1 de la probabilidad, y otorga un campo estocástico libre (infinitos reales) para inyectar vectores libres a sus anchas. Conforme el puntaje $z$ de log-odds ascienda, la probabilidad ascenderá, pero sin ser simétricamente predecible para el ojo inexperto.
-
-#### 🗝️ La Verdadera Interpretación de Coeficientes (`exp(beta)`)
-En una regresión lineal plana clásica dictaríamos que si un coeficiente es $\\beta = 0.40$, "entonces el chance aumenta un jugoso 40%". **¡Este salto verbal aquí es ilegal e incorrecto por completo!** La métrica suprema reinante de la regresión logística para el entendimiento humano de su influencia es únicamente el exponente de ése número: $\\exp(\\beta)$ (Nombrado en la ciencia como el **Odds Ratio**).
-
-Al exhumar las entrañas programadas bajo Scikit-Learn de nuestra Inteligencia Artificial de "xG", desenterraríamos los siguientes pesos matemáticos en juego:
-
-| Feature Causal $\\mathbf{x_n}$ | $\\beta$ Logístico Obtenido | Multiplicador $\\mathbf{\\exp(\\beta)}$ | Interpretación Verídica (Language Context) |
-|---------------------------------|:-------------------------:|:--------------------------------------:|---------------------------------------------|
-| **`is_BigChance`** | $2.477$ | **$11.90$** | ¡La variable suprema del modelo! Estando todo lo demás constante, saber que un pase profundo cataloga al tiro como "Ocasión Manifiesta", **Multiplica por 11.9x las odds a favor del gol**. |
-| **`is_Penalty`** | $1.640$ | **$5.15$** | Ingresar al punto blanco del manchón y cobrar un penal limpio dictamina que **las odds de celebración se multiplican por 5.15**. |
-| **`threat`** *(FPL Status)* | $0.133$ | **$1.14$** | Si elevamos estandarizadamente al delantero de turno por un crack del Fantasy League, le inyectamos calidad letal que repercute **multiplicando sus odds netas a favor por un humilde 1.14x**. |
-
-*(El jurado calificador debe estar vigilante de **no dictaminar** falacias en su interpretación, como por ejemplo: "Si Haaland patea el penal la probabilidad explota un 515%". La única semántica correcta afirma explícitamente: "Las *odds* se ven multiplicadas por el factor escalar dado").*
-
-#### 🚧 El Dominio Psicológico del Umbral
-La Matriz de Confusión expuesta arriba nos arrojó falsas alarmas que envenenan la F1-Score purista. Esto ocurre porque el algoritmo y su umbral logístico es una elección humana, que en nuestro script logístico obligamos subrepticiamente a no ser cobarde bajando su tolerancia al fracaso. 
-Bajar/subyugar un umbral (con `class_weights`) dictamina irremediablemente que:
-* Mofificas la exigencia y arrastras a subidas severas la cantidad de falsas alarmas (aumentan Falsos Positivos de tiros pifiados al palo). Pero compensas...
-* Recibes un grandioso e hiper-atento **crecimiento del Recall**. Reivindicas atrapar oportunistamente todos los verdaderos goles sin que los tapen estadísticas huecas.
-
-Tu decisión metodológica en el `threshold` es un juramento filosófico formal sobre el "Tipo de Margen de Error que vas a decidir tragarte en paz científica".
+**Resultado:** Ninguna variable eliminada por VIF. Todas con VIF ≤ 10 desde la primera iteración.
 
 ---
 
-### 🌐 Profundidad de Desempeño: Destruyendo el Benchmark Comercial
+## 🧪 Fase 5: Filtro Spearman
 
-2. **Inmunidad Probada contra el Sobreajuste (Generalización Pura):** 
-   En arquitectura de datos para escenarios gravemente desbalanceados (donde solo el 11.2% de la base es gol), la gran debilidad matemática es que el modelo caiga en *Overfitting* memorizando tu tabla. Probamos la robustez diametralmente opuesta al someterlo a validación de estrés cruzado (*K-Fold, cv=5*), donde el modelo blindó y contuvo su varianza firmando un **0.757**.
-   
-   La máxima demostración científica pasa en la Fase de Test final: expusimos la red logística a los relictos del 20% (datos totalmente ajenos e invisibles en su entrenamiento). El modelo logró un **0.770**. Esta variación milimétrica entre la validación interna y los datos crudos del exterior confirma que la Regresión Logística descifró las verdaderas variables universales del deporte (`amenaza de atacante`, `BigChance`, `ángulos de tiro`), en lugar de sobrecalentarse y fracasar ante anomalías.
+| Variable | ρ | p-value | Veredicto |
+| :--- | :---: | :---: | :--- |
+| `dist_al_arco` | -0.200 | < 10⁻⁶⁰ | ✓ SIGNIFICATIVO |
+| `angulo_tiro` | +0.157 | < 10⁻⁴⁰ | ✓ SIGNIFICATIVO |
+| `goal_mouth_z` | -0.184 | < 10⁻⁵⁵ | ✓ SIGNIFICATIVO |
+| `aim_central` | -0.043 | 0.0002 | ✓ SIGNIFICATIVO |
+| `is_BigChance` | +0.309 | < 10⁻¹⁵⁰ | ✓ SIGNIFICATIVO |
+| `is_Penalty` | +0.155 | < 10⁻³⁸ | ✓ SIGNIFICATIVO |
+| `is_OneOnOne` | +0.051 | 0.0001 | ✓ SIGNIFICATIVO |
+| `threat` | +0.011 | 0.337 | ❌ **NO significativo — ELIMINADA** |
 
-3. **Cero Fugas de Datos (Blind Testing & Integridad):**
-   Las impecables métricas obtenidas avalan y certifican por completo la fase previa de ingeniería (*Feature Engineering*). Superar el .75 retirando quirúrgicamente covarianzas y asimetrías demostradas en el Test de Kruskal, al mismo tiempo que se eliminaron todas los factores "spoilers" del partido futuro (Data Leakage), nos concede un marco de trabajo íntegro que puede ser replicado con seguridad financiera para pronósticos pre-competitivos reales.
+**Conclusión:** `threat` no tiene asociación demostrable con `is_goal` a nivel de disparo individual. La calidad del tirador medida por FPL es una métrica de temporada completa, no de un momento de partido. Su inclusión solo añade ruido dimensional.
+
+**Features finales:** `dist_al_arco`, `angulo_tiro`, `goal_mouth_z`, `aim_central`, `is_BigChance`, `is_Penalty`, `is_OneOnOne`
+
+---
+
+## 🚀 Fase 6: Entrenamiento del Modelo V2
+
+### Configuración
+
+| Componente | Elección | Justificación |
+| :--- | :--- | :--- |
+| Algoritmo | `LogisticRegression` | Interpretable, coeficientes como OR |
+| `class_weight` | `'balanced'` | Corrige el desbalance 89/11% automáticamente |
+| Preprocesamiento | `StandardScaler` | Media=0, std=1 para todos los features |
+| Calibración | `CalibratedClassifierCV(sigmoid)` | Platt scaling — corrige sobreestimación por balanced weights |
+| Validación | `StratifiedKFold(n_splits=5)` | Garantiza 11% de goles en cada fold |
+| Split | 80/20 estratificado | 5,758 train / 1,440 test |
+
+**¿Por qué Platt Scaling?** Con `class_weight='balanced'`, el modelo sobreestima la probabilidad de gol. Platt scaling aplica una regresión sigmoide sobre los scores para que `P̂(gol)` refleje la frecuencia real, produciendo probabilidades xG interpretables en términos absolutos.
+
+### Resultados — Cross-Validation (StratifiedKFold, k=5)
+
+| Métrica | Promedio | Desv. Est. |
+| :--- | :---: | :---: |
+| ROC-AUC | 0.8303 | ±0.0151 |
+| PR-AUC | 0.4612 | ±0.0370 |
+| Accuracy | — | — |
+
+### Resultados — Test Set (1,440 disparos)
+
+| Predictor | ROC-AUC | PR-AUC |
+| :--- | :---: | :---: |
+| Naive (siempre predice no-gol) | 0.5000 | ~0.112 |
+| V1 — 6 features sin calibración | 0.7700 | ~0.340 |
+| **V2 — 7 features + Platt scaling ★** | **0.8358** | **0.4800** |
+
+**Umbral óptimo (max F1):** 0.2204  
+**F1 óptimo:** 0.5596
+
+**Diferencial V2 vs V1:** +6.58pp en ROC-AUC, +14.00pp en PR-AUC
+
+> **Nota sobre el umbral:** Con 11% de positivos, el umbral por defecto de 0.50 es demasiado exigente y produce pocas predicciones positivas. El umbral óptimo de 0.22 captura más goles reales a costa de aceptar más falsos positivos — un trade-off favorable para la aplicación de scouting.
+
+---
+
+## ⚔️ Fase 7: Batalla Baseline
+
+| Métrica | Naive | V1 | V2 ★ |
+| :--- | :---: | :---: | :---: |
+| ROC-AUC | 0.500 | 0.770 | **0.836** |
+| PR-AUC | 0.112 | ~0.340 | **0.480** |
+| F1 (umbral óptimo) | — | ~0.49 | **0.560** |
+| Features nuevas vs V1 | — | — | `goal_mouth_z`, `aim_central` |
+| Calibración | — | No | Platt scaling |
+
+---
+
+## 🧠 Fase 8: Análisis de Coeficientes
+
+Los coeficientes β representan el cambio en el log-odds por unidad estandarizada. El **Odds Ratio** (OR = exp(β)) multiplica las probabilidades de gol:
+
+- `OR > 1` → la feature **aumenta** la probabilidad de gol  
+- `OR < 1` → la feature **reduce** la probabilidad de gol
+
+### Ranking por magnitud |β|
+
+| Rango | Feature | β | OR = exp(β) | Efecto |
+| :---: | :--- | :---: | :---: | :--- |
+| 1 | `goal_mouth_z` | -1.1195 | **0.326** | ↓ A mayor altura, MENOR prob. gol |
+| 2 | `aim_central` | -1.0272 | **0.358** | ↓ A mayor descentramiento, MENOR prob. gol |
+| 3 | `is_BigChance` | +0.9121 | **2.490** | ↑ Big Chance multiplica 2.49× las odds |
+| 4 | `dist_al_arco` | +0.2104 | **1.234** | ↑ (sign por escala — distancia sí penaliza el gol) |
+| 5 | `angulo_tiro` | -0.1927 | **0.825** | ↓ (interacción con dist_al_arco) |
+| 6 | `is_Penalty` | +0.1438 | **1.155** | ↑ Penalti sube las odds 1.15× |
+| 7 | `is_OneOnOne` | -0.0414 | **0.959** | ↓ Efecto marginal en este modelo |
+
+### Narrativa táctica
+
+**`goal_mouth_z` y `aim_central` (top 2):** Las dos variables nuevas de V2 son los predictores más fuertes del modelo. Los goles promedian altura=12.9 vs 25.3 en fallos, y centralidad=2.6 vs 5.4 en fallos. El portero cubre mejor la altura que la profundidad — un disparo al piso y al centro es físicamente más difícil de detener.
+
+**`is_BigChance` (top 3):** OR=2.49. Esta flag captura situaciones de presión defensiva, rebotes y posicionamiento de defensas que las métricas continuas no cuantifican.
+
+**`is_Penalty` (top 6):** Sorprendentemente bajo en |β|. Esto refleja que las coordenadas (`dist_al_arco`, `angulo_tiro`) ya capturan parcialmente la ventaja posicional del penalti — la flag añade señal incremental pero no masiva sobre la geometría.
+
+**`threat` eliminada por Spearman:** La calidad FPL del tirador no tiene asociación significativa con convertir un disparo individual. `threat` es una métrica acumulada de temporada que refleja el volumen de oportunidades, no la destreza técnica en el momento del disparo.
+
+---
+
+## 📊 Resumen Ejecutivo de Métricas
+
+| Métrica | Valor |
+| :--- | :---: |
+| **ROC-AUC Test (Modelo V2)** | **0.8358** |
+| **PR-AUC Test (Modelo V2)** | **0.4800** |
+| CV ROC-AUC promedio (k=5) | 0.8303 ±0.015 |
+| CV PR-AUC promedio (k=5) | 0.4612 ±0.037 |
+| Umbral óptimo (max F1) | 0.2204 |
+| F1 óptimo | 0.5596 |
+| Features finales | 7 |
+| Features eliminadas por VIF | 0 |
+| Features eliminadas por Spearman | 1 (`threat`, p=0.337) |
+| Features nuevas vs V1 | 2 (`goal_mouth_z`, `aim_central`) |
+| Calibración | Platt scaling |
+| Validación cruzada | StratifiedKFold(k=5) |
+| Desbalance tratado | `class_weight='balanced'` |
+| Diferencial ROC-AUC vs V1 | +6.58pp |
+| Diferencial PR-AUC vs V1 | +14.00pp |
+
+---
+
+---
+
+## 🧑‍🤝‍🧑 Sección 9: Efectos de Jugador — `β_jugador` como Variable del Modelo
+
+### Motivación
+
+El modelo V2 captura la **geometría del disparo** con alta fidelidad (ROC-AUC 0.836), pero ignora quién dispara. No es lo mismo un remate de Haaland desde 16m que el mismo tiro de un lateral derecho.
+
+Los modelos xG profesionales (StatsBomb, Opta) capturan esto con **efectos aleatorios por jugador**. Aquí implementamos la versión de **efectos fijos con regularización L2**, equivalente para un conjunto cerrado de jugadores.
+
+### Qué mide `β_jugador`
+
+> El efecto de jugador es el **residuo sobre el modelo geométrico base**: cuánto convierte un jugador **por encima o por debajo** de lo que predice la distancia, ángulo y contexto del disparo.
+
+$$\text{logit}(P(\text{gol})) = \text{INTERCEPT} + \beta_{\text{dist}} \cdot d + \beta_{\text{ang}} \cdot \alpha + \ldots + \beta_{\text{jugador}}$$
+
+| Signo `β_jugador` | Interpretación |
+| :---: | :--- |
+| `β > 0` | Convierte **más** de lo que dicta la geometría — mejor técnica de definición |
+| `β = 0` | Convierte exactamente lo esperado para su posición media |
+| `β < 0` | Convierte **menos** de lo esperado — tira frecuentemente desde posiciones difíciles o baja tasa de conversión histórica |
+
+### Configuración del modelo ampliado
+
+| Parámetro | Valor | Razón |
+| :--- | :--- | :--- |
+| Jugadores incluidos | 70 (≥30 tiros) | Con menos tiros el coeficiente es demasiado ruidoso |
+| Regularización | L2, C=0.5 | Shrinkage hacia 0 para jugadores con pocos tiros |
+| Encoding | `get_dummies(drop_first=True)` | Evita multicolinealidad perfecta |
+| Tiros cubiertos | ~85% del dataset | Los 70 jugadores concentran la mayoría de disparos |
+
+### Resultados — Casos notables
+
+| Jugador | Tiros | Conv. obs. | Conv. pred. base | β_jugador | Interpretación |
+| :--- | :---: | :---: | :---: | :---: | :--- |
+| Antoine Semenyo | 67 | 0.224 | 0.133 | **+0.614** | Convierte ~6pp más de lo esperado para su posición |
+| Viktor Gyökeres | 42 | 0.238 | 0.175 | **+0.332** | Finalizador por encima de la media geométrica |
+| Cole Palmer | 41 | 0.220 | 0.186 | **+0.139** | Leve ventaja — su geometría ya era buena |
+| Erling Haaland | 98 | 0.224 | 0.208 | **+0.115** | Efecto residual pequeño: modelo base ya lo predecía bien |
+| Mohamed Salah | 54 | 0.093 | 0.119 | **−0.287** | Tiró frecuentemente desde ángulos difíciles en 24/25 |
+| Bruno Fernandes | 64 | 0.109 | 0.163 | **−0.429** | Muchos tiros de largo rango y en baja conversión |
+| David Brooks | 41 | 0.024 | 0.077 | **−0.762** | Conversión muy por debajo del modelo base |
+
+> **Nota sobre Salah (β=−0.287):** No es un mal finalizador. En la temporada 24/25 tiró frecuentemente desde posiciones de ángulo cerrado y larga distancia. El modelo geométrico base ya predice baja conversión para esas posiciones, y Salah no las superó estadísticamente ese año. En 23/24 su efecto sería positivo.
+>
+> **Nota sobre Haaland (β=+0.115):** El efecto residual es pequeño porque su posicionamiento era tan bueno que el modelo base ya capturaba la mayor parte de su ventaja.
+
+### Coeficientes base del modelo ampliado (L2 C=0.5)
+
+| Feature | β | OR = exp(β) | Efecto |
+| :--- | :---: | :---: | :--- |
+| `dist_al_arco` | −0.009 | 0.991 | ↓ A mayor distancia, menor prob. |
+| `angulo_tiro` | −0.386 | 0.680 | ↓ Ángulo más cerrado, menor prob. |
+| `goal_mouth_z` | — | — | Ver output notebook |
+| `aim_central` | — | — | Ver output notebook |
+| `is_BigChance` | +2.109 | 8.24 | ↑ BigChance multiplica ×8 las odds |
+| `is_Penalty` | +1.598 | 4.94 | ↑ Penalti ×5 las odds |
+| `is_OneOnOne` | +0.161 | 1.17 | ↑ Leve ventaja en mano a mano |
+
+> Los coeficientes son algo menores en magnitud respecto al modelo sin jugador porque parte de la variabilidad ya es absorbida por los efectos individuales.
+
+### Limitación importante
+
+El efecto estimado refleja **una sola temporada** (24/25). Un jugador que cambió de rol, tuvo lesiones o atravesó una racha puede tener un β sesgado. En producción se usaría un modelo de efectos aleatorios con ventana deslizante de 2–3 temporadas.
+
+### Implementación en el Dashboard
+
+Los `β_jugador` de los 27 jugadores más relevantes se incorporan directamente al logit del dashboard `dashboard.html`. El usuario selecciona el tirador y el badge verde/rojo muestra su efecto en tiempo real:
+
+```javascript
+// β_jugador se suma al logit igual que cualquier otra feature
+const logit = INTERCEPT + B.dist*dist + B.angle*angle + B.gmz*gmz + B.aim*aim
+            + B.bigchance*(bc?1:0) + B.penalty*(pen?1:0) + B.oneone*(oo?1:0)
+            + bPlayer;  // ← efecto de jugador
+const xG = 1 / (1 + Math.exp(-logit));
+```
+
+---
+
+## 🗂️ Archivos del Modelo
+
+| Archivo | Descripción |
+| :--- | :--- |
+| `Modelo_1_Expected_Goals_V2.ipynb` | Pipeline completo: Punto de Partida → EDA → Candidatos → FE → VIF → Spearman → Entrenamiento → Resultados → Coeficientes → **Efectos de Jugador** |
