@@ -3502,34 +3502,80 @@ class CinematicEngine {
     }catch(e){}
   }
 
+  // ── Player data constants ───────────────────────────────────────────
+  const PLAYERS = [
+    { name: 'Erling Haaland', group: 'Finalizadores élite', code: '110661', tc: '43', beta: 0.115 },
+    { name: 'Cole Palmer', group: 'Finalizadores élite', code: '437015', tc: '8', beta: 0.180 },
+    { name: 'Viktor Gyökeres', group: 'Finalizadores élite', code: '232152', tc: '1', beta: 0.332 },
+    { name: 'Antoine Semenyo', group: 'Finalizadores élite', code: '437044', tc: '91', beta: 0.614 },
+    { name: 'João Pedro', group: 'Finalizadores élite', code: '450257', tc: '36', beta: 0.150 },
+    { name: 'Mohamed Salah', group: 'Delanteros', code: '118748', tc: '14', beta: -0.287 },
+    { name: 'Ollie Watkins', group: 'Delanteros', code: '178301', tc: '7', beta: 0.080 },
+    { name: 'Dominic Calvert-Lewin', group: 'Delanteros', code: '177815', tc: '11', beta: 0.120 },
+    { name: 'Richarlison', group: 'Delanteros', code: '212391', tc: '6', beta: 0.050 },
+    { name: 'Phil Foden', group: 'Mediocampistas', code: '209244', tc: '43', beta: 0.090 },
+    { name: 'Bruno Guimarães', group: 'Mediocampistas', code: '443568', tc: '4', beta: 0.140 },
+    { name: 'Enzo Fernández', group: 'Mediocampistas', code: '494056', tc: '8', beta: -0.060 },
+    { name: 'Bruno Fernandes', group: 'Mediocampistas', code: '141746', tc: '1', beta: -0.429 },
+    { name: 'Martin Ødegaard', group: 'Mediocampistas', code: '184029', tc: '3', beta: 0.070 },
+    { name: 'Alexis Mac Allister', group: 'Mediocampistas', code: '243016', tc: '14', beta: -0.150 },
+    { name: 'David Brooks', group: 'Mediocampistas', code: '201642', tc: '91', beta: -0.762 },
+    { name: 'Bukayo Saka', group: 'Mediocampistas', code: '223340', tc: '3', beta: -0.120 },
+    { name: 'Morgan Rogers', group: 'Mediocampistas', code: '480456', tc: '7', beta: -0.180 },
+    { name: 'Jarrod Bowen', group: 'Mediocampistas', code: '178186', tc: '21', beta: -0.040 }
+  ];
+
+  const PLAYER_MAP = Object.fromEntries(PLAYERS.map(p => [p.name, p]));
+  const PLAYER_EFFECTS = Object.fromEntries(PLAYERS.map(p => [p.name, p.beta]));
+  let selectedPlayer = '__avg__';
+
+  const playerPhotoUrl = id => `https://resources.premierleague.com/premierleague/photos/players/110x140/p${id}.png`;
+  const teamBadgeUrl = id => `https://resources.premierleague.com/premierleague/badges/t${id}.svg`;
+
   function computeXG(){
     if(shotX===null) return null;
-    const dx=GOAL_X-shotX,dy=GOAL_Y-shotY;
+    const dx=GOAL_X-shotX, dy=GOAL_Y-shotY;
     const dist=Math.sqrt(dx*dx+dy*dy);
-    const angle=Math.atan2(7.32/2,Math.max(dist,0.5))*(180/Math.PI);
+    const angle=Math.atan2(7.32/2, Math.max(dist,0.5))*(180/Math.PI);
     const gmz=parseFloat(document.getElementById('sl-height').value);
     const aim=parseFloat(document.getElementById('sl-aim').value);
-    const sel=document.getElementById('xg-player-select');
-    const playerKey=sel?sel.value:'__avg__';
-    const bPlayer=playerKey==='__avg__'?0:(PLAYER_EFFECTS[playerKey]||0);
-    const logit=INTERCEPT+B.dist*dist+B.angle*angle+B.gmz*gmz+B.aim*aim
-      +B.bigchance*(flags.bigchance?1:0)+B.penalty*(flags.penalty?1:0)+B.oneone*(flags.oneone?1:0)
-      +bPlayer;
-    return {xg:1/(1+Math.exp(-logit)),dist:dist.toFixed(1),angle:angle.toFixed(1),gmz,aim,bPlayer,playerKey};
+    
+    // Usar selectedPlayer en lugar del select desaparecido
+    const playerKey = selectedPlayer;
+    const bPlayer = playerKey === '__avg__' ? 0 : (PLAYER_EFFECTS[playerKey] || 0);
+    
+    const logit=INTERCEPT + B.dist*dist + B.angle*angle + B.gmz*gmz + B.aim*aim
+      + B.bigchance*(flags.bigchance?1:0) + B.penalty*(flags.penalty?1:0) + B.oneone*(flags.oneone?1:0)
+      + bPlayer;
+    return {xg:1/(1+Math.exp(-logit)), dist:dist.toFixed(1), angle:angle.toFixed(1), gmz, aim, bPlayer, playerKey};
   }
 
   window.xgUpdateGauge=function(){
     const res=computeXG(); if(!res) return;
-    const {xg,dist,angle,gmz,aim}=res;
+    const {xg,dist,angle,gmz,aim,bPlayer}=res;
     const fill=document.getElementById('xg-gauge-fill');
     const val=document.getElementById('xg-gauge-val');
     fill.style.width=(xg*100)+'%';
     const col=xg>=0.5?'#00ff88':xg>=0.25?'#ffcc00':xg>=0.10?'#ff8844':'#ff4444';
     fill.style.background=col; val.style.color=col; val.textContent=xg.toFixed(3);
+    
+    // Readout
     document.getElementById('xg-readout-dist').textContent='Distancia: '+dist+' m  ·  Ángulo: '+angle+'°';
     document.getElementById('xg-readout-angle').textContent='Altura: '+(gmz<12?'bajo ✓':gmz<28?'medio':'alto ✗')+'  ·  Puntería: '+(aim<8?'centrado ✓':aim<25?'lateral':'esquina');
     document.getElementById('sl-height-val').textContent=gmz<12?'bajo':gmz<28?'medio':'alto';
     document.getElementById('sl-aim-val').textContent=aim<8?'centro':aim<25?'lateral':'esquina';
+
+    // Player effect badge
+    const badge = document.getElementById('xg-player-effect-badge');
+    if(badge){
+      if(selectedPlayer==='__avg__'){
+        badge.textContent='promedio'; badge.className='effect-neu';
+      } else {
+        const sign=bPlayer>=0?'+':'';
+        badge.textContent='β '+sign+bPlayer.toFixed(2);
+        badge.className=bPlayer>0.05?'effect-pos':bPlayer<-0.05?'effect-neg':'effect-neu';
+      }
+    }
   };
 
   window.xgToggle=function(key){
@@ -3817,6 +3863,23 @@ class CinematicEngine {
       <!-- Analytics content -->
       <div id="xg-detail-content">
 
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+           <div class="xg-radar-wrap">
+             <canvas id="xg-player-radar" width="160" height="160"></canvas>
+           </div>
+           <div style="display:flex;flex-direction:column;gap:6px;justify-content:center">
+              <div class="xg-pc-section" style="margin:0">Perfil FPL</div>
+              <div class="xg-kpi" style="padding:10px">
+                <div class="xg-kpi-val" style="font-size:18px;color:#ffcc00">${threat}</div>
+                <div class="xg-kpi-lbl">Threat Score</div>
+              </div>
+              <div class="xg-kpi" style="padding:10px">
+                <div class="xg-kpi-val" style="font-size:18px;color:#ff44ff">${s.pen?Math.round(s.pen*100)+'%':'0%'}</div>
+                <div class="xg-kpi-lbl">Penalties</div>
+              </div>
+           </div>
+        </div>
+
         <div class="xg-pc-section" style="margin-top:4px">Estadísticas de tiro · PL 24/25</div>
         <div class="xg-kpi-grid">
           <div class="xg-kpi" style="--kpi-glow:linear-gradient(135deg,rgba(0,255,255,0.15),transparent)">
@@ -3836,7 +3899,7 @@ class CinematicEngine {
             <div class="xg-kpi-lbl">Dist. media<br>de tiro</div>
           </div>
           <div class="xg-kpi" style="--kpi-glow:linear-gradient(135deg,rgba(255,70,255,0.12),transparent)">
-            <div class="xg-kpi-val" style="color:#ff44ff">${s.tiros?((s.goles||0)/s.tiros*1000/10).toFixed(1):'—'}</div>
+            <div class="xg-kpi-val" style="color:#ff44ff">${s.tiros?((s.goles||0)/s.tiros*10).toFixed(1):'—'}</div>
             <div class="xg-kpi-lbl">Goles per<br>10 tiros</div>
           </div>
           <div class="xg-kpi" style="--kpi-glow:linear-gradient(135deg,rgba(80,180,255,0.12),transparent)">
@@ -3864,30 +3927,75 @@ class CinematicEngine {
           </div>
         </div>
 
-        ${threat>0?`
-        <div class="xg-pc-section">FPL Threat Score</div>
-        <div class="xg-comp-row">
-          <div class="xg-comp-header">
-            <span class="xg-comp-label">Threat total temporada</span>
-            <span class="xg-comp-value" style="color:#ffcc00">${threat}</span>
-          </div>
-          <div class="xg-comp-track">
-            <div class="xg-comp-fill" style="width:${Math.min(100,threat/threatMax*100)}%;background:linear-gradient(90deg,#ffaa00,#ffff44)"></div>
-          </div>
-        </div>`:''}
-
-        ${s.pen>0?`
-        <div class="xg-pc-section">Penaltis</div>
-        <div style="font-size:10px;color:rgba(255,255,255,0.4);line-height:1.6">
-          <b style="color:#ff44ff">${((s.pen||0)*100).toFixed(0)}%</b> de sus tiros fueron penaltis
-          ${s.pen>=0.08?' · <span style="color:#ff44ff">Lanzador frecuente</span>':''}
-        </div>`:''}
-
       </div>`;
 
     // Trigger slide in after paint
-    requestAnimationFrame(()=>{ panel.classList.add('slide-in'); });
+    requestAnimationFrame(()=>{
+      panel.classList.add('slide-in');
+      setTimeout(()=>xgDrawRadar(p, s), 50);
+    });
   }
+
+  function xgDrawRadar(p, s){
+    const canvas=document.getElementById('xg-player-radar');
+    if(!canvas) return;
+    const C=canvas.getContext('2d');
+    const W=canvas.width, H=canvas.height;
+    const cx=W/2, cy=H/2, r=60;
+    
+    C.clearRect(0,0,W,H);
+    
+    // Normalize stats
+    const stats = [
+      Math.min(1, (s.conv||0)/0.3),
+      Math.min(1, (s.bc||0)/0.6),
+      Math.min(1, (s.threat||0)/1400),
+      Math.min(1, 1 - (s.dist||17)/30),
+      Math.min(1, (p.beta+0.8)/1.6),
+      Math.min(1, (s.goles||0)/20)
+    ];
+    const labels = ['CONV','BIGC','THRT','DIST','BETA','GOAL'];
+    
+    // Draw background hex
+    C.beginPath(); C.setLineDash([2,2]); C.strokeStyle='rgba(255,255,255,0.1)';
+    for(let i=1;i<=3;i++){
+      const rr = r * (i/3);
+      for(let j=0;j<6;j++){
+        const a = j*Math.PI*2/6 - Math.PI/2;
+        const x = cx+Math.cos(a)*rr, y = cy+Math.sin(a)*rr;
+        if(j===0) C.moveTo(x,y); else C.lineTo(x,y);
+      }
+      C.closePath();
+    }
+    C.stroke(); C.setLineDash([]);
+    
+    // Draw axes & labels
+    C.font='8px Inter'; C.textAlign='center'; C.fillStyle='rgba(255,255,255,0.3)';
+    for(let j=0;j<6;j++){
+      const a = j*Math.PI*2/6 - Math.PI/2;
+      const x = cx+Math.cos(a)*r, y = cy+Math.sin(a)*r;
+      C.beginPath(); C.moveTo(cx,cy); C.lineTo(x,y); C.stroke();
+      const lx = cx+Math.cos(a)*(r+12), ly = cy+Math.sin(a)*(r+12);
+      C.fillText(labels[j], lx, ly+3);
+    }
+    
+    // Draw shape
+    C.beginPath(); C.fillStyle='rgba(0,255,255,0.2)'; C.strokeStyle='#00ffff'; C.lineWidth=2;
+    stats.forEach((v,j)=>{
+      const a = j*Math.PI*2/6 - Math.PI/2;
+      const x = cx+Math.cos(a)*r*v, y = cy+Math.sin(a)*r*v;
+      if(j===0) C.moveTo(x,y); else C.lineTo(x,y);
+    });
+    C.closePath(); C.fill(); C.stroke();
+    
+    // Draw dots
+    C.fillStyle='#fff';
+    stats.forEach((v,j)=>{
+      const a = j*Math.PI*2/6 - Math.PI/2;
+      C.beginPath(); C.arc(cx+Math.cos(a)*r*v, cy+Math.sin(a)*r*v, 2, 0, Math.PI*2); C.fill();
+    });
+  }
+
 
   function xgSelectInOverlay(key){
     // Mark active in list
