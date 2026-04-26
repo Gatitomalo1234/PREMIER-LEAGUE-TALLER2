@@ -4351,10 +4351,20 @@ class CinematicEngine {
         if(pt[1]<minY) minY=pt[1]; if(pt[1]>maxY) maxY=pt[1];
       });
       const ptsW = maxX-minX, ptsH = maxY-minY;
-      const scale = Math.min(W/ptsW, H/ptsH) * 0.45;
+      const scale = Math.min(W/ptsW, H/ptsH) * 0.75;
       const offsetX = W/2 - (minX + ptsW/2)*scale;
       const offsetY = H/2 - (minY + ptsH/2)*scale;
       candidatePositions = PL_PTS.map(pt=>[pt[0]*scale+offsetX, pt[1]*scale+offsetY]);
+      
+      // Enrich with extra particles for density
+      const enriched = [];
+      candidatePositions.forEach(pt => {
+        enriched.push(pt);
+        for(let k=0; k<3; k++) {
+           enriched.push([pt[0] + (Math.random()-0.5)*10, pt[1] + (Math.random()-0.5)*10]);
+        }
+      });
+      candidatePositions = enriched;
     }
     
     if(candidatePositions.length<50){ 
@@ -4364,12 +4374,12 @@ class CinematicEngine {
       return; 
     }
     for(let i=candidatePositions.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [candidatePositions[i],candidatePositions[j]]=[candidatePositions[j],candidatePositions[i]]; }
-    const N=Math.min(550,candidatePositions.length);
+    const N=Math.min(3000,candidatePositions.length);
     const targets=candidatePositions.slice(0,N);
-    const COLORS=['#7b2fbe','#9b59b6','#a855f7','#00ffff','#c084fc','#ffffff','#6d28d9'];
+    const COLORS=['#ff44ff','#00ffff','#44ff88','#ffcc00','#ffffff','#a855f7','#ff00aa'];
     const particles=targets.map(([tx,ty])=>{
-      const angle=Math.random()*Math.PI*2, dist=Math.max(W,H)*0.7+Math.random()*200;
-      return { x:W/2+Math.cos(angle)*dist, y:H/2+Math.sin(angle)*dist, tx, ty, r:Math.random()*2.2+0.8, baseR:Math.random()*2.2+0.8, color:COLORS[Math.floor(Math.random()*COLORS.length)], alpha:0, speed:0.06+Math.random()*0.07 };
+      const angle=Math.random()*Math.PI*2, dist=Math.max(W,H)*0.8+Math.random()*300;
+      return { x:W/2+Math.cos(angle)*dist, y:H/2+Math.sin(angle)*dist, tx, ty, r:Math.random()*1.8+0.5, baseR:Math.random()*1.8+0.5, color:COLORS[Math.floor(Math.random()*COLORS.length)], alpha:0, speed:0.04+Math.random()*0.05 };
     });
     const PHASE_GATHER=0,PHASE_HOLD=1,PHASE_PULSE=2,PHASE_FLASH=3;
     let phase=PHASE_GATHER, phaseT=0, rafId=null, lastT=performance.now();
