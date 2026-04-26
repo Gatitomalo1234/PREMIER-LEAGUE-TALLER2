@@ -613,6 +613,16 @@
 .m2-pipe-label{font-size:9px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.55);text-transform:uppercase}
 .m2-pipe-sublabel{font-size:8px;color:rgba(255,255,255,.22);margin-top:2px}
 .m2-pipe-arrow{font-size:16px;color:rgba(255,68,255,.3);padding:0 3px;flex-shrink:0}
+
+.xg-pipe{display:flex;align-items:center;gap:0;margin:14px 0 10px;flex-wrap:wrap;justify-content:center}
+.xg-pipe-node{display:flex;flex-direction:column;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);cursor:pointer;transition:all .25s;min-width:76px;text-align:center;backdrop-filter:blur(8px)}
+.xg-pipe-node:hover,.xg-pipe-node.active{border-color:var(--cyan);background:rgba(0,255,255,.09);box-shadow:0 0 20px rgba(0,255,255,.18),inset 0 1px 0 rgba(255,255,255,.07)}
+.xg-pipe-node.active .xg-pipe-icon{filter:drop-shadow(0 0 7px var(--cyan))}
+.xg-pipe-icon{font-size:20px;margin-bottom:4px}
+.xg-pipe-label{font-size:9px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.55);text-transform:uppercase}
+.xg-pipe-sublabel{font-size:8px;color:rgba(255,255,255,.22);margin-top:2px}
+.xg-pipe-arrow{font-size:16px;color:rgba(0,255,255,.3);padding:0 3px;flex-shrink:0}
+
 .m2-pv{display:none;animation:pvIn .3s ease}
 .m2-pv.active{display:grid}
 .m2-pv-text{font-size:11px;color:rgba(255,255,255,.5);line-height:1.7}
@@ -2380,102 +2390,224 @@ const WS = {
 `
     },
     result: {
-        overview: `<div class="xg-progress-dots" style="margin-bottom:14px"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div><div class="ws-grid">
-            <div class="ws-card ws-col-4" style="border-color:rgba(255,200,0,0.14);background:rgba(255,200,0,0.03)">
-                <div class="ws-card-label">El Reto del Empate</div>
-                <p class="ws-card-text">Clasificador multinomial que predice el resultado de cada partido (<strong style="color:#fff">H · D · A</strong>) usando estrictamente información disponible <strong style="color:#ffcc00">antes del pitido inicial</strong>. El enemigo a vencer: las propias casas de apuestas internacionales, con un acierto del <strong style="color:#ffcc00">54.24%</strong> en este test set. El desafío oculto: los empates (26% de los resultados) son estadísticamente caóticos — predecirlos en serio requiere <strong style="color:#fff">class_weight='balanced'</strong> y renunciar a accuracy pura por honestidad multiclase.</p>
-            </div>
-            <div class="ws-card"><div class="ws-card-label">Tipo</div><div class="ws-card-value">Clasificación Multinomial</div></div>
-            <div class="ws-card"><div class="ws-card-label">Algoritmo</div><div class="ws-card-value">LogisticRegression (lbfgs)</div></div>
-            <div class="ws-card"><div class="ws-card-label">Output</div><div class="ws-card-value">H · D · A</div></div>
-            <div class="ws-card"><div class="ws-card-label">Anti-Leakage</div><div class="ws-card-value" style="color:#ffcc00">100% Pre-partido</div></div>
-            <div class="ws-card ws-col-4" style="border-color:rgba(255,200,0,0.1)">
-                <div class="ws-card-label" style="margin-bottom:10px">Las 4 Features Finales — Supervivientes de VIF + Spearman</div>
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-                    <div style="background:rgba(255,200,0,0.04);border:1px solid rgba(255,200,0,0.15);border-radius:8px;padding:12px;text-align:center">
-                        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.35);margin-bottom:7px">b365h</div>
-                        <div style="font-family:var(--font-display);font-size:15px;color:#ffcc00;font-weight:700">Cuota Local</div>
-                        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:5px">Mayor predictor H/A</div>
-                    </div>
-                    <div style="background:rgba(255,200,0,0.04);border:1px solid rgba(255,200,0,0.15);border-radius:8px;padding:12px;text-align:center">
-                        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.35);margin-bottom:7px">b365a</div>
-                        <div style="font-family:var(--font-display);font-size:15px;color:#ffcc00;font-weight:700">Cuota Visita</div>
-                        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:5px">Perspectiva contraria</div>
-                    </div>
-                    <div style="background:rgba(68,255,136,0.04);border:1px solid rgba(68,255,136,0.12);border-radius:8px;padding:12px;text-align:center">
-                        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.35);margin-bottom:7px">home_pts_last3</div>
-                        <div style="font-family:var(--font-display);font-size:15px;color:#44ff88;font-weight:700">Momentum</div>
-                        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:5px">Local últimos 3</div>
-                    </div>
-                    <div style="background:rgba(68,255,136,0.04);border:1px solid rgba(68,255,136,0.12);border-radius:8px;padding:12px;text-align:center">
-                        <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.35);margin-bottom:7px">away_gf_last3</div>
-                        <div style="font-family:var(--font-display);font-size:15px;color:#44ff88;font-weight:700">Ataque Visita</div>
-                        <div style="font-size:10px;color:rgba(255,255,255,0.35);margin-top:5px">Goles últimos 3</div>
-                    </div>
-                </div>
-            </div>
-        </div>`,
-        metrics: `<div class="xg-progress-dots" style="margin-bottom:14px"><div class="xg-dot"></div><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div><div class="ws-grid-3">
-            <div class="ws-metric-card" style="border-color:rgba(255,200,0,0.18);background:rgba(255,200,0,0.04)">
-                <div class="ws-metric-value" style="color:#ffcc00">55.93%</div>
-                <div class="ws-metric-label">Accuracy — V1 (sin balanced)</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="56" style="background:#ffcc00"></div></div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">Solo cuotas · 0 empates predichos</div>
-            </div>
-            <div class="ws-metric-card" style="border-color:rgba(255,200,0,0.18);background:rgba(255,200,0,0.04)">
-                <div class="ws-metric-value" style="color:#ffcc00">~55%</div>
-                <div class="ws-metric-label">Accuracy — V2b (balanced) ★</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="55" style="background:#ffcc00"></div></div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">Clasificador honesto 3 clases</div>
-            </div>
-            <div class="ws-metric-card">
-                <div class="ws-metric-value">54.24%</div>
-                <div class="ws-metric-label">Bet365 accuracy (este test)</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="54"></div></div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">El enemigo a superar</div>
-            </div>
-            <div class="ws-metric-card">
-                <div class="ws-metric-value">49.14%</div>
-                <div class="ws-metric-label">CV Accuracy (StratifiedKFold k=5)</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="49"></div></div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">Generalización honesta fuera del test</div>
-            </div>
-            <div class="ws-metric-card">
-                <div class="ws-metric-value">4 / 9</div>
-                <div class="ws-metric-label">Features finales (VIF + Spearman)</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="44"></div></div>
-                <div style="font-size:10px;color:rgba(255,200,0,0.6);margin-top:6px">5 candidatas eliminadas por redundancia</div>
-            </div>
-            <div class="ws-metric-card">
-                <div class="ws-metric-value">&gt; 0</div>
-                <div class="ws-metric-label">Empates predichos (V2b)</div>
-                <div class="ws-mbar"><div class="ws-mbar-fill" data-w="100"></div></div>
-                <div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">V1: 0 · V2a: algunos · V2b: todos</div>
-            </div>
-        </div>`,
+        overview: `<div class="xg-progress-dots"><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">MODELO 3 · REGRESIÓN MULTINOMIAL</div>
+<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">El Descubrimiento</div>
+<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">Clasificador que predice el resultado exacto: H (Local), D (Empate), o A (Visitante).</div>
+
+<div class="xg-split" style="margin-bottom:20px">
+  <div style="flex:1">
+    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Reto del Empate</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">
+      Las casas de apuestas como Bet365 procesan montañas de datos en tiempo real (lesiones, clima, historial, flujo de dinero) y logran un acierto del <strong style="color:var(--cyan)">54.24%</strong> al predecir el ganador en este test set. Nuestro objetivo es superarlos usando <strong>estrictamente información pública disponible antes del pitido inicial</strong> (cero Data Leakage temporal).
+    </div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7">
+      Pero hay un problema estadístico masivo: <strong style="color:#ff44ff">adivinar el empate es caótico</strong> (26% de los resultados reales). Un modelo ingenuo maximiza su Accuracy nunca prediciendo empates (V1). Para construir un clasificador honesto, renunciar a la exactitud pura y forzar <code style="color:var(--cyan)">class_weight='balanced'</code> fue mandatorio.
+    </div>
+  </div>
+  
+  <div style="flex:1;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:20px;backdrop-filter:blur(10px)">
+    <div style="font-size:9px;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.3);margin-bottom:14px">ANATOMÍA DEL MODELO M3</div>
+    
+    <div class="xg-var-row">
+      <div>
+        <div class="xg-var-name" style="color:var(--cyan)">Target Y</div>
+        <div class="xg-var-desc">Clasificación 3 Clases (H, D, A)</div>
+      </div>
+      <span class="xg-badge xg-badge-new" style="background:rgba(0,255,255,.1);color:var(--cyan);border-color:rgba(0,255,255,.3)">Multinomial</span>
+    </div>
+
+    <div class="xg-var-row">
+      <div>
+        <div class="xg-var-name" style="color:#ff44ff">Algoritmo</div>
+        <div class="xg-var-desc">LogisticRegression (lbfgs)</div>
+      </div>
+      <span class="xg-badge xg-badge-new" style="background:rgba(255,68,255,.1);color:#ff44ff;border-color:rgba(255,68,255,.3)">Softmax</span>
+    </div>
+    
+    <div class="xg-var-row">
+      <div>
+        <div class="xg-var-name" style="color:var(--cyan)">Anti-Leakage</div>
+        <div class="xg-var-desc">Información Pre-Partido</div>
+      </div>
+      <span class="xg-badge xg-badge-green" style="color:#44ff88">100% Lícito</span>
+    </div>
+
+    <div class="xg-var-row">
+      <div>
+        <div class="xg-var-name" style="color:#ff44ff">Enemigo a Vencer</div>
+        <div class="xg-var-desc">Baseline Bet365 (Test Set)</div>
+      </div>
+      <span class="xg-badge xg-badge-red" style="color:#ff8080">54.24%</span>
+    </div>
+  </div>
+</div>`,
+        metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">M3 · EL LABORATORIO</div>
+<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">Análisis de Variables y Versiones</div>
+<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">La purga de ruido estadístico, la matriz de confusión y el fracaso de la complejidad.</div>
+
+<!-- SECCIÓN A: Poda de Ruido con Spearman -->
+<div class="xg-phase-block open">
+  <div class="xg-phase-head" onclick="this.parentElement.classList.toggle('open')">
+    <span class="xg-phase-icon">✂️</span>
+    <div style="flex:1"><div class="xg-phase-ht">A — Filtro de Correlación Spearman</div><div class="xg-phase-hsub">Evaluación estricta de asociación con el resultado final</div></div>
+    <span class="xg-phase-arrow">▾</span>
+  </div>
+  <div class="xg-phase-body"><div class="xg-phase-inner">
+    <div class="xg-split">
+      <div>
+        <div style="font-family:monospace;font-size:11px;color:var(--cyan);margin-bottom:8px">PRUEBA DE HIPÓTESIS α=0.15</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:12px">
+          Antes de entrenar, probamos la hipótesis nula de que la variable no tiene relación con el resultado usando la correlación de rangos de Spearman. Las cuotas Bet365 de local y visitante demostraron tener <strong style="color:var(--cyan)">señal altamente significativa</strong> (p &lt; 0.0001).
+        </div>
+        <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.6">
+          <strong style="color:#ff44ff">El veredicto de b365d:</strong> La cuota del empate fue la mayor decepción estadística. Con un p-value de 0.6303, se comprobó matemáticamente que <em>no carga información predictiva</em>. Su inclusión solo introducía ruido en el espacio de decisión logístico, por lo que fue eliminada.
+        </div>
+      </div>
+      
+      <div style="background:rgba(255,255,255,.01);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px; transition: transform 0.3s, box-shadow 0.3s" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 0 20px rgba(0,255,255,0.1)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px;text-align:center">CORRELACIONES SPEARMAN (ρ)</div>
+        <svg viewBox="0 0 200 120" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+          <line x1="100" y1="10" x2="100" y2="100" stroke="rgba(255,255,255,.08)" stroke-width="0.5" stroke-dasharray="3,2"/>
+          <text x="100" y="8" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle">ρ = 0</text>
+          <rect x="104" y="22" width="70" height="10" rx="2" fill="rgba(255,200,0,.35)" stroke="rgba(255,200,0,.5)" stroke-width="0.5"/>
+          <text x="100" y="30" font-size="6" fill="#ffcc00" text-anchor="end">b365h</text><text x="180" y="30" font-size="6" fill="#ffcc00">ρ=+0.61</text>
+          <rect x="104" y="38" width="58" height="10" rx="2" fill="rgba(255,200,0,.28)" stroke="rgba(255,200,0,.4)" stroke-width="0.5"/>
+          <text x="100" y="46" font-size="6" fill="#ffcc00" text-anchor="end">b365a</text><text x="168" y="46" font-size="6" fill="#ffcc00">ρ=+0.49</text>
+          <rect x="104" y="54" width="38" height="10" rx="2" fill="rgba(68,255,136,.25)" stroke="rgba(68,255,136,.4)" stroke-width="0.5"/>
+          <text x="100" y="62" font-size="6" fill="#44ff88" text-anchor="end">pts_last3</text><text x="148" y="62" font-size="6" fill="#44ff88">ρ=+0.32</text>
+          
+          <rect x="96" y="70" width="4" height="10" rx="1" fill="rgba(255,80,80,.25)" stroke="rgba(255,80,80,.4)" stroke-width="0.5"/>
+          <text x="94" y="78" font-size="6" fill="#ff8080" text-anchor="end">b365d</text><text x="104" y="78" font-size="6" fill="#ff8080" text-anchor="start">ρ=−0.04 (RUIDO)</text>
+          
+          <line x1="20" y1="90" x2="180" y2="90" stroke="rgba(255,80,80,.3)" stroke-width="0.6" stroke-dasharray="4,2"/>
+          <text x="100" y="110" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle">ELO · árbitro · rest_days → p > 0.15 ✗</text>
+        </svg>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SECCIÓN B: La Matriz de Confusión y el "Cero Empates" -->
+<div class="xg-phase-block open">
+  <div class="xg-phase-head" onclick="this.parentElement.classList.toggle('open')">
+    <span class="xg-phase-icon">🧮</span>
+    <div style="flex:1"><div class="xg-phase-ht">B — La Matriz de Confusión</div><div class="xg-phase-hsub">Por qué el modelo original predecía 0 empates (y no era un error)</div></div>
+    <span class="xg-phase-arrow">▾</span>
+  </div>
+  <div class="xg-phase-body"><div class="xg-phase-inner">
+    <div class="xg-split">
+      <div style="flex:1">
+        <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Caos del Empate</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">
+          Al evaluar el <strong>Modelo V1</strong> en el Test Set (59 partidos), notamos que predecía 19 locales, 14 visitantes y <strong>absolutamente 0 empates</strong>. Podría parecer un bug, pero matemáticamente es una respuesta racional: la clase "Empate" es tan impredecible que la regresión logística maximiza su Accuracy global (55.93%) decantándose siempre por H o A.
+        </div>
+        <div style="padding:10px 12px;background:rgba(255,80,80,.04);border-left:2px solid #ff8080;font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">
+          Para obligar al modelo a ser <em>honesto</em> e intentar predecir empates, introdujimos <strong style="color:#ffcc00">class_weight='balanced'</strong> en la V2b. El costo fue una ligera caída en accuracy general, pero logramos 6 aciertos reales de empate.
+        </div>
+      </div>
+      
+      <div style="flex:1;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:12px">
+        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px;text-align:center">MATRIZ DE CONFUSIÓN TEST SET (V1)</div>
+        <div style="display:grid;grid-template-columns:auto 1fr 1fr 1fr;grid-template-rows:auto 1fr 1fr 1fr;gap:3px;margin:0 auto;max-width:240px">
+          <div></div>
+          <div style="font-size:7px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED: H</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED: D</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED: A</div>
+          <div style="font-size:7px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL H</div>
+          <div style="background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.22);border-radius:4px;display:flex;align-items:center;justify-content:center;height:36px;transition:all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.3)'" onmouseout="this.style.background='rgba(0,255,255,.1)'"><div style="font-size:16px;font-weight:700;color:var(--cyan)">19</div></div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">0</div></div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">6</div></div>
+          <div style="font-size:7px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL D</div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;height:36px;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">8</div></div>
+          <div style="background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.22);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s;box-shadow: 0 0 10px rgba(255,200,0,0.5)" onmouseover="this.style.background='rgba(255,200,0,.3)'" onmouseout="this.style.background='rgba(255,200,0,.1)'"><div style="font-size:16px;font-weight:700;color:#ffcc00">0</div></div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">7</div></div>
+          <div style="font-size:7px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL A</div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;height:36px;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">5</div></div>
+          <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(255,80,80,.3)'" onmouseout="this.style.background='rgba(255,80,80,.07)'"><div style="font-size:16px;font-weight:700;color:#ff6666">0</div></div>
+          <div style="background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.22);border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.3)'" onmouseout="this.style.background='rgba(0,255,255,.1)'"><div style="font-size:16px;font-weight:700;color:var(--cyan)">14</div></div>
+        </div>
+        <div style="text-align:center; margin-top: 10px; font-size: 9px; color: #ffcc00">Pasa el cursor para interactuar</div>
+      </div>
+    </div>
+  </div></div>
+</div>
+
+<!-- SECCIÓN C: La Batalla de Versiones (Laboratorio) -->
+<div class="xg-phase-block open">
+  <div class="xg-phase-head" onclick="this.parentElement.classList.toggle('open')">
+    <span class="xg-phase-icon">⚔️</span>
+    <div style="flex:1"><div class="xg-phase-ht">C — Batalla de Versiones (Lab Avanzado)</div><div class="xg-phase-hsub">Occam vs Complejidad: ELO Dinámico y Árbitros</div></div>
+    <span class="xg-phase-arrow">▾</span>
+  </div>
+  <div class="xg-phase-body"><div class="xg-phase-inner">
+    
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:16px">
+      Para intentar superar el 60% de Accuracy, construimos un autómata de <strong>Rating ELO dinámico</strong> y calculamos el sesgo localista de cada <strong>árbitro</strong>. Comparamos empíricamente 4 modelos:
+    </div>
+
+    <table class="xg-battle-table">
+      <thead><tr>
+        <th>Configuración (Features)</th><th>CV Accuracy</th><th>Test Accuracy</th><th>Veredicto</th>
+      </tr></thead>
+      <tbody>
+        <tr class="xg-battle-row" style="opacity:0.6; transition: background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+          <td><span class="xg-battle-name" style="color:rgba(255,255,255,.6)">Config 3 — Cuotas + ELO</span></td>
+          <td><span class="xg-battle-auc" style="color:#ff6666">48.26%</span></td>
+          <td><span class="xg-battle-f1" style="color:#ff6666">52.54%</span></td>
+          <td><span class="xg-battle-acc">Colinealidad: Bet365 ya incluye el poderío del equipo.</span></td>
+        </tr>
+        <tr class="xg-battle-row" style="opacity:0.6; transition: background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+          <td><span class="xg-battle-name" style="color:rgba(255,255,255,.6)">Config 4 — Súper Modelo (+ELO +Árbitro)</span></td>
+          <td><span class="xg-battle-auc" style="color:#ff6666">48.70%</span></td>
+          <td><span class="xg-battle-f1" style="color:#ff6666">52.54%</span></td>
+          <td><span class="xg-battle-acc">Maldición de dimensionalidad con n=291. Overfitting.</span></td>
+        </tr>
+        <tr class="xg-battle-row" style="opacity:0.8; transition: background 0.3s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+          <td><span class="xg-battle-name" style="color:#ffcc00">Config 2 — Cuotas + Árbitro</span></td>
+          <td><span class="xg-battle-auc" style="color:#ffcc00">49.57%</span></td>
+          <td><span class="xg-battle-f1" style="color:#ffcc00">54.24%</span></td>
+          <td><span class="xg-battle-acc">Mejoría leve en CV, pero no supera el baseline en Test.</span></td>
+        </tr>
+        <tr class="xg-battle-row winner" style="transition: transform 0.3s, box-shadow 0.3s" onmouseover="this.style.transform='scale(1.02)'; this.style.boxShadow='0 0 15px rgba(0,255,255,0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+          <td><span class="xg-battle-name" style="color:var(--cyan)">Modelo V2 — Navaja de Occam</span><br><span class="xg-battle-badge best" style="background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.3);color:var(--cyan)">GANADOR</span></td>
+          <td><span class="xg-battle-auc" style="color:var(--cyan)">49.14%</span></td>
+          <td><span class="xg-battle-f1" style="color:var(--cyan);font-weight:700;font-size:14px">55.93%</span></td>
+          <td><span class="xg-battle-acc" style="color:rgba(255,255,255,.7)">Solo cuotas B365. Principio de Parsimonia empírico.</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:10px;color:rgba(255,255,255,.45);line-height:1.6">
+      <strong>Conclusión de Mercados Eficientes:</strong> Al añadir ELO a un modelo que ya tiene b365h, generamos ruido. El mercado es eficiente: <em>las cuotas globales ya contienen toda la información táctica, arbitral y de lesiones pre-partido.</em>
+    </div>
+
+  </div></div>
+</div>`,
         training: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-eyebrow" style="margin-bottom:6px">PIPELINE · CLASIFICADOR H·D·A</div>
 <div class="xg-phase-title" style="font-size:22px;margin-bottom:4px">La Batalla del Empate</div>
 <div class="xg-phase-sub">Pipeline de 5 etapas — haz clic en cada bloque para explorar su decisión.</div>
 
-<div class="xg-pipe" id="r2-pipe-row">
-  <div class="xg-pipe-node active" onclick="r2Pipe(this,0)"><span class="xg-pipe-icon">📋</span><span class="xg-pipe-label">Datos</span><span class="xg-pipe-sublabel">291 partidos</span></div>
+<div class="xg-pipe" id="m3-pipe-row">
+  <div class="xg-pipe-node active" onclick="m3Pipe(this,0)"><span class="xg-pipe-icon">📋</span><span class="xg-pipe-label">Datos</span><span class="xg-pipe-sublabel">291 partidos</span></div>
   <span class="xg-pipe-arrow">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,1)"><span class="xg-pipe-icon">🔍</span><span class="xg-pipe-label">Spearman</span><span class="xg-pipe-sublabel">Filtro α=0.15</span></div>
+  <div class="xg-pipe-node" onclick="m3Pipe(this,1)"><span class="xg-pipe-icon">🔍</span><span class="xg-pipe-label">Spearman</span><span class="xg-pipe-sublabel">Filtro α=0.15</span></div>
   <span class="xg-pipe-arrow">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,2)"><span class="xg-pipe-icon">⚖️</span><span class="xg-pipe-label">Balanced</span><span class="xg-pipe-sublabel">class_weight</span></div>
+  <div class="xg-pipe-node" onclick="m3Pipe(this,2)"><span class="xg-pipe-icon">⚖️</span><span class="xg-pipe-label">Balanced</span><span class="xg-pipe-sublabel">class_weight</span></div>
   <span class="xg-pipe-arrow">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,3)"><span class="xg-pipe-icon">🧮</span><span class="xg-pipe-label">LogReg</span><span class="xg-pipe-sublabel">lbfgs · H/D/A</span></div>
+  <div class="xg-pipe-node" onclick="m3Pipe(this,3)"><span class="xg-pipe-icon">🧮</span><span class="xg-pipe-label">LogReg</span><span class="xg-pipe-sublabel">lbfgs · H/D/A</span></div>
   <span class="xg-pipe-arrow">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,4)"><span class="xg-pipe-icon">🏆</span><span class="xg-pipe-label">Resultado</span><span class="xg-pipe-sublabel">55.93% acc.</span></div>
+  <div class="xg-pipe-node" onclick="m3Pipe(this,4)"><span class="xg-pipe-icon">🏆</span><span class="xg-pipe-label">Resultado</span><span class="xg-pipe-sublabel">55.93% acc.</span></div>
 </div>
 
-<div class="xg-pdetail" id="r2-pdetail">291 partidos PL 24/25. Split 80/20 estratificado: ~232 train / ~59 test. StratifiedKFold(k=5) preserva proporciones H/D/A en cada fold.</div>
+<div class="xg-pdetail" id="m3-pdetail">291 partidos PL 24/25. Split 80/20 estratificado: ~232 train / ~59 test. StratifiedKFold(k=5) preserva proporciones H/D/A en cada fold.</div>
 
 <div class="xg-vis-panel" style="margin-top:16px">
 
   <!-- Panel 0: DATOS — distribución H/D/A + split -->
-  <div class="xg-pv active" id="r2-vp-0">
+  <div class="m3-pv" id="m3-vp-0" style="display:block">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">DISTRIBUCIÓN DE CLASES</div>
@@ -2506,7 +2638,7 @@ const WS = {
   </div>
 
   <!-- Panel 1: SPEARMAN — selección de features -->
-  <div class="xg-pv" id="r2-vp-1">
+  <div class="m3-pv" id="m3-vp-1" style="display:none">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CORRELACIONES SPEARMAN (ρ)</div>
@@ -2548,7 +2680,7 @@ const WS = {
   </div>
 
   <!-- Panel 2: BALANCED — el truco del empate -->
-  <div class="xg-pv" id="r2-vp-2">
+  <div class="m3-pv" id="m3-vp-2" style="display:none">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SIN balanced — trampa estadística</div>
@@ -2582,7 +2714,7 @@ const WS = {
   </div>
 
   <!-- Panel 3: LOGREG — softmax multinomial -->
-  <div class="xg-pv" id="r2-vp-3">
+  <div class="m3-pv" id="m3-vp-3" style="display:none">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SOFTMAX — 3 PROBABILIDADES</div>
@@ -2625,7 +2757,7 @@ const WS = {
   </div>
 
   <!-- Panel 4: RESULTADO — CV + matriz multiclase -->
-  <div class="xg-pv" id="r2-vp-4">
+  <div class="m3-pv" id="m3-vp-4" style="display:none">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CV — ACCURACY POR FOLD (V2b)</div>
@@ -2692,52 +2824,122 @@ const WS = {
   </div>
 
 </div>`,
-        predictions: `<div class="ws-table-wrap"><table class="ws-table">
-            <thead><tr><th>Partido</th><th>b365h</th><th>b365a</th><th>Pred V2b</th><th>Real</th><th>¿Correcto?</th></tr></thead>
-            <tbody>
-                <tr><td>MCI vs ARS</td><td>1.90</td><td>3.80</td><td>H</td><td>H</td><td><span class="ws-pill ws-green">✓</span></td></tr>
-                <tr><td>LIV vs CHE</td><td>1.62</td><td>5.50</td><td>H</td><td>D</td><td><span class="ws-pill ws-red">✗</span></td></tr>
-                <tr><td>TOT vs MUN</td><td>2.10</td><td>3.40</td><td>D</td><td>A</td><td><span class="ws-pill ws-red">✗</span></td></tr>
-                <tr><td>AVL vs NEW</td><td>2.50</td><td>2.80</td><td>D</td><td>D</td><td><span class="ws-pill ws-green">✓</span></td></tr>
-                <tr><td>BHA vs FUL</td><td>2.20</td><td>3.20</td><td>H</td><td>H</td><td><span class="ws-pill ws-green">✓</span></td></tr>
-                <tr><td>EVE vs WOL</td><td>2.00</td><td>3.75</td><td>H</td><td>A</td><td><span class="ws-pill ws-red">✗</span></td></tr>
-            </tbody>
-        </table>
-        <div style="margin-top:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:11px;text-align:center">
-                <div style="font-size:18px;font-weight:600;color:#ffcc00">55.93%</div>
-                <div style="font-size:8.5px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.28);margin-top:3px">V1 — mejor accuracy pura</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:11px;text-align:center">
-                <div style="font-size:18px;font-weight:600;color:#44ff88">+1.69pp</div>
-                <div style="font-size:8.5px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.28);margin-top:3px">V1 vs Bet365</div>
-            </div>
-            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:11px;text-align:center">
-                <div style="font-size:18px;font-weight:600;color:var(--cyan)">26.1%</div>
-                <div style="font-size:8.5px;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.28);margin-top:3px">Empates en el dataset</div>
-            </div>
+        predictions: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div><div class="xg-dot"></div></div>
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,255,255,.5)">MODELO 3 &middot; SIMULADOR EN VIVO</div>
+  <div style="font-s        data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div></div>
+<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">M3 · VALIDACIÓN FINAL</div>
+<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">Métricas y Coeficientes</div>
+<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">El veredicto estadístico contra el mercado y la interpretación de Odds Ratios.</div>
+
+<div class="xg-split" style="margin-bottom:20px">
+  <div style="flex:1">
+    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Enemigo Superado</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">
+      Nuestro modelo V2b (Multinomial balanceado) logra predecir los tres resultados con exactitud asombrosa usando solo 4 variables. La métrica <strong>Accuracy de Test</strong> nos indica cuántas predicciones acertamos frente a las probabilidades puras del mercado.
+    </div>
+    
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(0,255,255,.05);border:1px solid rgba(0,255,255,.2);backdrop-filter:blur(8px); transition: transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:monospace;font-size:10px;color:var(--cyan);margin-bottom:4px;font-weight:700">Modelo M3 (V2b + Balanced)</div>
+          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:2px; transition: width 1s ease" class="xg-fill-bar"></div></div>
         </div>
-        <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,0.3);text-align:center;line-height:1.6">V1 gana en accuracy pura porque nunca predice empates — trampa estadística. V2b es el único clasificador que intenta las 3 clases en serio, pagando el costo honesto en accuracy.</div></div>`,
-        data: `<div class="ws-grid">
-            <div class="ws-card"><div class="ws-card-label">Partidos (temporada activa)</div><div class="ws-card-value">291 de 380</div></div>
-            <div class="ws-card"><div class="ws-card-label">Victorias locales (H)</div><div class="ws-card-value ws-accent">~46%</div></div>
-            <div class="ws-card"><div class="ws-card-label">Empates (D)</div><div class="ws-card-value" style="color:#ffcc00">26.1%</div></div>
-            <div class="ws-card"><div class="ws-card-label">Victorias visitante (A)</div><div class="ws-card-value">~28%</div></div>
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:8px">Señal estadística de las cuotas (Spearman vs resultado)</div>
-                <div class="ws-table-wrap"><table class="ws-table">
-                    <thead><tr><th>Variable</th><th>ρ Spearman</th><th>p-value</th><th>Veredicto</th></tr></thead>
-                    <tbody>
-                        <tr><td>b365h</td><td style="color:#44ff88">significativa</td><td style="color:#44ff88">&lt; 0.001</td><td>✓ Incluida — cuota local discrimina</td></tr>
-                        <tr><td>b365a</td><td style="color:#44ff88">significativa</td><td style="color:#44ff88">&lt; 0.001</td><td>✓ Incluida — cuota visitante discrimina</td></tr>
-                        <tr><td>b365d</td><td style="color:#ff5555">no significativa</td><td style="color:#ff5555">0.6303</td><td>✗ Eliminada — predecir Draw es ruido puro</td></tr>
-                        <tr><td>home_pts_last3</td><td style="color:#44ff88">significativa</td><td style="color:#44ff88">&lt; 0.15</td><td>✓ Momentum local aporta señal real</td></tr>
-                        <tr><td>away_gf_last3</td><td style="color:#44ff88">significativa</td><td style="color:#44ff88">&lt; 0.15</td><td>✓ Ataque visitante reciente discrimina</td></tr>
-                        <tr><td>home_ga_last3 / away_ga_last3</td><td style="color:#ff5555">no significativa</td><td style="color:#ff5555">&gt; 0.20</td><td>✗ Defensa no discrimina el resultado</td></tr>
-                    </tbody>
-                </table></div>
-            </div>
-        </div>`
+        <div style="text-align:right;min-width:60px">
+          <div style="font-size:18px;font-weight:700;color:var(--cyan);line-height:1">~55.0%</div>
+          <div style="font-size:8px;color:rgba(0,255,255,.5);letter-spacing:.08em;margin-top:2px">Honesto 3 Clases</div>
+        </div>
+      </div>
+      
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.05);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px); transition: transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+        <div>
+          <div style="font-family:monospace;font-size:10px;color:#ff8080;margin-bottom:4px;font-weight:700">Bet365 (Favorito Cuota)</div>
+          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:54.2%;background:linear-gradient(90deg,rgba(255,80,80,.4),#ff8080);border-radius:2px"></div></div>
+        </div>
+        <div style="text-align:right;min-width:60px">
+          <div style="font-size:18px;font-weight:300;color:#ff8080;line-height:1">54.24%</div>
+          <div style="font-size:8px;color:rgba(255,80,80,.5);letter-spacing:.08em;margin-top:2px">Baseline</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div style="flex:1">
+    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">Análisis Odds Ratios = exp(β)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:12px">
+      ¿Cómo se traduce el impacto de la cuota en probabilidades? Para cada variable, el Odds Ratio indica por qué factor se multiplican los "chances" de un resultado.
+    </div>
+    
+    <div style="margin-bottom:12px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(255,255,255,.05);padding:14px">
+      <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px;text-align:center">EFECTO EXPONENCIAL DEL OR</div>
+      <svg viewBox="0 0 300 100" style="width:100%; overflow: visible;" xmlns="http://www.w3.org/2000/svg">
+        <line x1="30" y1="80" x2="270" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+        <line x1="30" y1="20" x2="30" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+        <text x="25" y="25" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 1.0</text>
+        <text x="25" y="80" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 0.0</text>
+        <text x="150" y="95" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">Cuota Bet365 (Favorito → Underdog)</text>
+        
+        <path d="M 30,25 C 80,25 100,75 270,75" fill="none" stroke="var(--cyan)" stroke-width="2" />
+        
+        <circle cx="70" cy="35" r="4" fill="#ff44ff" style="transition: r 0.3s; cursor:pointer" onmouseover="this.setAttribute('r','6'); document.getElementById('tooltip-1').style.opacity=1" onmouseout="this.setAttribute('r','4'); document.getElementById('tooltip-1').style.opacity=0"/>
+        <text id="tooltip-1" x="70" y="22" font-size="8" fill="#ff44ff" text-anchor="middle" font-weight="700" style="opacity:0; transition: opacity 0.3s">Cuota Baja = P(Alta)</text>
+        
+        <circle cx="150" cy="71" r="4" fill="#ff8080" style="transition: r 0.3s; cursor:pointer" onmouseover="this.setAttribute('r','6'); document.getElementById('tooltip-2').style.opacity=1" onmouseout="this.setAttribute('r','4'); document.getElementById('tooltip-2').style.opacity=0"/>
+        <text id="tooltip-2" x="150" y="58" font-size="8" fill="#ff8080" text-anchor="middle" font-weight="700" style="opacity:0; transition: opacity 0.3s">Cuota Alta = P(Baja)</text>
+      </svg>
+    </div>
+    
+    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06); transition: all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.05)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(255,255,255,.02)'; this.style.borderColor='rgba(255,255,255,.06)'">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-family:monospace;font-size:10px;color:var(--cyan);font-weight:600">b365h (Cuota Local)</span>
+          <span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">
+          El Odds Ratio de la clase <strong style="color:#44ff88">Home</strong> frente a la cuota <code style="color:var(--cyan)">b365h</code> es negativo en β. Es decir, a <strong>menor</strong> cuota (favorito), <strong>mayores</strong> son los odds de que gane.
+        </div>
+      </div>
+      
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06); transition: all 0.3s" onmouseover="this.style.background='rgba(255,68,255,.05)'; this.style.borderColor='#ff44ff'" onmouseout="this.style.background='rgba(255,255,255,.02)'; this.style.borderColor='rgba(255,255,255,.06)'">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+          <span style="font-family:monospace;font-size:10px;color:#ff44ff;font-weight:600">b365a (Cuota Visita)</span>
+          <span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span>
+        </div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">
+          Efecto espejo. Cuando la cuota del visitante baja (es claro favorito), la probabilidad log-odds de que el visitante gane se dispara exponencialmente frente al resto.
+        </div>
+      </div>
+    </div>
+    
+    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.4);line-height:1.6">
+      <strong>Veredicto:</strong> El mercado ya digirió todos los datos estadísticos previos. Sus cuotas actúan como el super-resumen perfecto de fuerza. La regresión lo descubre y las eleva como los únicos Odds Ratios dominantes.
+    </div>
+  </div>
+</div>`,</span></td>
+          <td><span class="xg-battle-f1" style="color:#ff6666">52.54%</span></td>
+          <td><span class="xg-battle-acc">Maldición de dimensionalidad con n=291. Overfitting.</span></td>
+        </tr>
+        <tr class="xg-battle-row" style="opacity:0.8">
+          <td><span class="xg-battle-name" style="color:#ffcc00">Config 2 — Cuotas + Árbitro</span></td>
+          <td><span class="xg-battle-auc" style="color:#ffcc00">49.57%</span></td>
+          <td><span class="xg-battle-f1" style="color:#ffcc00">54.24%</span></td>
+          <td><span class="xg-battle-acc">Mejoría leve en CV, pero no supera el baseline en Test.</span></td>
+        </tr>
+        <tr class="xg-battle-row winner">
+          <td><span class="xg-battle-name" style="color:var(--cyan)">Modelo V2 — Navaja de Occam</span><br><span class="xg-battle-badge best" style="background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.3);color:var(--cyan)">GANADOR</span></td>
+          <td><span class="xg-battle-auc" style="color:var(--cyan)">49.14%</span></td>
+          <td><span class="xg-battle-f1" style="color:var(--cyan);font-weight:700;font-size:14px">55.93%</span></td>
+          <td><span class="xg-battle-acc" style="color:rgba(255,255,255,.7)">Solo cuotas B365. Principio de Parsimonia empírico.</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:10px;color:rgba(255,255,255,.45);line-height:1.6">
+      <strong>Conclusión de Mercados Eficientes:</strong> Al añadir ELO a un modelo que ya tiene b365h, generamos ruido. El mercado es eficiente: <em>las cuotas globales ya contienen toda la información táctica, arbitral y de lesiones pre-partido.</em>
+    </div>
+
+  </div></div>
+</div>`
     },
     data: {
         overview: `<div class="ws-grid">
@@ -4830,13 +5032,13 @@ class CinematicEngine {
     if(idx===4){ setTimeout(()=>{ document.querySelectorAll('.m2-fold-bar').forEach((b,i)=>{ const pct=b.dataset.pct||'0'; setTimeout(()=>{ b.style.width=pct+'%'; },i*120); }); },100); }
   };
 
-  window.r2Pipe=function(el,idx){
+  window.m3Pipe=function(el,idx){
     const details=['291 partidos PL 24/25. Split 80/20 estratificado: ~232 train / ~59 test. StratifiedKFold(k=5) preserva proporciones H/D/A. El desafío: predecir 3 clases superando a Bet365 (54.24%).','Spearman con α=0.15 filtra las 4 variables con señal real. ELO, sesgo de árbitro y dias de descanso fallan el umbral — en n=291 no tienen poder estadístico suficiente y generan colinealidad.','class_weight="balanced" asigna pesos inversamente proporcionales a la frecuencia de cada clase. Los empates (26%) reciben w=1.28 para que el modelo aprenda a predecirlos y no los ignore.','LogisticRegression multinomial con softmax: genera P(H), P(D), P(A) que suman 1. argmax da la predicción final. Solver lbfgs es eficiente para clasificación multiclase con pocas features.','V2b (balanced) alcanza ~55% accuracy y predice empates en serio. V1 llega a 55.93% pero nunca predice D — trampa estadística. El costo de la honestidad multiclase es menos de 1pp de accuracy.'];
-    document.querySelectorAll('#r2-pipe-row .xg-pipe-node').forEach(n=>n.classList.remove('active'));
+    document.querySelectorAll('#m3-pipe-row .xg-pipe-node').forEach(n=>n.classList.remove('active'));
     el.classList.add('active');
-    const det=document.getElementById('r2-pdetail');
+    const det=document.getElementById('m3-pdetail');
     if(det){ det.style.opacity='0'; setTimeout(()=>{ det.textContent=details[idx]; det.style.opacity='1'; },150); }
-    document.querySelectorAll('[id^="r2-vp-"]').forEach((p,i)=>p.classList.toggle('active',i===idx));
+    document.querySelectorAll('.m3-pv').forEach((p,i)=>{ p.style.display=i===idx?'block':'none'; });
     if(idx===4){ setTimeout(()=>{ document.querySelectorAll('.r2-fold-bar').forEach((b,i)=>{ const pct=b.dataset.pct||'0'; setTimeout(()=>{ b.style.width=pct+'%'; },i*120); }); },100); }
   };
 
