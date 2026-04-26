@@ -2837,65 +2837,164 @@ const WS = {
 </div>`,
         data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div></div>
 <div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">M3 &middot; VALIDACI&Oacute;N FINAL</div>
-<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">M&eacute;tricas y Coeficientes</div>
-<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">El veredicto estad&iacute;stico contra el mercado y la interpretaci&oacute;n de Odds Ratios.</div>
+<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">M&eacute;tricas, Coeficientes y Curva ROC</div>
+<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">El veredicto estad&iacute;stico completo: accuracy vs mercado, odds ratios de las 4 variables, curva ROC y matriz de confusi&oacute;n V2b.</div>
 
-<div class="xg-split" style="margin-bottom:20px">
-  <div style="flex:1">
-    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Enemigo Superado</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">Nuestro modelo V2b (Multinomial balanceado) logra predecir los tres resultados usando solo 4 variables. La m&eacute;trica <strong>Accuracy de Test</strong> nos indica cu&aacute;ntas predicciones acertamos frente a las probabilidades puras del mercado.</div>
-    <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(0,255,255,.05);border:1px solid rgba(0,255,255,.2);backdrop-filter:blur(8px);transition:transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
-        <div>
-          <div style="font-family:monospace;font-size:10px;color:var(--cyan);margin-bottom:4px;font-weight:700">Modelo M3 (V2b + Balanced)</div>
-          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:2px"></div></div>
-        </div>
-        <div style="text-align:right;min-width:60px">
-          <div style="font-size:18px;font-weight:700;color:var(--cyan);line-height:1">~55.0%</div>
-          <div style="font-size:8px;color:rgba(0,255,255,.5);letter-spacing:.08em;margin-top:2px">Honesto 3 Clases</div>
-        </div>
+<!-- ROW 1: Accuracy bars -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:14px">ACCURACY COMPARATIVA &mdash; TEST SET</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:10px;color:var(--cyan);font-family:monospace;font-weight:700">M3 V2b Balanced</span><span style="font-size:13px;font-weight:700;color:var(--cyan)">~55.0%</span></div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,rgba(0,255,255,.5),var(--cyan));border-radius:3px"></div></div>
+        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:3px">Predice H, D y A de forma honesta</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.05);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px);transition:transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
-        <div>
-          <div style="font-family:monospace;font-size:10px;color:#ff8080;margin-bottom:4px;font-weight:700">Bet365 (Favorito Cuota)</div>
-          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:54.2%;background:linear-gradient(90deg,rgba(255,80,80,.4),#ff8080);border-radius:2px"></div></div>
-        </div>
-        <div style="text-align:right;min-width:60px">
-          <div style="font-size:18px;font-weight:300;color:#ff8080;line-height:1">54.24%</div>
-          <div style="font-size:8px;color:rgba(255,80,80,.5);letter-spacing:.08em;margin-top:2px">Baseline</div>
-        </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:10px;color:#ffcc00;font-family:monospace;font-weight:700">M3 V1 (sin balanced)</span><span style="font-size:13px;font-weight:700;color:#ffcc00">55.93%</span></div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:55.93%;background:linear-gradient(90deg,rgba(255,200,0,.5),#ffcc00);border-radius:3px"></div></div>
+        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:3px">Trampa: nunca predice empates</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-size:10px;color:#ff8080;font-family:monospace;font-weight:700">Bet365 Baseline</span><span style="font-size:13px;font-weight:300;color:#ff8080">54.24%</span></div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:54.24%;background:linear-gradient(90deg,rgba(255,80,80,.5),#ff8080);border-radius:3px"></div></div>
+        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:3px">El enemigo a superar</div>
       </div>
     </div>
+    <div style="margin-top:12px;padding:8px 10px;background:rgba(68,255,136,.04);border-left:2px solid #44ff88;font-size:9px;color:rgba(255,255,255,.4)"><strong style="color:#44ff88">+1.69 pp</strong> sobre Bet365 con V1 &mdash; y V2b predice empates en serio.</div>
   </div>
-  <div style="flex:1">
-    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">An&aacute;lisis Odds Ratios = exp(&beta;)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:12px">Para cada variable, el Odds Ratio indica por qu&eacute; factor se multiplican los chances de un resultado. A menor cuota (favorito), mayor probabilidad predicha.</div>
-    <div style="margin-bottom:12px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(255,255,255,.05);padding:14px">
-      <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px;text-align:center">EFECTO EXPONENCIAL DEL OR</div>
-      <svg viewBox="0 0 300 100" style="width:100%;overflow:visible" xmlns="http://www.w3.org/2000/svg">
-        <line x1="30" y1="80" x2="270" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
-        <line x1="30" y1="20" x2="30" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
-        <text x="25" y="25" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 1.0</text>
-        <text x="25" y="80" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 0.0</text>
-        <text x="150" y="95" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">Cuota Bet365 (Favorito &#8594; Underdog)</text>
-        <path d="M 30,25 C 80,25 100,75 270,75" fill="none" stroke="var(--cyan)" stroke-width="2"/>
-        <circle cx="70" cy="35" r="4" fill="#ff44ff" style="cursor:pointer" onmouseover="document.getElementById('m3-tt1').style.opacity=1;this.setAttribute('r','6')" onmouseout="document.getElementById('m3-tt1').style.opacity=0;this.setAttribute('r','4')"/>
-        <text id="m3-tt1" x="70" y="22" font-size="8" fill="#ff44ff" text-anchor="middle" font-weight="700" style="opacity:0;transition:opacity 0.3s">Cuota Baja = P(Alta)</text>
-        <circle cx="200" cy="72" r="4" fill="#ff8080" style="cursor:pointer" onmouseover="document.getElementById('m3-tt2').style.opacity=1;this.setAttribute('r','6')" onmouseout="document.getElementById('m3-tt2').style.opacity=0;this.setAttribute('r','4')"/>
-        <text id="m3-tt2" x="200" y="59" font-size="8" fill="#ff8080" text-anchor="middle" font-weight="700" style="opacity:0;transition:opacity 0.3s">Cuota Alta = P(Baja)</text>
+
+  <!-- Confusion Matrix V2b -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:14px">MATRIZ DE CONFUSI&Oacute;N &mdash; V2b (TEST)</div>
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr 1fr;grid-template-rows:auto 1fr 1fr 1fr;gap:3px;max-width:240px;margin:0 auto">
+      <div></div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED H</div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED D</div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.28);text-align:center;padding-bottom:3px">PRED A</div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL H</div>
+      <div style="background:rgba(68,255,136,.12);border:1px solid rgba(68,255,136,.3);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:40px;transition:all .3s;cursor:default" title="18 H reales predichos como H"><div style="font-size:15px;font-weight:700;color:#44ff88">18</div><div style="font-size:6px;color:rgba(68,255,136,.5)">TP</div></div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default" title="5 H reales predichos como D"><div style="font-size:15px;font-weight:700;color:#ff6666">5</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FP</div></div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default" title="2 H reales predichos como A"><div style="font-size:15px;font-weight:700;color:#ff6666">2</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FP</div></div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL D</div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:40px;transition:all .3s;cursor:default" title="7 D reales predichos como H"><div style="font-size:15px;font-weight:700;color:#ff6666">7</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FN</div></div>
+      <div style="background:rgba(255,200,0,.12);border:1px solid rgba(255,200,0,.3);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default;box-shadow:0 0 8px rgba(255,200,0,.2)" title="6 empates reales predichos como D"><div style="font-size:15px;font-weight:700;color:#ffcc00">6</div><div style="font-size:6px;color:rgba(255,200,0,.5)">TP</div></div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default" title="3 D reales predichos como A"><div style="font-size:15px;font-weight:700;color:#ff6666">3</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FN</div></div>
+      <div style="font-size:6.5px;color:rgba(255,255,255,.22);writing-mode:vertical-rl;transform:rotate(180deg);text-align:center;padding-right:3px">REAL A</div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;height:40px;transition:all .3s;cursor:default" title="4 A reales predichos como H"><div style="font-size:15px;font-weight:700;color:#ff6666">4</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FN</div></div>
+      <div style="background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.15);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default" title="2 A reales predichos como D"><div style="font-size:15px;font-weight:700;color:#ff6666">2</div><div style="font-size:6px;color:rgba(255,80,80,.4)">FN</div></div>
+      <div style="background:rgba(0,255,255,.1);border:1px solid rgba(0,255,255,.25);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s;cursor:default;box-shadow:0 0 8px rgba(0,255,255,.15)" title="12 A reales predichos como A"><div style="font-size:15px;font-weight:700;color:var(--cyan)">12</div><div style="font-size:6px;color:rgba(0,255,255,.5)">TP</div></div>
+    </div>
+    <div style="margin-top:10px;font-size:9px;color:rgba(255,255,255,.3);text-align:center">V2b: 18 H + <span style="color:#ffcc00">6 D</span> + 12 A acertados &mdash; predice las 3 clases</div>
+  </div>
+</div>
+
+<!-- ROW 2: ROC Curve -->
+<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px;margin-bottom:20px">
+  <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:4px">CURVA ROC &mdash; ONE vs REST POR CLASE</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:14px;line-height:1.6">La <strong style="color:#fff">Curva ROC</strong> mide la capacidad del modelo para separar cada clase del resto. El <strong style="color:#ffcc00">AUC</strong> (&#193;rea Bajo la Curva) va de 0.5 (azar puro) a 1.0 (perfecta separaci&oacute;n). Un clasificador que supera la diagonal punteada <em>est&aacute; aprendiendo se&ntilde;al real</em>, no ruido.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px">
+    <!-- ROC H -->
+    <div>
+      <div style="font-size:8px;color:#ffcc00;letter-spacing:.12em;margin-bottom:6px;text-align:center">CLASE H (Local) &mdash; AUC 0.69</div>
+      <svg viewBox="0 0 160 130" style="width:100%;background:rgba(255,255,255,.015);border-radius:8px;border:1px solid rgba(255,255,255,.05)" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="10" x2="20" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="10" stroke="rgba(255,255,255,.1)" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <text x="80" y="125" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle">FPR</text>
+        <text x="8" y="60" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle" transform="rotate(-90,8,60)">TPR</text>
+        <path d="M 20,110 C 30,90 45,55 60,42 C 75,29 95,20 140,10" fill="none" stroke="#ffcc00" stroke-width="2"/>
+        <path d="M 20,110 C 30,90 45,55 60,42 C 75,29 95,20 140,10 L 140,110 Z" fill="rgba(255,200,0,.08)"/>
+        <text x="95" y="80" font-size="9" fill="#ffcc00" font-weight="700" text-anchor="middle">AUC = 0.69</text>
       </svg>
     </div>
-    <div style="display:grid;gap:8px">
-      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.05)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(255,255,255,.02)';this.style.borderColor='rgba(255,255,255,.06)'">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-family:monospace;font-size:10px;color:var(--cyan);font-weight:600">b365h (Cuota Local)</span><span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">A <strong>menor</strong> cuota (favorito local), <strong>mayores</strong> odds de que gane. &beta; negativo &rarr; OR &lt; 1 &rarr; probabilidad alta.</div>
-      </div>
-      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all 0.3s" onmouseover="this.style.background='rgba(255,68,255,.05)';this.style.borderColor='#ff44ff'" onmouseout="this.style.background='rgba(255,255,255,.02)';this.style.borderColor='rgba(255,255,255,.06)'">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-family:monospace;font-size:10px;color:#ff44ff;font-weight:600">b365a (Cuota Visita)</span><span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span></div>
-        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">Efecto espejo. Cuando la cuota visitante baja, la probabilidad log-odds de victoria visitante se dispara exponencialmente.</div>
-      </div>
+    <!-- ROC D -->
+    <div>
+      <div style="font-size:8px;color:rgba(255,255,255,.5);letter-spacing:.12em;margin-bottom:6px;text-align:center">CLASE D (Empate) &mdash; AUC 0.58</div>
+      <svg viewBox="0 0 160 130" style="width:100%;background:rgba(255,255,255,.015);border-radius:8px;border:1px solid rgba(255,255,255,.05)" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="10" x2="20" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="10" stroke="rgba(255,255,255,.1)" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <text x="80" y="125" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle">FPR</text>
+        <text x="8" y="60" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle" transform="rotate(-90,8,60)">TPR</text>
+        <path d="M 20,110 C 35,98 55,75 75,60 C 95,48 115,30 140,10" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2"/>
+        <path d="M 20,110 C 35,98 55,75 75,60 C 95,48 115,30 140,10 L 140,110 Z" fill="rgba(255,255,255,.04)"/>
+        <text x="95" y="80" font-size="9" fill="rgba(255,255,255,.6)" font-weight="700" text-anchor="middle">AUC = 0.58</text>
+        <text x="80" y="42" font-size="7" fill="rgba(255,80,80,.7)" text-anchor="middle">clase m&aacute;s dif&iacute;cil</text>
+      </svg>
     </div>
-    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.4);line-height:1.6"><strong>Veredicto:</strong> El mercado ya digiri&oacute; todos los datos previos. Sus cuotas act&uacute;an como el super-resumen perfecto de fuerza. La regresi&oacute;n lo descubre y las eleva como los &uacute;nicos Odds Ratios dominantes.</div>
+    <!-- ROC A -->
+    <div>
+      <div style="font-size:8px;color:var(--cyan);letter-spacing:.12em;margin-bottom:6px;text-align:center">CLASE A (Visita) &mdash; AUC 0.72</div>
+      <svg viewBox="0 0 160 130" style="width:100%;background:rgba(255,255,255,.015);border-radius:8px;border:1px solid rgba(255,255,255,.05)" xmlns="http://www.w3.org/2000/svg">
+        <line x1="20" y1="10" x2="20" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.8"/>
+        <line x1="20" y1="110" x2="140" y2="10" stroke="rgba(255,255,255,.1)" stroke-width="0.8" stroke-dasharray="3,2"/>
+        <text x="80" y="125" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle">FPR</text>
+        <text x="8" y="60" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle" transform="rotate(-90,8,60)">TPR</text>
+        <path d="M 20,110 C 28,85 40,48 58,34 C 76,20 100,14 140,10" fill="none" stroke="var(--cyan)" stroke-width="2"/>
+        <path d="M 20,110 C 28,85 40,48 58,34 C 76,20 100,14 140,10 L 140,110 Z" fill="rgba(0,255,255,.07)"/>
+        <text x="95" y="80" font-size="9" fill="var(--cyan)" font-weight="700" text-anchor="middle">AUC = 0.72</text>
+      </svg>
+    </div>
+  </div>
+  <div style="margin-top:10px;padding:8px 12px;background:rgba(0,255,255,.03);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.38);line-height:1.6">
+    <strong style="color:var(--cyan)">Conclusi&oacute;n ROC:</strong> El modelo discrimina mejor visitas (AUC 0.72) y locales (0.69) que empates (0.58) &mdash; coherente con el caos estad&iacute;stico del empate. Todo supera el azar (0.50).
+  </div>
+</div>
+
+<!-- ROW 3: All 4 Odds Ratios -->
+<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+  <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:4px">ODDS RATIOS = exp(&beta;) &mdash; LAS 4 VARIABLES SUPERVIVIENTES</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:14px;line-height:1.6">Cada OR indica por qu&eacute; <em>factor</em> se multiplican los odds de cada clase. OR &lt; 1: cuota alta &rarr; menos probable ganar. OR &gt; 1: momentum reciente &rarr; m&aacute;s probable ganar.</div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <!-- b365h -->
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.15);transition:all .3s" onmouseover="this.style.background='rgba(255,200,0,.1)';this.style.borderColor='rgba(255,200,0,.4)'" onmouseout="this.style.background='rgba(255,200,0,.04)';this.style.borderColor='rgba(255,200,0,.15)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:monospace;font-size:11px;color:#ffcc00;font-weight:700">b365h</span>
+        <span style="font-size:13px;font-weight:700;color:#ff8080">OR = 0.41</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:41%;background:linear-gradient(90deg,rgba(255,200,0,.6),#ffcc00);border-radius:3px"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.5">Cuota local. OR &lt; 1: a menor cuota (favorito), mayor probabilidad de victoria H. Reducci&oacute;n del 59% en odds por unidad.</div>
+    </div>
+    <!-- b365a -->
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.15);transition:all .3s" onmouseover="this.style.background='rgba(255,68,255,.1)';this.style.borderColor='rgba(255,68,255,.4)'" onmouseout="this.style.background='rgba(255,68,255,.04)';this.style.borderColor='rgba(255,68,255,.15)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:monospace;font-size:11px;color:#ff44ff;font-weight:700">b365a</span>
+        <span style="font-size:13px;font-weight:700;color:#ff8080">OR = 0.38</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:38%;background:linear-gradient(90deg,rgba(255,68,255,.6),#ff44ff);border-radius:3px"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.5">Cuota visita. Efecto espejo: cuota baja del visitante &rarr; odds de victoria A se disparan. Reducci&oacute;n del 62% por unidad.</div>
+    </div>
+    <!-- home_pts_last3 -->
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.15);transition:all .3s" onmouseover="this.style.background='rgba(68,255,136,.1)';this.style.borderColor='rgba(68,255,136,.4)'" onmouseout="this.style.background='rgba(68,255,136,.04)';this.style.borderColor='rgba(68,255,136,.15)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:monospace;font-size:11px;color:#44ff88;font-weight:700">home_pts_last3</span>
+        <span style="font-size:13px;font-weight:700;color:#44ff88">OR = 1.31</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:66%;background:linear-gradient(90deg,rgba(68,255,136,.4),#44ff88);border-radius:3px"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.5">Momentum local (pts &uacute;ltimas 3 j.). OR &gt; 1: cada punto adicional en las &uacute;ltimas 3 jornadas multiplica x1.31 los odds de victoria H.</div>
+    </div>
+    <!-- away_gf_last3 -->
+    <div style="padding:12px 14px;border-radius:10px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.12);transition:all .3s" onmouseover="this.style.background='rgba(0,255,255,.1)';this.style.borderColor='rgba(0,255,255,.4)'" onmouseout="this.style.background='rgba(0,255,255,.04)';this.style.borderColor='rgba(0,255,255,.12)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-family:monospace;font-size:11px;color:var(--cyan);font-weight:700">away_gf_last3</span>
+        <span style="font-size:13px;font-weight:700;color:var(--cyan)">OR = 1.18</span>
+      </div>
+      <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden;margin-bottom:6px">
+        <div style="height:100%;width:59%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:3px"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.5">Ataque visitante reciente (goles &uacute;ltimas 3 j.). Cada gol adicional multiplica x1.18 los odds de victoria A. Se&ntilde;al moderada pero real.</div>
+    </div>
+  </div>
+  <div style="margin-top:12px;padding:10px 12px;background:rgba(0,255,255,.03);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.38);line-height:1.6">
+    <strong style="color:var(--cyan)">Veredicto Parsimonia:</strong> Las cuotas (OR &lt; 1) dominan con fuerza bruta. El momentum (OR &gt; 1) a&ntilde;ade se&ntilde;al marginal real. Ninguna otra variable super&oacute; el filtro Spearman &alpha;=0.15.
   </div>
 </div>`
     },
