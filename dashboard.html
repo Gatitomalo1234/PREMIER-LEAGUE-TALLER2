@@ -2999,106 +2999,399 @@ const WS = {
 </div>`
     },
     data: {
-        overview: `<div class="ws-grid">
-            <div class="ws-card ws-col-4" style="border-color:rgba(68,255,136,0.12);background:rgba(68,255,136,0.03)">
-                <div class="ws-card-label">Núcleo del Sistema</div>
-                <p class="ws-card-text">Pipeline ETL completo que extrae, limpia y distribuye datos de <strong style="color:#fff">3 fuentes independientes</strong> hacia ambos modelos. Consumiendo la API de StatsBomb + Fantasy Premier League, el sistema procesa <strong style="color:#44ff88">444,252 eventos</strong> de 291 partidos a lo largo de 10 temporadas (2015–2025). El principio rector de todo el diseño: <strong style="color:#fff">cero Data Leakage</strong> — separar quirúrgicamente información pre-partido de datos que solo existen después del pitazo final.</p>
-            </div>
-            <div class="ws-card"><div class="ws-card-label">Tipo</div><div class="ws-card-value">Data Hub / ETL</div></div>
-            <div class="ws-card"><div class="ws-card-label">Eventos</div><div class="ws-card-value ws-accent">444,252</div></div>
-            <div class="ws-card"><div class="ws-card-label">Estado</div><div class="ws-card-value" style="color:var(--cyan)">● Live</div></div>
-            <div class="ws-card"><div class="ws-card-label">Modelos alimentados</div><div class="ws-card-value">3</div></div>
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:10px">Las 3 Fuentes — El Triángulo de Información</div>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-                    <div style="background:rgba(68,255,136,0.04);border:1px solid rgba(68,255,136,0.12);border-radius:8px;padding:14px">
-                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:#44ff88;margin-bottom:8px">Events.csv</div>
-                        <div style="font-size:14px;color:#fff;font-weight:500;margin-bottom:4px">444,252 filas × 19 cols</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6">0 duplicados · coords x,y 100% íntegras<br>end_x/end_y 33% vacíos (estructural)<br>is_goal: 807 eventos · 0.18%</div>
-                    </div>
-                    <div style="background:rgba(68,255,136,0.04);border:1px solid rgba(68,255,136,0.12);border-radius:8px;padding:14px">
-                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:#44ff88;margin-bottom:8px">Matches.csv</div>
-                        <div style="font-size:14px;color:#fff;font-weight:500;margin-bottom:4px">291 filas × 41 cols</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6">Dataset perfectamente limpio — 0 nulos<br>Odds: Bet365, Betway, Max, Avg<br>Promedio 2.77 goles · 54% Over 2.5</div>
-                    </div>
-                    <div style="background:rgba(68,255,136,0.04);border:1px solid rgba(68,255,136,0.12);border-radius:8px;padding:14px">
-                        <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.2em;color:#44ff88;margin-bottom:8px">Players.csv</div>
-                        <div style="font-size:14px;color:#fff;font-weight:500;margin-bottom:4px">822 filas × 37 cols</div>
-                        <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6">xG · xA · threat · influence FPL<br>Join rate sobre events: 77%<br>chance_next_round: 26% nulos</div>
-                    </div>
-                </div>
-            </div>
-        </div>`,
-        metrics: `<div class="ws-grid-3">
-            <div class="ws-metric-card"><div class="ws-metric-value ws-accent">444,252</div><div class="ws-metric-label">Eventos totales</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="100"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">~30s de carga inicial desde la API</div></div>
-            <div class="ws-metric-card"><div class="ws-metric-value ws-accent">98.3%</div><div class="ws-metric-label">Completitud global</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="98"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">player_id nulo ~1% — estructural</div></div>
-            <div class="ws-metric-card"><div class="ws-metric-value">77%</div><div class="ws-metric-label">Join rate FPL × Events</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="77"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">Merge por coincidencia de texto de nombre</div></div>
-            <div class="ws-metric-card"><div class="ws-metric-value">291</div><div class="ws-metric-label">Partidos activos (J30/38)</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="76"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">76.6% de la temporada completada</div></div>
-            <div class="ws-metric-card"><div class="ws-metric-value">10</div><div class="ws-metric-label">Temporadas históricas</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="100"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">2015/16 → 2024/25</div></div>
-            <div class="ws-metric-card"><div class="ws-metric-value">3,800+</div><div class="ws-metric-label">Partidos históricos totales</div><div class="ws-mbar"><div class="ws-mbar-fill" data-w="95"></div></div><div style="font-size:10px;color:rgba(255,255,255,0.3);margin-top:6px">Base de entrenamiento del modelo Lasso</div></div>
-        </div>`,
-        training: `<div class="ws-grid">
-            <div class="ws-card"><div class="ws-card-label">Lenguaje</div><div class="ws-card-value">Python 3.11</div></div>
-            <div class="ws-card"><div class="ws-card-label">Librerías</div><div class="ws-card-value">pandas · sklearn · statsmodels</div></div>
-            <div class="ws-card"><div class="ws-card-label">Almacenamiento</div><div class="ws-card-value">CSV + Parquet</div></div>
-            <div class="ws-card"><div class="ws-card-label">Latencia ETL</div><div class="ws-card-value">~2.3s / partido</div></div>
-            <div class="ws-card ws-col-4"><div class="ws-card-label" style="margin-bottom:8px">Pipeline ETL — 8 etapas + 3 scripts especializados</div><div class="ws-tag-list"><span class="ws-tag">1 · Extracción API StatsBomb</span><span class="ws-tag">2 · Parseo JSON → DataFrame</span><span class="ws-tag">3 · Feature Engineering + qualifiers</span><span class="ws-tag">4 · Rolling averages históricos</span><span class="ws-tag">5 · Limpieza nulos estructurales</span><span class="ws-tag">6 · Encoding categóricas</span><span class="ws-tag">7 · Normalización StandardScaler</span><span class="ws-tag">8 · Split estratificado anti-leakage</span></div></div>
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:8px">Diagnóstico de Nulos por Dataset</div>
-                <div class="ws-table-wrap"><table class="ws-table">
-                    <thead><tr><th>Dataset</th><th>Campo</th><th>% Nulos</th><th>Causa</th></tr></thead>
-                    <tbody>
-                        <tr><td>Events</td><td>goal_mouth_y/z</td><td><span class="ws-pill ws-yellow">98%</span></td><td>Solo tiros al arco registran posición de portería</td></tr>
-                        <tr><td>Events</td><td>end_x / end_y</td><td><span class="ws-pill ws-yellow">33%</span></td><td>Solo pases y tiros tienen coordenada de destino</td></tr>
-                        <tr><td>Events</td><td>player_id</td><td><span class="ws-pill ws-green">~1%</span></td><td>Acciones colectivas sin autor identificado</td></tr>
-                        <tr><td>Players</td><td>chance_next_round</td><td><span class="ws-pill ws-yellow">26%</span></td><td>Jugadores sin proyección FPL asignada</td></tr>
-                        <tr><td>Players</td><td>news (lesiones)</td><td><span class="ws-pill ws-red">62.6%</span></td><td>Vacío = sin incidencias — nulo estructural válido</td></tr>
-                        <tr><td>Matches</td><td>Todos los campos</td><td><span class="ws-pill ws-green">0%</span></td><td>Dataset perfectamente limpio ✓</td></tr>
-                    </tbody>
-                </table></div>
-            </div>
-        </div>`,
-        predictions: `<div class="ws-grid">
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:8px">Flujo en Vivo — Despacho hacia los Modelos</div>
-                <p class="ws-card-text">El Central Matrix actúa como despachador inteligente: filtra y serializa vectores específicos para cada modelo. El xG recibe exclusivamente <strong style="color:#fff">tiros (is_shot=1)</strong> con features espaciales y FPL. El Lasso recibe <strong style="color:#fff">filas de partido</strong> con rolling averages y métricas de influencia pre-calculadas. Ningún modelo ve información posterior al pitazo inicial.</p>
-            </div>
-            <div class="ws-card"><div class="ws-card-label">Output → xG</div><div class="ws-card-value ws-accent">7,198 tiros</div></div>
-            <div class="ws-card"><div class="ws-card-label">Output → Lasso</div><div class="ws-card-value">3,800+ partidos</div></div>
-            <div class="ws-card"><div class="ws-card-label">Batch size</div><div class="ws-card-value">1 partido</div></div>
-            <div class="ws-card"><div class="ws-card-label">Latencia</div><div class="ws-card-value">~2.3s</div></div>
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:8px">Distribución de Eventos por Tipo</div>
-                <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:9px;text-align:center"><div style="font-size:13px;color:#fff;font-weight:500">210,844</div><div style="font-size:8px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.25);margin-top:2px">Passes</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">47.5%</div></div>
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:9px;text-align:center"><div style="font-size:13px;color:#fff;font-weight:500">128,407</div><div style="font-size:8px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.25);margin-top:2px">Shots</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">28.9%</div></div>
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:9px;text-align:center"><div style="font-size:13px;color:#fff;font-weight:500">58,301</div><div style="font-size:8px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.25);margin-top:2px">Carries</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">13.1%</div></div>
-                    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:9px;text-align:center"><div style="font-size:13px;color:#fff;font-weight:500">46,700</div><div style="font-size:8px;text-transform:uppercase;letter-spacing:0.14em;color:rgba(255,255,255,0.25);margin-top:2px">Otros</div><div style="font-size:9px;color:rgba(255,255,255,0.3)">10.5%</div></div>
-                </div>
-            </div>
-        </div>`,
-        data: `<div class="ws-grid">
-            <div class="ws-card"><div class="ws-card-label">Shots (event_type)</div><div class="ws-card-value ws-accent">128,407</div></div>
-            <div class="ws-card"><div class="ws-card-label">Passes</div><div class="ws-card-value">210,844</div></div>
-            <div class="ws-card"><div class="ws-card-label">Carries</div><div class="ws-card-value">58,301</div></div>
-            <div class="ws-card"><div class="ws-card-label">Dribbles</div><div class="ws-card-value">22,156</div></div>
-            <div class="ws-card"><div class="ws-card-label">Tackles</div><div class="ws-card-value">18,744</div></div>
-            <div class="ws-card"><div class="ws-card-label">Goles reales (is_goal=1)</div><div class="ws-card-value ws-accent">807</div></div>
-            <div class="ws-card"><div class="ws-card-label">Total</div><div class="ws-card-value ws-accent">444,252</div></div>
-            <div class="ws-card"><div class="ws-card-label">Fuente</div><div class="ws-card-value">StatsBomb Open API</div></div>
-            <div class="ws-card ws-col-4">
-                <div class="ws-card-label" style="margin-bottom:8px">Pruebas de Normalidad — Por qué Pearson no sirve aquí</div>
-                <div class="ws-table-wrap"><table class="ws-table">
-                    <thead><tr><th>Prueba</th><th>Variable</th><th>p-value</th><th>Impacto arquitectónico</th></tr></thead>
-                    <tbody>
-                        <tr><td>Shapiro-Wilk</td><td>total_goals</td><td style="color:#ffcc00">9.46×10⁻⁹</td><td style="font-size:11px">Distribución asimétrica → prohíbe Pearson, obliga Spearman</td></tr>
-                        <tr><td>Shapiro-Wilk</td><td>b365h odds</td><td style="color:#ff5555">2.38×10⁻¹⁸</td><td style="font-size:11px">Colas pesadas de underdogs — transformación log recomendada</td></tr>
-                        <tr><td>Shapiro-Wilk</td><td>hst tiros puerta</td><td style="color:#ffcc00">7.08×10⁻⁶</td><td style="font-size:11px">No normal — confirma uso de pruebas no paramétricas</td></tr>
-                        <tr><td>Kruskal-Wallis</td><td>b365h × resultado</td><td style="color:#44ff88">9.88×10⁻⁹</td><td style="font-size:11px">Odds agrupan varianza del resultado ✓ — feature válida</td></tr>
-                    </tbody>
-                </table></div>
-            </div>
-        </div>`
+        overview: `<div style="margin-bottom:18px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">EDA GENERAL · CENTRAL MATRIX</div>
+  <div style="font-size:22px;font-weight:300;color:#fff;margin-bottom:4px">Los 3 Datasets del Proyecto</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.6">Pipeline ETL que extrae, limpia y distribuye datos hacia los modelos. Principio rector: <strong style="color:#fff">cero Data Leakage</strong> — información pre-partido únicamente.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
+  <!-- Dataset cards -->
+  <div style="display:flex;flex-direction:column;gap:8px">
+    <div style="padding:14px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(68,255,136,.4)'" onmouseout="this.style.borderColor='rgba(68,255,136,.14)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#44ff88">Events.csv</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.5)">444,252 × 19</span>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">Tiros, pases, conducciones por partido. Fuente principal de M1 (xG). <span style="color:#ffcc00">33%</span> de end_x/end_y nulos — estructural.</div>
+    </div>
+    <div style="padding:14px;border-radius:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(255,200,0,.4)'" onmouseout="this.style.borderColor='rgba(255,200,0,.14)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#ffcc00">Matches.csv</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.5)">291 × 41</span>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">Partidos PL 24/25. <span style="color:#44ff88">0 nulos</span> — dataset perfecto. Cuotas Bet365, Betway, Max, Avg. Promedio 2.77 goles/partido.</div>
+    </div>
+    <div style="padding:14px;border-radius:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(255,68,255,.4)'" onmouseout="this.style.borderColor='rgba(255,68,255,.14)'">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#ff44ff">Players.csv</span>
+        <span style="font-size:11px;color:rgba(255,255,255,.5)">822 × 37</span>
+      </div>
+      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">FPL: xG, xA, threat, influence, creativity. Join rate con events: <span style="color:#ffcc00">77%</span>. chance_next_round: 26% nulos.</div>
+    </div>
+  </div>
+
+  <!-- Distribution H/D/A chart -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:14px">DISTRIBUCIÓN DE RESULTADOS — 291 PARTIDOS</div>
+    <svg viewBox="0 0 240 140" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- bars -->
+      <rect x="20" y="30" width="52" height="78" rx="4" fill="rgba(255,200,0,.25)" stroke="rgba(255,200,0,.5)" stroke-width="1"/>
+      <rect x="94" y="55" width="52" height="53" rx="4" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
+      <rect x="168" y="47" width="52" height="61" rx="4" fill="rgba(0,255,255,.18)" stroke="rgba(0,255,255,.4)" stroke-width="1"/>
+      <!-- values -->
+      <text x="46" y="24" font-size="12" fill="#ffcc00" text-anchor="middle" font-weight="700">134</text>
+      <text x="46" y="117" font-size="8" fill="#ffcc00" text-anchor="middle">H · 46.0%</text>
+      <text x="120" y="49" font-size="12" fill="rgba(255,255,255,.7)" text-anchor="middle" font-weight="700">76</text>
+      <text x="120" y="117" font-size="8" fill="rgba(255,255,255,.5)" text-anchor="middle">D · 26.1%</text>
+      <text x="194" y="41" font-size="12" fill="var(--cyan)" text-anchor="middle" font-weight="700">81</text>
+      <text x="194" y="117" font-size="8" fill="var(--cyan)" text-anchor="middle">A · 27.8%</text>
+      <!-- reference line 33% -->
+      <line x1="10" y1="83" x2="230" y2="83" stroke="rgba(255,80,80,.35)" stroke-width="0.8" stroke-dasharray="4,3"/>
+      <text x="232" y="86" font-size="6" fill="rgba(255,80,80,.6)">33%</text>
+      <!-- x axis -->
+      <line x1="10" y1="110" x2="230" y2="110" stroke="rgba(255,255,255,.08)" stroke-width="0.7"/>
+    </svg>
+    <div style="font-size:9px;color:rgba(255,80,80,.65);text-align:center;margin-top:4px">⚠ Empate (D) es clase minoritaria — justifica class_weight='balanced' en M3</div>
+  </div>
+</div>
+
+<!-- Key stats row -->
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+  <div style="padding:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.12);border-radius:8px;text-align:center">
+    <div style="font-size:18px;font-weight:700;color:#44ff88">444K</div>
+    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Eventos totales</div>
+  </div>
+  <div style="padding:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.12);border-radius:8px;text-align:center">
+    <div style="font-size:18px;font-weight:700;color:#ffcc00">291</div>
+    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Partidos PL 24/25</div>
+  </div>
+  <div style="padding:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.12);border-radius:8px;text-align:center">
+    <div style="font-size:18px;font-weight:700;color:#ff44ff">822</div>
+    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Jugadores FPL</div>
+  </div>
+  <div style="padding:10px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.12);border-radius:8px;text-align:center">
+    <div style="font-size:18px;font-weight:700;color:var(--cyan)">3</div>
+    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Modelos alimentados</div>
+  </div>
+</div>`,
+        metrics: `<div style="margin-bottom:18px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">SECCIÓN 4 EDA · CUOTAS BET365</div>
+  <div style="font-size:20px;font-weight:300;color:#fff;margin-bottom:4px">Las Cuotas como Señal Predictiva</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6">El hallazgo más importante del EDA: b365h y b365a correlacionan fuertemente con el resultado. b365d es ruido puro. Esto define las features de M3.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+  <!-- Spearman table -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">CORRELACIÓN SPEARMAN ρ — Bet365 vs Resultado</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-family:monospace;font-size:10px;color:var(--cyan);font-weight:700">b365h</span>
+          <span style="font-size:10px;color:var(--cyan)">ρ = +0.61 · p &lt; 0.001</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:61%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:3px"></div>
+        </div>
+        <div style="font-size:8px;color:rgba(255,255,255,.3);margin-top:2px">✅ INCLUIDA — señal fuerte en M3</div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-family:monospace;font-size:10px;color:#ff44ff;font-weight:700">b365a</span>
+          <span style="font-size:10px;color:#ff44ff">ρ = +0.49 · p &lt; 0.001</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:49%;background:linear-gradient(90deg,rgba(255,68,255,.4),#ff44ff);border-radius:3px"></div>
+        </div>
+        <div style="font-size:8px;color:rgba(255,255,255,.3);margin-top:2px">✅ INCLUIDA — efecto espejo</div>
+      </div>
+      <div style="opacity:.7">
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-family:monospace;font-size:10px;color:#ff8080;font-weight:700;text-decoration:line-through">b365d</span>
+          <span style="font-size:10px;color:#ff8080">ρ = −0.04 · p = 0.630</span>
+        </div>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:4%;background:rgba(255,80,80,.5);border-radius:3px"></div>
+        </div>
+        <div style="font-size:8px;color:#ff8080;margin-top:2px">❌ ELIMINADA — ruido puro, p=0.63</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bet365 signal chart -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:8px">DISTRIBUCIÓN b365h POR RESULTADO</div>
+    <div style="font-size:9px;color:rgba(255,255,255,.35);margin-bottom:10px;line-height:1.5">Histograma superpuesto: cuota baja = favorito. La separación entre curvas confirma la señal predictiva.</div>
+    <svg viewBox="0 0 220 110" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- axes -->
+      <line x1="20" y1="90" x2="210" y2="90" stroke="rgba(255,255,255,.1)" stroke-width="0.8"/>
+      <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(255,255,255,.1)" stroke-width="0.8"/>
+      <text x="115" y="105" font-size="7" fill="rgba(255,255,255,.25)" text-anchor="middle">Cuota b365h →</text>
+      <text x="10" y="50" font-size="7" fill="rgba(255,255,255,.25)" text-anchor="middle" transform="rotate(-90,10,50)">Frecuencia</text>
+      <!-- H curve (peaks at low odds ~1.5-2.0) -->
+      <path d="M 25,88 C 35,88 42,70 52,40 C 60,18 68,12 76,22 C 84,35 90,65 100,82 C 110,88 130,90 210,90" fill="rgba(255,200,0,.18)" stroke="#ffcc00" stroke-width="1.5"/>
+      <!-- A curve (peaks at higher odds ~2.5-4.0) -->
+      <path d="M 25,90 C 55,90 70,88 90,78 C 105,62 118,38 132,22 C 145,10 158,16 170,40 C 182,62 195,82 210,88" fill="rgba(0,255,255,.12)" stroke="var(--cyan)" stroke-width="1.5"/>
+      <!-- D curve (flat, wide) -->
+      <path d="M 25,90 C 60,90 80,85 105,78 C 125,72 145,72 165,78 C 185,84 200,88 210,90" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.4)" stroke-width="1.2" stroke-dasharray="3,2"/>
+      <!-- labels -->
+      <text x="60" y="17" font-size="7" fill="#ffcc00" font-weight="700">H (favoritos)</text>
+      <text x="145" y="17" font-size="7" fill="var(--cyan)" font-weight="700">A (underdogs)</text>
+      <text x="115" y="72" font-size="7" fill="rgba(255,255,255,.4)">D (plano)</text>
+      <!-- x ticks -->
+      <text x="25" y="98" font-size="6" fill="rgba(255,255,255,.2)" text-anchor="middle">1.2</text>
+      <text x="80" y="98" font-size="6" fill="rgba(255,255,255,.2)" text-anchor="middle">2.0</text>
+      <text x="140" y="98" font-size="6" fill="rgba(255,255,255,.2)" text-anchor="middle">3.5</text>
+      <text x="200" y="98" font-size="6" fill="rgba(255,255,255,.2)" text-anchor="middle">7.0+</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Shapiro-Wilk row -->
+<div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:14px">
+  <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:10px">PRUEBAS DE NORMALIDAD — SHAPIRO-WILK · Por qué no usamos Pearson</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div style="padding:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.12);border-radius:8px">
+      <div style="font-family:monospace;font-size:9px;color:#ffcc00;margin-bottom:4px">total_goals</div>
+      <div style="font-size:13px;font-weight:700;color:#ffcc00">p = 9.46×10⁻⁹</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Asimétrica → obliga Spearman</div>
+    </div>
+    <div style="padding:10px;background:rgba(255,80,80,.04);border:1px solid rgba(255,80,80,.12);border-radius:8px">
+      <div style="font-family:monospace;font-size:9px;color:#ff8080;margin-bottom:4px">b365h odds</div>
+      <div style="font-size:13px;font-weight:700;color:#ff8080">p = 2.38×10⁻¹⁸</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Colas pesadas de underdogs</div>
+    </div>
+    <div style="padding:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.12);border-radius:8px">
+      <div style="font-family:monospace;font-size:9px;color:#44ff88;margin-bottom:4px">b365h × resultado</div>
+      <div style="font-size:13px;font-weight:700;color:#44ff88">p = 9.88×10⁻⁹</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Kruskal-Wallis ✓ feature válida</div>
+    </div>
+  </div>
+</div>`,
+        training: `<div style="margin-bottom:18px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">SECCIONES 3 + EDA · ÁRBITRO &amp; PIPELINE ETL</div>
+  <div style="font-size:20px;font-weight:300;color:#fff;margin-bottom:4px">Factor Árbitro &amp; Pipeline de 8 Etapas</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6">El árbitro no carga señal predictiva significativa (p&gt;0.05). El ETL procesa los 3 datasets en 8 etapas con latencia ~2.3s/partido.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+  <!-- Referee chart -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:8px">FACTOR ÁRBITRO — % VICTORIAS LOCAL (TOP 8)</div>
+    <svg viewBox="0 0 220 130" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- axes -->
+      <line x1="70" y1="10" x2="70" y2="115" stroke="rgba(255,255,255,.08)" stroke-width="0.8"/>
+      <line x1="70" y1="115" x2="210" y2="115" stroke="rgba(255,255,255,.08)" stroke-width="0.8"/>
+      <!-- reference line 46% -->
+      <line x1="70" y1="115" x2="70" y2="115" stroke="none"/>
+      <!-- ref vertical: 46% of 140px = 64px from left -->
+      <line x1="134" y1="10" x2="134" y2="115" stroke="rgba(255,200,0,.3)" stroke-width="0.8" stroke-dasharray="3,2"/>
+      <text x="136" y="9" font-size="6" fill="rgba(255,200,0,.5)">media 46%</text>
+      <!-- bars (each referee, % H victories, bar width = pct * 1.4) -->
+      <rect x="71" y="14" width="62" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="22" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Atkinson</text>
+      <text x="137" y="22" font-size="6.5" fill="rgba(255,255,255,.5)">44%</text>
+
+      <rect x="71" y="28" width="70" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="36" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Coote</text>
+      <text x="145" y="36" font-size="6.5" fill="rgba(255,255,255,.5)">50%</text>
+
+      <rect x="71" y="42" width="58" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="50" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Kavanagh</text>
+      <text x="133" y="50" font-size="6.5" fill="rgba(255,255,255,.5)">41%</text>
+
+      <rect x="71" y="56" width="65" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="64" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Langford</text>
+      <text x="140" y="64" font-size="6.5" fill="rgba(255,255,255,.5)">46%</text>
+
+      <rect x="71" y="70" width="72" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="78" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Madley</text>
+      <text x="147" y="78" font-size="6.5" fill="rgba(255,255,255,.5)">51%</text>
+
+      <rect x="71" y="84" width="60" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="92" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Mason</text>
+      <text x="135" y="92" font-size="6.5" fill="rgba(255,255,255,.5)">43%</text>
+
+      <rect x="71" y="98" width="67" height="10" rx="2" fill="rgba(255,255,255,.2)"/>
+      <text x="68" y="106" font-size="6.5" fill="rgba(255,255,255,.4)" text-anchor="end">Oliver</text>
+      <text x="142" y="106" font-size="6.5" fill="rgba(255,255,255,.5)">48%</text>
+    </svg>
+    <div style="margin-top:8px;padding:7px 10px;background:rgba(255,80,80,.05);border-left:2px solid rgba(255,80,80,.4);font-size:8.5px;color:rgba(255,255,255,.4);line-height:1.5">
+      <strong style="color:#ff8080">Kruskal-Wallis p &gt; 0.05</strong> — varianza entre árbitros dentro del ruido muestral. Variable eliminada de M3.
+    </div>
+  </div>
+
+  <!-- ETL Pipeline interactive -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">PIPELINE ETL — 8 ETAPAS · Latencia ~2.3s/partido</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(68,255,136,.06);border:1px solid rgba(68,255,136,.15)">
+        <span style="font-size:9px;font-weight:700;color:#44ff88;min-width:16px">1</span>
+        <div><div style="font-size:9px;font-weight:600;color:#44ff88">Extracción API StatsBomb</div><div style="font-size:8px;color:rgba(255,255,255,.3)">JSON → 444,252 eventos</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.1)">
+        <span style="font-size:9px;font-weight:700;color:#44ff88;min-width:16px">2</span>
+        <div><div style="font-size:9px;font-weight:600;color:#44ff88">Parseo JSON → DataFrame</div><div style="font-size:8px;color:rgba(255,255,255,.3)">pandas · flatten qualifiers</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.1)">
+        <span style="font-size:9px;font-weight:700;color:#ffcc00;min-width:16px">3</span>
+        <div><div style="font-size:9px;font-weight:600;color:#ffcc00">Feature Engineering</div><div style="font-size:8px;color:rgba(255,255,255,.3)">is_BigChance, is_Penalty, aim_central</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.1)">
+        <span style="font-size:9px;font-weight:700;color:#ffcc00;min-width:16px">4</span>
+        <div><div style="font-size:9px;font-weight:600;color:#ffcc00">Rolling Averages históricos</div><div style="font-size:8px;color:rgba(255,255,255,.3)">pts_last3, gf_last3 por equipo</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(255,80,80,.04);border:1px solid rgba(255,80,80,.1)">
+        <span style="font-size:9px;font-weight:700;color:#ff8080;min-width:16px">5</span>
+        <div><div style="font-size:9px;font-weight:600;color:#ff8080">Limpieza de nulos</div><div style="font-size:8px;color:rgba(255,255,255,.3)">Nulos estructurales documentados</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.1)">
+        <span style="font-size:9px;font-weight:700;color:var(--cyan);min-width:16px">6</span>
+        <div><div style="font-size:9px;font-weight:600;color:var(--cyan)">Encoding categóricas</div><div style="font-size:8px;color:rgba(255,255,255,.3)">FTR → 0/1/2 · referee → int</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.1)">
+        <span style="font-size:9px;font-weight:700;color:var(--cyan);min-width:16px">7</span>
+        <div><div style="font-size:9px;font-weight:600;color:var(--cyan)">Normalización StandardScaler</div><div style="font-size:8px;color:rgba(255,255,255,.3)">μ=0, σ=1 — anti-dominancia</div></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;background:rgba(255,68,255,.06);border:1px solid rgba(255,68,255,.15)">
+        <span style="font-size:9px;font-weight:700;color:#ff44ff;min-width:16px">8</span>
+        <div><div style="font-size:9px;font-weight:600;color:#ff44ff">Split estratificado anti-leakage</div><div style="font-size:8px;color:rgba(255,255,255,.3)">80/20 · StratifiedKFold(k=5)</div></div>
+      </div>
+    </div>
+  </div>
+</div>`,
+
+        predictions: `<div style="margin-bottom:18px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">SECCIÓN 6 EDA · xG Y DISPAROS</div>
+  <div style="font-size:20px;font-weight:300;color:#fff;margin-bottom:4px">Disparos, Goles y Eficiencia Ofensiva</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6">Solo el <strong style="color:#fff">11.2%</strong> de disparos resultan en gol. Fuerte desbalance de clase que obliga a usar AUC-ROC en M1, no accuracy cruda.</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+  <!-- Donut events breakdown -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">DISTRIBUCIÓN DE EVENTOS (444,252 total)</div>
+    <svg viewBox="0 0 220 120" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- stacked bar -->
+      <rect x="20" y="30" width="100" height="20" rx="2" fill="rgba(68,255,136,.35)"/>
+      <rect x="120" y="30" width="64" height="20" rx="2" fill="rgba(0,255,255,.3)"/>
+      <rect x="184" y="30" width="28" height="20" rx="2" fill="rgba(255,200,0,.3)"/>
+      <rect x="212" y="30" width="8" height="20" rx="2" fill="rgba(255,255,255,.15)"/>
+      <!-- labels -->
+      <text x="70" y="24" font-size="7" fill="#44ff88" text-anchor="middle">Passes</text>
+      <text x="70" y="58" font-size="7" fill="#44ff88" text-anchor="middle">47.5%</text>
+      <text x="152" y="24" font-size="7" fill="var(--cyan)" text-anchor="middle">Shots</text>
+      <text x="152" y="58" font-size="7" fill="var(--cyan)" text-anchor="middle">28.9%</text>
+      <text x="198" y="24" font-size="7" fill="#ffcc00" text-anchor="middle">Carries</text>
+      <text x="198" y="58" font-size="7" fill="#ffcc00" text-anchor="middle">13.1%</text>
+      <!-- conversion insight -->
+      <rect x="20" y="75" width="220" height="1" fill="rgba(255,255,255,.06)"/>
+      <text x="120" y="90" font-size="8" fill="rgba(255,255,255,.45)" text-anchor="middle">De 128,407 disparos → solo 807 son goles</text>
+      <text x="120" y="103" font-size="10" fill="#ffcc00" text-anchor="middle" font-weight="700">Conversión: 0.63% por evento · 11.2% por tiro</text>
+    </svg>
+    <div style="margin-top:6px;padding:7px 10px;background:rgba(255,80,80,.05);border-left:2px solid rgba(255,80,80,.4);font-size:8.5px;color:rgba(255,255,255,.4)">
+      Desbalance extremo → M1 usa AUC-ROC + undersampling, no accuracy
+    </div>
+  </div>
+  <!-- Cross-dataset correlations -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">CRUCE 3 DATASETS — CORRELACIONES CLAVE</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:9px;color:var(--cyan)">FPL Threat ↔ Disparos al arco</span>
+          <span style="font-size:9px;font-weight:700;color:var(--cyan)">ρ = +0.68</span>
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:68%;background:var(--cyan);border-radius:3px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:9px;color:#44ff88">FPL Points ↔ % Victorias Home</span>
+          <span style="font-size:9px;font-weight:700;color:#44ff88">ρ = +0.54</span>
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:54%;background:#44ff88;border-radius:3px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:9px;color:#ffcc00">Disparos totales ↔ Goles reales</span>
+          <span style="font-size:9px;font-weight:700;color:#ffcc00">ρ = +0.71</span>
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:71%;background:#ffcc00;border-radius:3px"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:3px">
+          <span style="font-size:9px;color:#ff44ff">b365h ↔ FPL Threat equipo</span>
+          <span style="font-size:9px;font-weight:700;color:#ff44ff">ρ = −0.62</span>
+        </div>
+        <div style="height:5px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden"><div style="height:100%;width:62%;background:#ff44ff;border-radius:3px"></div></div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:7px 10px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:8.5px;color:rgba(255,255,255,.4);line-height:1.5">
+      <strong style="color:var(--cyan)">Mercados eficientes:</strong> Las cuotas Bet365 ya incorporan la calidad FPL y el historial de disparos. Añadir FPL sobre cuotas no mejora M3.
+    </div>
+  </div>
+</div>`,
+        data: `<div style="margin-bottom:18px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">SECCIÓN 5 EDA · JUGADORES FPL</div>
+  <div style="font-size:20px;font-weight:300;color:#fff;margin-bottom:4px">Calidad FPL por Equipo</div>
+  <div style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6">¿La calidad del plantel predice victorias? FPL Threat correlaciona con disparos (ρ=0.68) pero es colineal con las cuotas — no aporta poder neto en M3.</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px">
+  <!-- FPL metrics chart -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">FPL THREAT vs % VICTORIAS HOME (top 8 equipos)</div>
+    <svg viewBox="0 0 220 130" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+      <!-- axes -->
+      <line x1="30" y1="10" x2="30" y2="110" stroke="rgba(255,255,255,.1)" stroke-width="0.8"/>
+      <line x1="30" y1="110" x2="210" y2="110" stroke="rgba(255,255,255,.1)" stroke-width="0.8"/>
+      <text x="120" y="125" font-size="6.5" fill="rgba(255,255,255,.25)" text-anchor="middle">FPL Threat total equipo →</text>
+      <text x="12" y="60" font-size="6.5" fill="rgba(255,255,255,.25)" text-anchor="middle" transform="rotate(-90,12,60)">% Victorias H</text>
+      <!-- trend line -->
+      <line x1="40" y1="95" x2="200" y2="30" stroke="rgba(68,255,136,.3)" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- scatter points -->
+      <circle cx="50" cy="88" r="4" fill="rgba(255,200,0,.7)" title="Arsenal"/>
+      <text x="50" y="82" font-size="6" fill="#ffcc00" text-anchor="middle">ARS</text>
+      <circle cx="80" cy="72" r="4" fill="rgba(0,255,255,.7)" title="Man City"/>
+      <text x="80" y="66" font-size="6" fill="var(--cyan)" text-anchor="middle">MCI</text>
+      <circle cx="110" cy="60" r="4" fill="rgba(68,255,136,.7)" title="Liverpool"/>
+      <text x="110" y="54" font-size="6" fill="#44ff88" text-anchor="middle">LIV</text>
+      <circle cx="140" cy="50" r="4" fill="rgba(255,200,0,.7)" title="Chelsea"/>
+      <text x="140" y="44" font-size="6" fill="#ffcc00" text-anchor="middle">CHE</text>
+      <circle cx="165" cy="42" r="4" fill="rgba(255,68,255,.7)" title="Spurs"/>
+      <text x="165" y="36" font-size="6" fill="#ff44ff" text-anchor="middle">TOT</text>
+      <circle cx="60" cy="98" r="3" fill="rgba(255,255,255,.4)" title="Wolves"/>
+      <circle cx="190" cy="30" r="4" fill="rgba(0,255,255,.6)" title="Man Utd"/>
+      <text x="190" y="24" font-size="6" fill="var(--cyan)" text-anchor="middle">MUN</text>
+      <!-- correlation label -->
+      <text x="120" y="100" font-size="7.5" fill="rgba(68,255,136,.8)" text-anchor="middle" font-weight="700">ρ = +0.54 · p &lt; 0.05</text>
+    </svg>
+  </div>
+  <!-- FPL key metrics -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:12px">MÉTRICAS FPL — DEFINICIONES</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div style="padding:9px 12px;border-radius:8px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.12)">
+        <div style="font-family:monospace;font-size:9px;color:#ffcc00;font-weight:700;margin-bottom:3px">threat</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4)">Amenaza ofensiva: tiros, posición, oportunidades creadas. Correlaciona con disparos reales (ρ=0.68).</div>
+      </div>
+      <div style="padding:9px 12px;border-radius:8px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.12)">
+        <div style="font-family:monospace;font-size:9px;color:#ff44ff;font-weight:700;margin-bottom:3px">influence</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4)">Impacto en el juego. Acciones que afectan el resultado final. Señal más amplia que threat.</div>
+      </div>
+      <div style="padding:9px 12px;border-radius:8px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.12)">
+        <div style="font-family:monospace;font-size:9px;color:var(--cyan);font-weight:700;margin-bottom:3px">creativity</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4)">Pases clave, centros, oportunidades creadas. Alta correlación con asistencias esperadas (xA).</div>
+      </div>
+      <div style="padding:9px 12px;border-radius:8px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.12)">
+        <div style="font-family:monospace;font-size:9px;color:#44ff88;font-weight:700;margin-bottom:3px">total_points</div>
+        <div style="font-size:9px;color:rgba(255,255,255,.4)">Puntos FPL acumulados. Proxy de rendimiento global del jugador en la temporada.</div>
+      </div>
+    </div>
+    <div style="margin-top:10px;padding:7px 10px;background:rgba(255,80,80,.05);border-left:2px solid rgba(255,80,80,.4);font-size:8.5px;color:rgba(255,255,255,.4)">
+      <strong style="color:#ff8080">Conclusión:</strong> FPL es colineal con las cuotas. Añadirlo a M3 sobre b365h/a no reduce el error.
+    </div>
+  </div>
+</div>`
     },
     live: {
         overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
