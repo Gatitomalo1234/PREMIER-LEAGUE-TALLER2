@@ -1968,89 +1968,16 @@ const WS = {
   </div>
 
 </div>`,
-        predictions: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div></div>
-<div class="xg-eyebrow" style="margin-bottom:6px">MODELO 2 · LASSO EN ACCIÓN</div>
-<div class="xg-phase-title" style="font-size:22px;margin-bottom:4px">El Oráculo de Goles</div>
-<div class="xg-phase-sub" style="margin-bottom:18px">Ajusta las condiciones pre-partido y el modelo calculará los goles esperados en tiempo real.</div>
-
-<div id="m2-lab" style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
-  <div>
-    <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:14px">PARÁMETROS PRE-PARTIDO</div>
-
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:rgba(255,255,255,.55)">Away_Avg_AST <span style="color:rgba(255,255,255,.25);font-size:9px">(tiros visitante, rolling)</span></span><span id="m2-ast-val" style="font-size:11px;font-weight:700;color:#44ff88">5.2</span></div>
-      <input id="m2-ast" type="range" min="1" max="12" step="0.1" value="5.2" style="width:100%;accent-color:#44ff88">
-    </div>
-
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:rgba(255,255,255,.55)">Home_Sum_influence <span style="color:rgba(255,255,255,.25);font-size:9px">(FPL stars)</span></span><span id="m2-inf-val" style="font-size:11px;font-weight:700;color:#44ff88">120</span></div>
-      <input id="m2-inf" type="range" min="0" max="400" step="5" value="120" style="width:100%;accent-color:#44ff88">
-    </div>
-
-    <div style="margin-bottom:14px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:rgba(255,255,255,.55)">Home_Avg_FTHG <span style="color:rgba(255,255,255,.25);font-size:9px">(goles local histórico)</span></span><span id="m2-fthg-val" style="font-size:11px;font-weight:700;color:#ff8080">1.4</span></div>
-      <input id="m2-fthg" type="range" min="0.5" max="3.5" step="0.1" value="1.4" style="width:100%;accent-color:#ff8080">
-    </div>
-
-    <div style="margin-bottom:18px">
-      <div style="display:flex;justify-content:space-between;margin-bottom:5px"><span style="font-size:10px;color:rgba(255,255,255,.55)">Home_Days_Rest <span style="color:rgba(255,255,255,.25);font-size:9px">(días de descanso)</span></span><span id="m2-rest-val" style="font-size:11px;font-weight:700;color:#ff8080">5</span></div>
-      <input id="m2-rest" type="range" min="1" max="14" step="1" value="5" style="width:100%;accent-color:#ff8080">
-    </div>
-
-    <div style="padding:10px 14px;border-radius:8px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);font-size:10px;color:rgba(255,255,255,.35);line-height:1.7">
-      <strong style="color:#ff44ff">Fórmula:</strong> ŷ = exp(1.224 + 0.0408·AST + 0.0695·Inf − 0.0598·FTHG − 0.0498·Rest) − 1
-    </div>
-  </div>
-
-  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px">
-    <div style="text-align:center">
-      <div style="font-size:9px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:8px">GOLES PREDICHOS</div>
-      <div id="m2-pred-num" style="font-size:72px;font-weight:200;color:#ff44ff;line-height:1;transition:all .3s">2.4</div>
-      <div id="m2-pred-label" style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px">Partido abierto</div>
-    </div>
-
-    <svg id="m2-gauge" viewBox="0 0 200 120" style="width:100%;max-width:220px" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="m2-grad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stop-color="#44ff88"/>
-          <stop offset="50%" stop-color="#ff44ff"/>
-          <stop offset="100%" stop-color="#ff3333"/>
-        </linearGradient>
-      </defs>
-      <!-- arc background -->
-      <path d="M20,100 A80,80 0 0,1 180,100" fill="none" stroke="rgba(255,255,255,.07)" stroke-width="16" stroke-linecap="round"/>
-      <!-- arc fill -->
-      <path id="m2-arc" d="M20,100 A80,80 0 0,1 100,20" fill="none" stroke="url(#m2-grad)" stroke-width="16" stroke-linecap="round" style="transition:all .4s ease"/>
-      <!-- needle -->
-      <line id="m2-needle" x1="100" y1="100" x2="100" y2="28" stroke="#ff44ff" stroke-width="2" stroke-linecap="round" style="transform-origin:100px 100px;transform:rotate(0deg);transition:transform .4s ease"/>
-      <circle cx="100" cy="100" r="5" fill="#ff44ff"/>
-      <!-- labels -->
-      <text x="14" y="115" font-size="8" fill="rgba(255,255,255,.3)">0</text>
-      <text x="100" y="10" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle">3</text>
-      <text x="186" y="115" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="end">6+</text>
-    </svg>
-
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%">
-      <div style="padding:8px 10px;border-radius:7px;background:rgba(255,255,255,.03);text-align:center">
-        <div style="font-size:9px;color:rgba(255,255,255,.3)">Error esperado</div>
-        <div style="font-size:16px;font-weight:600;color:#ffcc00;margin-top:2px">±1.26</div>
-      </div>
-      <div style="padding:8px 10px;border-radius:7px;background:rgba(255,255,255,.03);text-align:center">
-        <div style="font-size:9px;color:rgba(255,255,255,.3)">Over 2.5</div>
-        <div id="m2-over" style="font-size:16px;font-weight:600;color:#44ff88;margin-top:2px">Sí</div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div style="margin-top:28px;padding:0 4px">
-  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,68,255,.5);text-align:center;margin-bottom:14px">¿LISTO PARA PROBARLO EN VIVO?</div>
-  <button onclick="(function(){const nodes=document.querySelectorAll('.node-label');nodes.forEach(n=>{if(n.textContent.trim()==='Testeo en Vivo'){n.closest('div[data-node]')||n.parentElement.click&&n.parentElement.click();}});const live=document.querySelector('[data-node=live]');if(live){live.click();}else{const ev=new CustomEvent('select-node',{detail:{id:'live'}});document.dispatchEvent(ev);}window._selectNode&&window._selectNode('live');})()" style="width:100%;padding:18px 24px;border-radius:14px;border:2px solid rgba(255,68,255,.6);background:linear-gradient(135deg,rgba(255,68,255,.15) 0%,rgba(120,0,180,.2) 100%);color:#ff44ff;font-size:16px;font-weight:700;letter-spacing:.08em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;transition:all .25s;position:relative;overflow:hidden" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,68,255,.28) 0%,rgba(120,0,180,.35) 100%)';this.style.borderColor='rgba(255,68,255,.9)';this.style.boxShadow='0 0 32px rgba(255,68,255,.4)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,68,255,.15) 0%,rgba(120,0,180,.2) 100%)';this.style.borderColor='rgba(255,68,255,.6)';this.style.boxShadow='none'">
-    <span style="font-size:22px">⚡</span>
+        predictions: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div></div>
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,68,255,.5)">MODELO 2 &middot; SIMULADOR EN VIVO</div>
+  <div style="font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.7;max-width:380px">El simulador completo de goles con las 4 variables Lasso est&aacute; disponible en el nodo de <strong style="color:#ff44ff">Testeo en Vivo</strong>, donde M2 + M3 trabajan juntos en tiempo real.</div>
+  <button onclick="window._selectNode&&window._selectNode('live')" style="width:100%;max-width:420px;padding:22px 28px;border-radius:16px;border:2px solid rgba(255,68,255,.6);background:linear-gradient(135deg,rgba(255,68,255,.12) 0%,rgba(120,0,180,.18) 100%);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);color:#ff44ff;font-size:17px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:14px;transition:all .3s;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 0 20px rgba(255,68,255,.1)" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,68,255,.26) 0%,rgba(120,0,180,.32) 100%)';this.style.borderColor='rgba(255,68,255,.95)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.12),0 0 40px rgba(255,68,255,.35)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,68,255,.12) 0%,rgba(120,0,180,.18) 100%)';this.style.borderColor='rgba(255,68,255,.6)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.08),0 0 20px rgba(255,68,255,.1)'">
+    <span style="font-size:28px">&#9889;</span>
     <span>Ir al Testeo en Vivo</span>
-    <span style="font-size:12px;opacity:.6;margin-left:4px">→ Live Test Node</span>
+    <span style="font-size:12px;opacity:.55;margin-left:2px">&#8594; Live Test Node</span>
   </button>
-  <div style="font-size:10px;color:rgba(255,255,255,.25);text-align:center;margin-top:10px;line-height:1.5">Conecta M2 + M3 · Predicción en tiempo real con datos de partido</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.22);text-align:center;line-height:1.6">Conecta M2 + M3 &middot; Predicci&oacute;n en tiempo real con datos de partido</div>
 </div>`,
         data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div></div>
 
