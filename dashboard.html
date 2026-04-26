@@ -3448,41 +3448,49 @@ const WS = {
 
 <div style="background:rgba(0,255,255,.03);border:1px solid rgba(0,255,255,.15);border-radius:14px;padding:20px;margin-bottom:24px">
   <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:.2em;margin-bottom:15px;text-transform:uppercase;text-align:center">ARQUITECTURA DE FLUJO DE DATOS</div>
-  <svg viewBox="0 0 600 120" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+  <svg viewBox="0 0 600 160" style="width:100%" xmlns="http://www.w3.org/2000/svg">
     <!-- Sources -->
-    <rect x="10" y="35" width="100" height="50" rx="6" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
-    <text x="60" y="58" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">3 FUENTES</text>
-    <text x="60" y="72" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">API StatsBomb + FPL</text>
+    <rect x="10" y="55" width="100" height="50" rx="6" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+    <text x="60" y="78" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">3 FUENTES</text>
+    <text x="60" y="92" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">API StatsBomb + FPL</text>
     
     <!-- Arrow 1 -->
-    <path d="M 115,60 L 165,60" stroke="var(--cyan)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    <path d="M 115,80 L 165,80" stroke="var(--cyan)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
     
     <!-- ETL -->
-    <rect x="175" y="30" width="120" height="60" rx="8" fill="rgba(0,255,255,.1)" stroke="var(--cyan)" stroke-width="1"/>
-    <text x="235" y="55" font-size="10" fill="var(--cyan)" text-anchor="middle" font-weight="700">CENTRAL MATRIX</text>
-    <text x="235" y="70" font-size="7" fill="rgba(255,255,255,.6)" text-anchor="middle">Limpieza + Feature Eng</text>
-    <text x="235" y="82" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Split Anti-Leakage</text>
+    <rect x="175" y="50" width="120" height="60" rx="8" fill="rgba(0,255,255,.1)" stroke="var(--cyan)" stroke-width="1"/>
+    <text x="235" y="75" font-size="10" fill="var(--cyan)" text-anchor="middle" font-weight="700">CENTRAL MATRIX</text>
+    <text x="235" y="90" font-size="7" fill="rgba(255,255,255,.6)" text-anchor="middle">Limpieza + Feature Eng</text>
+    <text x="235" y="102" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Split Anti-Leakage</text>
 
-    <!-- Arrow 2 split -->
-    <path d="M 300,60 L 330,60 Q 350,60 350,40 L 350,25 L 380,25" stroke="rgba(255,255,255,.2)" stroke-width="1.5" fill="none"/>
-    <path d="M 300,60 L 330,60 Q 350,60 350,80 L 350,95 L 380,95" stroke="rgba(255,255,255,.2)" stroke-width="1.5" fill="none"/>
+    <!-- Arrow 2 split (Triple branch) -->
+    <path d="M 300,80 L 330,80 Q 350,80 350,60 L 350,30 L 380,30" stroke="rgba(255,255,255,.2)" stroke-width="1.2" fill="none"/>
+    <path d="M 300,80 L 380,80" stroke="rgba(255,255,255,.2)" stroke-width="1.2" fill="none"/>
+    <path d="M 300,80 L 330,80 Q 350,80 350,100 L 350,130 L 380,130" stroke="rgba(255,255,255,.2)" stroke-width="1.2" fill="none"/>
 
     <!-- Model 1 -->
-    <rect x="390" y="5" width="100" height="40" rx="6" fill="rgba(68,255,136,.05)" stroke="rgba(68,255,136,.2)"/>
-    <text x="440" y="22" font-size="9" fill="#44ff88" text-anchor="middle" font-weight="700">MODELO 1 (xG)</text>
-    <text x="440" y="35" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">LogReg + Platt</text>
+    <rect x="390" y="10" width="105" height="35" rx="6" fill="rgba(68,255,136,.05)" stroke="rgba(68,255,136,.2)"/>
+    <text x="442" y="25" font-size="8.5" fill="#44ff88" text-anchor="middle" font-weight="700">M1: PROBABILIDAD (xG)</text>
+    <text x="442" y="36" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Logistic Regression</text>
+
+    <!-- Model 2 -->
+    <rect x="390" y="62" width="105" height="35" rx="6" fill="rgba(255,68,255,.05)" stroke="rgba(255,68,255,.2)"/>
+    <text x="442" y="77" font-size="8.5" fill="#ff44ff" text-anchor="middle" font-weight="700">M2: VOLUMEN (Goles)</text>
+    <text x="442" y="88" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Lasso Regularization</text>
 
     <!-- Model 3 -->
-    <rect x="390" y="75" width="100" height="40" rx="6" fill="rgba(255,200,0,.05)" stroke="rgba(255,200,0,.2)"/>
-    <text x="440" y="92" font-size="9" fill="#ffcc00" text-anchor="middle" font-weight="700">MODELO 3 (H/D/A)</text>
-    <text x="440" y="105" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">LR Multinomial</text>
+    <rect x="390" y="112" width="105" height="35" rx="6" fill="rgba(255,200,0,.05)" stroke="rgba(255,200,0,.2)"/>
+    <text x="442" y="127" font-size="8.5" fill="#ffcc00" text-anchor="middle" font-weight="700">M3: RESULTADO (H/D/A)</text>
+    <text x="442" y="138" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Clasificador Multiclase</text>
 
-    <!-- Arrow 3 -->
-    <path d="M 500,60 L 530,60" stroke="rgba(255,255,255,.4)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <!-- Final Arrows joining -->
+    <path d="M 500,30 L 520,30 Q 535,30 535,60 L 535,80 L 545,80" stroke="rgba(255,255,255,.15)" stroke-width="1" fill="none"/>
+    <path d="M 500,80 L 545,80" stroke="rgba(255,255,255,.15)" stroke-width="1" fill="none"/>
+    <path d="M 500,130 L 520,130 Q 535,130 535,100 L 535,80 L 545,80" stroke="rgba(255,255,255,.15)" stroke-width="1" fill="none"/>
     
     <!-- DASHBOARD -->
-    <rect x="540" y="35" width="50" height="50" rx="25" fill="rgba(255,255,255,.1)" stroke="#fff"/>
-    <text x="565" y="65" font-size="18" text-anchor="middle">🖥️</text>
+    <rect x="548" y="55" width="48" height="48" rx="24" fill="rgba(255,255,255,.1)" stroke="#fff"/>
+    <text x="572" y="85" font-size="18" text-anchor="middle">🖥️</text>
 
     <defs>
       <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
