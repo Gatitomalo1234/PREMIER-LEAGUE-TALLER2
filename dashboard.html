@@ -3393,46 +3393,129 @@ const WS = {
     </div>
   </div>
 </div>`,
-        summary: `<div style="margin-bottom:18px">
-  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">RESUMEN EJECUTIVO · EDA GENERAL</div>
-  <div style="font-size:22px;font-weight:300;color:#fff;margin-bottom:4px">Conclusiones del Análisis Exploratorio</div>
-  <div style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.6">Hallazgos críticos que definen la arquitectura de los Modelos 1, 2 y 3.</div>
+        summary: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:rgba(0,255,255,.6);margin-bottom:6px">MANIFESTO DEL PROYECTO · PREMIER LEAGUE PREDICTION</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">De los Datos Crudos a la<br><span style="color:var(--cyan);font-weight:700">Inteligencia Predictiva</span></div>
+  <div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;max-width:600px">Este ecosistema integra <strong style="color:#fff">444,252 eventos</strong> y <strong style="color:#fff">291 partidos</strong> para resolver un problema fundamental: ¿es posible batir al mercado de apuestas usando Machine Learning? A través de 3 modelos especializados, transformamos la geometría del juego y las cuotas en probabilidades accionables.</div>
 </div>
 
-<div class="ws-grid" style="gap:12px">
-  <div class="ws-card ws-col-4" style="background:rgba(68,255,136,.03);border-color:rgba(68,255,136,.15)">
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <div style="font-size:24px">🎯</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
+  <!-- Pillar 1: M1 & M2 -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+      <div style="width:32px;height:32px;background:rgba(68,255,136,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#44ff88;font-size:18px">⚽</div>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#44ff88;margin-bottom:4px">M1 (xG): El desafío del desbalance</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.5">Con una tasa de conversión de solo <strong style="color:#fff">11.2%</strong> por tiro, el accuracy es una métrica engañosa. Se optó por <strong style="color:#fff">AUC-ROC</strong> y calibración de Platt para obtener probabilidades reales de gol.</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">M1 (xG) &amp; M2 (Goles)</div>
+        <div style="font-size:9px;color:#44ff88;letter-spacing:.1em;text-transform:uppercase">Análisis de Eventos Crudos</div>
       </div>
+    </div>
+    <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:12px">
+      M1 calcula la probabilidad de gol de cada tiro basándose en su geometría espacial (ángulo, distancia). M2 usa estos valores para predecir el número total de goles por partido mediante regresión Lasso.
+    </p>
+    <div style="display:flex;gap:8px">
+      <span style="font-size:9px;padding:3px 8px;background:rgba(68,255,136,.1);color:#44ff88;border-radius:4px;border:1px solid rgba(68,255,136,.2)">AUC-ROC: 0.72</span>
+      <span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);border-radius:4px;border:1px solid rgba(255,255,255,.1)">MAEv2: 1.15</span>
     </div>
   </div>
 
-  <div class="ws-card ws-col-4" style="background:rgba(255,200,0,.03);border-color:rgba(255,200,0,.15)">
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <div style="font-size:24px">⚖️</div>
+  <!-- Pillar 2: M3 -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
+      <div style="width:32px;height:32px;background:rgba(255,200,0,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#ffcc00;font-size:18px">⚖️</div>
       <div>
-        <div style="font-size:13px;font-weight:700;color:#ffcc00;margin-bottom:4px">M3 (H/D/A): El Oráculo de Bet365</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.5">Las cuotas <strong style="color:#fff">b365h (ρ=0.61)</strong> y <strong style="color:#fff">b365a (ρ=0.49)</strong> son las señales más potentes. El empate es ruido. La colinealidad con FPL justifica mantener el modelo parsimonioso (solo cuotas + rolling stats).</div>
+        <div style="font-size:14px;font-weight:700;color:#fff">M3 (H/D/A)</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;text-transform:uppercase">El Oráculo del Mercado</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:12px">
+      Un clasificador multiclase que predice Local/Empate/Visitante. El EDA confirmó que las cuotas de Bet365 ya "digieren" la mayoría de la información pública (FPL, stats), actuando como una base de referencia altamente eficiente.
+    </p>
+    <div style="display:flex;gap:8px">
+      <span style="font-size:9px;padding:3px 8px;background:rgba(255,200,0,.1);color:#ffcc00;border-radius:4px;border:1px solid rgba(255,200,0,.2)">Acc: 55.9%</span>
+      <span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);border-radius:4px;border:1px solid rgba(255,255,255,.1)">Signal: b365h/a</span>
+    </div>
+  </div>
+</div>
+
+<div style="background:rgba(0,255,255,.03);border:1px solid rgba(0,255,255,.15);border-radius:14px;padding:20px;margin-bottom:24px">
+  <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:.2em;margin-bottom:15px;text-transform:uppercase;text-align:center">ARQUITECTURA DE FLUJO DE DATOS</div>
+  <svg viewBox="0 0 600 120" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+    <!-- Sources -->
+    <rect x="10" y="35" width="100" height="50" rx="6" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)"/>
+    <text x="60" y="58" font-size="9" fill="#fff" text-anchor="middle" font-weight="700">3 FUENTES</text>
+    <text x="60" y="72" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">API StatsBomb + FPL</text>
+    
+    <!-- Arrow 1 -->
+    <path d="M 115,60 L 165,60" stroke="var(--cyan)" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+    
+    <!-- ETL -->
+    <rect x="175" y="30" width="120" height="60" rx="8" fill="rgba(0,255,255,.1)" stroke="var(--cyan)" stroke-width="1"/>
+    <text x="235" y="55" font-size="10" fill="var(--cyan)" text-anchor="middle" font-weight="700">CENTRAL MATRIX</text>
+    <text x="235" y="70" font-size="7" fill="rgba(255,255,255,.6)" text-anchor="middle">Limpieza + Feature Eng</text>
+    <text x="235" y="82" font-size="6" fill="rgba(255,255,255,.4)" text-anchor="middle">Split Anti-Leakage</text>
+
+    <!-- Arrow 2 split -->
+    <path d="M 300,60 L 330,60 Q 350,60 350,40 L 350,25 L 380,25" stroke="rgba(255,255,255,.2)" stroke-width="1.5" fill="none"/>
+    <path d="M 300,60 L 330,60 Q 350,60 350,80 L 350,95 L 380,95" stroke="rgba(255,255,255,.2)" stroke-width="1.5" fill="none"/>
+
+    <!-- Model 1 -->
+    <rect x="390" y="5" width="100" height="40" rx="6" fill="rgba(68,255,136,.05)" stroke="rgba(68,255,136,.2)"/>
+    <text x="440" y="22" font-size="9" fill="#44ff88" text-anchor="middle" font-weight="700">MODELO 1 (xG)</text>
+    <text x="440" y="35" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">LogReg + Platt</text>
+
+    <!-- Model 3 -->
+    <rect x="390" y="75" width="100" height="40" rx="6" fill="rgba(255,200,0,.05)" stroke="rgba(255,200,0,.2)"/>
+    <text x="440" y="92" font-size="9" fill="#ffcc00" text-anchor="middle" font-weight="700">MODELO 3 (H/D/A)</text>
+    <text x="440" y="105" font-size="7" fill="rgba(255,255,255,.4)" text-anchor="middle">LR Multinomial</text>
+
+    <!-- Arrow 3 -->
+    <path d="M 500,60 L 530,60" stroke="rgba(255,255,255,.4)" stroke-width="2" marker-end="url(#arrowhead)"/>
+    
+    <!-- DASHBOARD -->
+    <rect x="540" y="35" width="50" height="50" rx="25" fill="rgba(255,255,255,.1)" stroke="#fff"/>
+    <text x="565" y="65" font-size="18" text-anchor="middle">🖥️</text>
+
+    <defs>
+      <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="context-stroke" />
+      </marker>
+    </defs>
+  </svg>
+</div>
+
+<div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px">
+  <div>
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:12px;text-transform:uppercase">Conclusiones Estratégicas</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="padding:12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:4px">1. El Ruido del Empate</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">El empate es la variable más difícil de predecir (correlación cuota-resultado casi nula). Nuestra solución fue usar <strong style="color:#fff">class_weight='balanced'</strong> para evitar que el modelo ignore esta clase.</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:4px">2. La Superioridad de la Geometría</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">Añadir el ángulo y la distancia del tiro mejoró el AUC del xG en <strong style="color:#44ff88">+0.08</strong> comparado con modelos basados solo en descripción de texto.</div>
       </div>
     </div>
   </div>
-
-  <div class="ws-card ws-col-4" style="background:rgba(0,255,255,.03);border-color:rgba(0,255,255,.15)">
-    <div style="display:flex;gap:12px;align-items:flex-start">
-      <div style="font-size:24px">🔄</div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:4px">Integridad: Cero Data Leakage</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.5);line-height:1.5">El pipeline ETL separa quirúrgicamente los eventos. Solo se usan promedios móviles <strong style="color:#fff">pre-partido</strong> para evitar contaminación de información que no existe al momento de la predicción.</div>
+  
+  <div style="background:rgba(0,255,255,.02);border:1px solid rgba(0,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:var(--cyan);font-weight:700;letter-spacing:.15em;margin-bottom:12px;text-transform:uppercase">Stack Tecnológico</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:6px">
+        <div style="font-size:12px;color:#fff">🐍</div><div style="font-size:8px;color:rgba(255,255,255,.3)">Python 3.11</div>
+      </div>
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:6px">
+        <div style="font-size:12px;color:#fff">🐼</div><div style="font-size:8px;color:rgba(255,255,255,.3)">Pandas</div>
+      </div>
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:6px">
+        <div style="font-size:12px;color:#fff">⚙️</div><div style="font-size:8px;color:rgba(255,255,255,.3)">Sklearn</div>
+      </div>
+      <div style="text-align:center;padding:8px;background:rgba(255,255,255,.03);border-radius:6px">
+        <div style="font-size:12px;color:#fff">✨</div><div style="font-size:8px;color:rgba(255,255,255,.3)">GSAP / 3JS</div>
       </div>
     </div>
-  </div>
-
-  <div class="ws-card ws-col-4" style="border:1px dashed rgba(255,255,255,.12)">
-    <div style="font-size:10px;color:rgba(255,255,255,.3);text-align:center;padding:10px">
-      EDA completado sobre <strong style="color:#fff">444,252 eventos</strong> · Próximo paso: Entrenamiento de Modelos
+    <div style="margin-top:15px;font-size:8px;color:rgba(255,255,255,.2);text-align:center;font-style:italic">
+      Proyecto Final Machine Learning I · Externado 2026
     </div>
   </div>
 </div>`
