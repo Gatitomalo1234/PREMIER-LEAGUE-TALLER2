@@ -1,0 +1,2 @@
+".xg-summary-card{padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);text-align:center}\n.xg-summary-val{font-size:20px;font-weight:300;color:var(--cyan);margin-bottom:3px}\n.xg-summary-lbl{font-size:9px;
+<truncated 3100 bytes>
