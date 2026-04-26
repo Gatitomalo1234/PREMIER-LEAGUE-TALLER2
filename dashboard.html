@@ -655,6 +655,8 @@
 }
 </script>
 
+<script src="pl_pts_tmp.js"></script>
+
 <script type="module">
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
@@ -4341,14 +4343,26 @@ class CinematicEngine {
     const liveEl=document.getElementById('xg-live');
     if(liveEl) liveEl.classList.add('intro-hide');
     const C=canvas.getContext('2d'), W=canvas.width, H=canvas.height;
-    const OW=W*2, OH=H*2;
-    const offC=_plLogoOffscreen(OW,OH);
-    const oC=offC.getContext('2d');
-    const imgData=oC.getImageData(0,0,OW,OH), data=imgData.data;
-    const candidatePositions=[];
-    const step=4;
-    for(let y=0;y<OH;y+=step){ for(let x=0;x<OW;x+=step){ const idx=(y*OW+x)*4; const lum=data[idx]*0.299+data[idx+1]*0.587+data[idx+2]*0.114; if(lum>140&&data[idx+3]>200) candidatePositions.push([x/2,y/2]); } }
-    if(candidatePositions.length<50){ canvas.classList.remove('active'); onComplete(); return; }
+    let candidatePositions=[];
+    if(typeof PL_PTS!=='undefined' && PL_PTS.length>0){
+      let minX=Infinity, maxX=-Infinity, minY=Infinity, maxY=-Infinity;
+      PL_PTS.forEach(pt=>{
+        if(pt[0]<minX) minX=pt[0]; if(pt[0]>maxX) maxX=pt[0];
+        if(pt[1]<minY) minY=pt[1]; if(pt[1]>maxY) maxY=pt[1];
+      });
+      const ptsW = maxX-minX, ptsH = maxY-minY;
+      const scale = Math.min(W/ptsW, H/ptsH) * 0.45;
+      const offsetX = W/2 - (minX + ptsW/2)*scale;
+      const offsetY = H/2 - (minY + ptsH/2)*scale;
+      candidatePositions = PL_PTS.map(pt=>[pt[0]*scale+offsetX, pt[1]*scale+offsetY]);
+    }
+    
+    if(candidatePositions.length<50){ 
+      canvas.classList.remove('active'); 
+      if(liveEl) liveEl.classList.remove('intro-hide');
+      onComplete(); 
+      return; 
+    }
     for(let i=candidatePositions.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [candidatePositions[i],candidatePositions[j]]=[candidatePositions[j],candidatePositions[i]]; }
     const N=Math.min(550,candidatePositions.length);
     const targets=candidatePositions.slice(0,N);
