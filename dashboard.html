@@ -2899,7 +2899,10 @@ class CinematicEngine {
     }
 
     materializeNodes() {
-        gsap.to('#intro-panel',{opacity:0,x:-100,filter:'blur(20px)',duration:1,ease:'power2.in'});
+        gsap.to('#intro-panel',{opacity:0,x:-100,filter:'blur(20px)',duration:1,ease:'power2.in',onComplete:()=>{
+            const ip = document.getElementById('intro-panel');
+            if(ip) ip.style.pointerEvents='none';
+        }});
         document.getElementById('btn-home').classList.add('show');
         this.nodesVisible=true;
         this.cards.forEach((node,i) => {
@@ -4383,7 +4386,7 @@ class CinematicEngine {
     });
     const PHASE_GATHER=0,PHASE_HOLD=1,PHASE_PULSE=2,PHASE_FLASH=3;
     let phase=PHASE_GATHER, phaseT=0, rafId=null, lastT=0;
-    const GATHER_DUR=1800,HOLD_DUR=500,PULSE_DUR=1000,FLASH_DUR=400;
+    const GATHER_DUR=3000,HOLD_DUR=800,PULSE_DUR=1600,FLASH_DUR=600;
     function drawFrame(now){
       if(!lastT) lastT = now;
       const dt=Math.max(0, Math.min(32,now-lastT)); lastT=now; phaseT+=dt;
