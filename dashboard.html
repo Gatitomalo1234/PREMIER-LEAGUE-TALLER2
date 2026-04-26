@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awwwards Ecosystem · Top Tier</title>
+    <title>Awwwards Ecosystem · Top Tier · v2</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -497,7 +497,135 @@
         .effect-pos{background:rgba(0,255,136,0.12);color:#00ff88;border:1px solid rgba(0,255,136,0.25)}
         .effect-neg{background:rgba(255,70,70,0.12);color:#ff6666;border:1px solid rgba(255,70,70,0.25)}
         .effect-neu{background:rgba(255,255,255,0.05);color:rgba(255,255,255,0.35);border:1px solid rgba(255,255,255,0.1)}
-    </style>
+    
+/* ── ws-body injected styles (moved to head) ── */
+.xg-phase-header{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.xg-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.xg-phase-title{font-size:26px;font-weight:300;color:#fff;margin:0 0 6px 0;line-height:1.1}
+.xg-phase-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin:0 0 20px 0}
+.xg-next-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 20px;border:1px solid rgba(0,255,255,.28);border-radius:30px;background:rgba(0,255,255,.06);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(0,255,255,.08);color:var(--cyan);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all .25s}
+.xg-next-btn:hover{background:rgba(0,255,255,.14);border-color:rgba(0,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 0 22px rgba(0,255,255,.18);transform:translateX(3px)}
+.xg-progress-dots{display:flex;gap:6px;margin-bottom:18px}
+.xg-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s}
+.xg-dot.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:18px;border-radius:3px}
+.xg-var-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);margin-bottom:5px;transition:all .2s}
+.xg-var-row:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
+.xg-var-name{font-family:monospace;font-size:11px;color:var(--cyan);white-space:nowrap}
+.xg-var-desc{font-size:11px;color:rgba(255,255,255,.45)}
+.xg-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;letter-spacing:.05em}
+.xg-badge-green{background:rgba(68,255,136,.15);color:#44ff88;border:1px solid rgba(68,255,136,.3)}
+.xg-badge-red{background:rgba(255,80,80,.15);color:#ff8080;border:1px solid rgba(255,80,80,.3)}
+.xg-badge-new{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.4)}
+.xg-split{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;align-items:start}
+.xg-imbalance-bar{height:28px;border-radius:6px;overflow:hidden;display:flex;margin-top:16px;position:relative}
+.xg-bar-fail{background:linear-gradient(90deg,#ff3333,#cc0000);display:flex;align-items:center;padding-left:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);transition:width 1.2s ease}
+.xg-bar-goal{background:linear-gradient(90deg,#00cc66,#44ff88);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:10px;font-weight:700;color:rgba(0,0,0,.7);transition:width 1.2s ease}
+.xg-phase-block{border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.xg-phase-block.open{border-color:rgba(0,255,255,.18)}
+.xg-phase-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;gap:12px}
+.xg-phase-head:hover .xg-phase-arrow{color:var(--cyan)}
+.xg-phase-icon{font-size:18px;min-width:28px}
+.xg-phase-ht{font-size:12px;font-weight:600;color:#fff;letter-spacing:.04em}
+.xg-phase-hsub{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px}
+.xg-phase-arrow{font-size:14px;color:rgba(255,255,255,.25);transition:transform .25s, color .2s;min-width:16px}
+.xg-phase-block.open .xg-phase-arrow{transform:rotate(180deg);color:var(--cyan)}
+.xg-phase-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.xg-phase-block.open .xg-phase-body{max-height:900px}
+.xg-phase-inner{padding:0 16px 16px}
+.xg-spearman-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:6px 10px;border-radius:5px;font-size:11px;border:1px solid transparent;transition:all .15s}
+.xg-spearman-row:hover{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
+.xg-spearman-row.eliminated{opacity:.55;text-decoration:line-through;text-decoration-color:rgba(255,80,80,.6)}
+.xg-rho{font-family:monospace;font-size:12px;font-weight:600;min-width:52px;text-align:right}
+.xg-pval{font-family:monospace;font-size:9px;color:rgba(255,255,255,.35);min-width:60px;text-align:right}
+.xg-vif-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:4px;overflow:hidden}
+.xg-vif-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#7b2fbe);border-radius:3px;transition:width .8s ease}
+.eda-chart-wrap{position:relative;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.eda-chart-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.eda-chart-tab{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.06em;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.eda-chart-tab.active{background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.4);color:var(--cyan);box-shadow:0 0 12px rgba(0,255,255,.12),inset 0 1px 0 rgba(255,255,255,.1)}
+.eda-bars{display:flex;align-items:flex-end;gap:18px;height:120px;padding:0 4px}
+.eda-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:opacity .2s}
+.eda-bar-group:hover .eda-bar{filter:brightness(1.3)}
+.eda-bars-inner{display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center}
+.eda-bar{border-radius:4px 4px 0 0;width:22px;transition:height .7s cubic-bezier(.34,1.56,.64,1),filter .2s}
+.eda-bar-goal{background:linear-gradient(180deg,#44ff88,rgba(68,255,136,.4))}
+.eda-bar-fail{background:linear-gradient(180deg,#ff6666,rgba(255,100,100,.3))}
+.eda-bar-label{font-size:8px;color:rgba(255,255,255,.35);text-align:center;letter-spacing:.04em;margin-top:2px;line-height:1.3}
+.eda-bar-val{font-size:9px;font-weight:700;text-align:center}
+.eda-tooltip{position:absolute;top:10px;right:12px;background:rgba(10,10,25,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(0,255,255,.2);border-radius:8px;padding:10px 14px;font-size:10px;min-width:160px;pointer-events:none;transition:opacity .2s;box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
+.eda-legend{display:flex;gap:14px;margin-top:10px}
+.eda-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;margin-top:1px}
+.xg-dis-section{margin-bottom:28px}
+.xg-dis-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
+.xg-dis-title{font-size:20px;font-weight:300;color:#fff;margin-bottom:14px;line-height:1.2}
+.xg-battle-table{width:100%;border-collapse:collapse}
+.xg-battle-table th{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:6px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06)}
+.xg-battle-row{opacity:0;transform:translateX(-10px);transition:opacity .35s ease,transform .35s ease}
+.xg-battle-row.vis{opacity:1;transform:translateX(0)}
+.xg-battle-row td{padding:9px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
+.xg-battle-row.winner td{background:rgba(0,255,255,.04);border-color:rgba(0,255,255,.1)}
+.xg-battle-row.winner td:first-child{border-left:2px solid var(--cyan)}
+.xg-battle-name{color:#fff;font-weight:500}
+.xg-battle-acc{color:rgba(255,255,255,.5)}
+.xg-battle-auc{color:var(--cyan);font-weight:600}
+.xg-battle-f1{color:rgba(255,255,255,.6)}
+.xg-battle-badge{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:.05em}
+.xg-battle-badge.best{background:rgba(0,255,255,.15);color:var(--cyan);border:1px solid rgba(0,255,255,.3)}
+.xg-or-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.xg-or-card{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease}
+.xg-or-card.vis{opacity:1;transform:translateY(0)}
+.xg-or-card:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
+.xg-or-feat{font-family:monospace;font-size:10px;color:var(--cyan);margin-bottom:4px}
+.xg-or-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:6px 0;position:relative}
+.xg-or-bar{height:100%;border-radius:4px;width:0;transition:width 1s ease}
+.xg-or-bar.pos{background:linear-gradient(90deg,rgba(0,255,255,.5),var(--cyan));transform-origin:left}
+.xg-or-bar.neg{background:linear-gradient(90deg,#ff4444,rgba(255,68,68,.4));transform-origin:left}
+.xg-or-vals{display:flex;justify-content:space-between;align-items:center}
+.xg-or-beta{font-size:11px;font-weight:600}
+.xg-or-beta.pos{color:var(--cyan)}
+.xg-or-beta.neg{color:#ff6666}
+.xg-or-odds{font-size:10px;color:rgba(255,255,255,.4)}
+.xg-or-interp{font-size:10px;color:rgba(255,255,255,.38);line-height:1.5;margin-top:5px}
+.xg-player-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.xg-player-card{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);opacity:0;transform:scale(.92);transition:opacity .3s,transform .3s}
+.xg-player-card.vis{opacity:1;transform:scale(1)}
+.xg-player-card:hover{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+.xg-player-name{font-size:11px;font-weight:600;color:#fff;margin-bottom:3px}
+.xg-player-club{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.06em;margin-bottom:7px}
+.xg-player-bar-wrap{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.xg-player-bar{height:100%;border-radius:3px;width:0;transition:width 1s ease}
+.xg-player-beta-val{font-size:12px;font-weight:700}
+.xg-player-interp{font-size:9px;color:rgba(255,255,255,.3);line-height:1.4;margin-top:3px}
+.xg-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.xg-summary-card{padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);text-align:center}
+.xg-summary-val{font-size:20px;font-weight:300;color:var(--cyan);margin-bottom:3px}
+.xg-summary-lbl{font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase}
+.m2-badge-activa{background:rgba(255,68,255,.15);color:#ff44ff;border:1px solid rgba(255,68,255,.35)}
+.m2-badge-elim{background:rgba(255,80,80,.15);color:#ff8080;border:1px solid rgba(255,80,80,.3)}
+.m2-imbalance-bar{height:28px;border-radius:6px;overflow:hidden;display:flex;margin-top:16px;position:relative}
+.m2-bar-activa{background:linear-gradient(90deg,#cc00ff,#ff44ff);display:flex;align-items:center;padding-left:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);width:0;transition:width 1.2s ease}
+.m2-bar-elim{background:linear-gradient(90deg,#ff3333,#cc0000);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);width:0;transition:width 1.2s ease}
+.m2-pipe{display:flex;align-items:center;gap:0;margin:14px 0 10px;flex-wrap:wrap;justify-content:center}
+.m2-pipe-node{display:flex;flex-direction:column;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);cursor:pointer;transition:all .25s;min-width:76px;text-align:center;backdrop-filter:blur(8px)}
+.m2-pipe-node:hover,.m2-pipe-node.active{border-color:#ff44ff;background:rgba(255,68,255,.09);box-shadow:0 0 20px rgba(255,68,255,.18),inset 0 1px 0 rgba(255,255,255,.07)}
+.m2-pipe-node.active .m2-pipe-icon{filter:drop-shadow(0 0 7px #ff44ff)}
+.m2-pipe-icon{font-size:20px;margin-bottom:4px}
+.m2-pipe-label{font-size:9px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.55);text-transform:uppercase}
+.m2-pipe-sublabel{font-size:8px;color:rgba(255,255,255,.22);margin-top:2px}
+.m2-pipe-arrow{font-size:16px;color:rgba(255,68,255,.3);padding:0 3px;flex-shrink:0}
+.m2-pv{display:none;animation:pvIn .3s ease}
+.m2-pv.active{display:grid}
+.m2-pv-text{font-size:11px;color:rgba(255,255,255,.5);line-height:1.7}
+.m2-pv-text strong{color:#fff}
+.m2-pv-kpi{padding:10px 12px;border-radius:8px;background:rgba(255,68,255,.05);border:1px solid rgba(255,68,255,.15);text-align:center;backdrop-filter:blur(6px)}
+.m2-pv-kpi-val{font-size:22px;font-weight:200;color:#ff44ff;line-height:1}
+.m2-pv-kpi-lbl{font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:.08em}
+.live-pulse{animation:livePulse 2s ease-in-out infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.92)}}
+.live-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
+.live-conn-line{height:2px;background:linear-gradient(90deg,rgba(255,68,255,0),rgba(255,68,255,.6),rgba(255,204,0,.6),rgba(255,68,255,0));border-radius:2px;margin:10px 0}
+.live-node-card{padding:14px 16px;border-radius:10px;border:1px solid;display:flex;align-items:center;gap:12px}
+</style>
 </head>
 <body>
 
@@ -679,30 +807,7 @@ const DATA = [
 // ── WORKSPACE CONTENT ─────────────────────────────────────────
 const WS = {
     xg: {
-        overview: `<style>
-.xg-phase-header{display:flex;align-items:center;gap:10px;margin-bottom:22px}
-.xg-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35)}
-.xg-phase-title{font-size:26px;font-weight:300;color:#fff;margin:0 0 6px 0;line-height:1.1}
-.xg-phase-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin:0 0 20px 0}
-.xg-next-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 20px;border:1px solid rgba(0,255,255,.28);border-radius:30px;background:rgba(0,255,255,.06);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(0,255,255,.08);color:var(--cyan);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all .25s}
-.xg-next-btn:hover{background:rgba(0,255,255,.14);border-color:rgba(0,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 0 22px rgba(0,255,255,.18);transform:translateX(3px)}
-.xg-progress-dots{display:flex;gap:6px;margin-bottom:18px}
-.xg-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s}
-.xg-dot.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:18px;border-radius:3px}
-.xg-var-row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,.05);background:rgba(255,255,255,.02);margin-bottom:5px;transition:all .2s}
-.xg-var-row:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.1)}
-.xg-var-name{font-family:monospace;font-size:11px;color:var(--cyan);white-space:nowrap}
-.xg-var-desc{font-size:11px;color:rgba(255,255,255,.45)}
-.xg-badge{font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap;letter-spacing:.05em}
-.xg-badge-green{background:rgba(68,255,136,.15);color:#44ff88;border:1px solid rgba(68,255,136,.3)}
-.xg-badge-red{background:rgba(255,80,80,.15);color:#ff8080;border:1px solid rgba(255,80,80,.3)}
-.xg-badge-new{background:rgba(168,85,247,.2);color:#c084fc;border:1px solid rgba(168,85,247,.4)}
-.xg-split{display:grid;grid-template-columns:1fr 1.15fr;gap:24px;align-items:start}
-.xg-imbalance-bar{height:28px;border-radius:6px;overflow:hidden;display:flex;margin-top:16px;position:relative}
-.xg-bar-fail{background:linear-gradient(90deg,#ff3333,#cc0000);display:flex;align-items:center;padding-left:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);transition:width 1.2s ease}
-.xg-bar-goal{background:linear-gradient(90deg,#00cc66,#44ff88);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:10px;font-weight:700;color:rgba(0,0,0,.7);transition:width 1.2s ease}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+        overview: `<div class="xg-progress-dots"><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-split">
   <div>
     <div class="xg-eyebrow">FASE 0 · EL PROBLEMA</div>
@@ -734,28 +839,7 @@ const WS = {
     <div class="xg-var-row" style="opacity:.45"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">minute / period / end_x / end_y</span><span class="xg-var-desc">p&gt;0.05 o 100% nulos</span><span class="xg-badge xg-badge-red">ELIMINADAS</span></div>
   </div>
 </div>`,
-        metrics: `<style>
-.xg-phase-block{border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
-.xg-phase-block.open{border-color:rgba(0,255,255,.18)}
-.xg-phase-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;gap:12px}
-.xg-phase-head:hover .xg-phase-arrow{color:var(--cyan)}
-.xg-phase-icon{font-size:18px;min-width:28px}
-.xg-phase-ht{font-size:12px;font-weight:600;color:#fff;letter-spacing:.04em}
-.xg-phase-hsub{font-size:10px;color:rgba(255,255,255,.35);margin-top:2px}
-.xg-phase-arrow{font-size:14px;color:rgba(255,255,255,.25);transition:transform .25s, color .2s;min-width:16px}
-.xg-phase-block.open .xg-phase-arrow{transform:rotate(180deg);color:var(--cyan)}
-.xg-phase-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
-.xg-phase-block.open .xg-phase-body{max-height:900px}
-.xg-phase-inner{padding:0 16px 16px}
-.xg-spearman-row{display:grid;grid-template-columns:1fr auto auto auto;gap:8px;align-items:center;padding:6px 10px;border-radius:5px;font-size:11px;border:1px solid transparent;transition:all .15s}
-.xg-spearman-row:hover{background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.06)}
-.xg-spearman-row.eliminated{opacity:.55;text-decoration:line-through;text-decoration-color:rgba(255,80,80,.6)}
-.xg-rho{font-family:monospace;font-size:12px;font-weight:600;min-width:52px;text-align:right}
-.xg-pval{font-family:monospace;font-size:9px;color:rgba(255,255,255,.35);min-width:60px;text-align:right}
-.xg-vif-bar{height:6px;background:rgba(255,255,255,.06);border-radius:3px;margin-top:4px;overflow:hidden}
-.xg-vif-fill{height:100%;background:linear-gradient(90deg,var(--cyan),#7b2fbe);border-radius:3px;transition:width .8s ease}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+        metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-eyebrow" style="margin-bottom:6px">FASE 1–4 · EDA → SELECCIÓN DE VARIABLES</div>
 <div class="xg-phase-title" style="font-size:22px;margin-bottom:4px">La Autopsia de los Datos</div>
 <div class="xg-phase-sub">4 filtros sucesivos para quedarnos con las 7 variables que de verdad predicen un gol.</div>
@@ -767,25 +851,7 @@ const WS = {
     <span class="xg-phase-arrow">▾</span>
   </div>
   <div class="xg-phase-body"><div class="xg-phase-inner">
-    <style>
-.eda-chart-wrap{position:relative;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;margin-bottom:12px}
-.eda-chart-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.eda-chart-tab{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.06em;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
-.eda-chart-tab.active{background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.4);color:var(--cyan);box-shadow:0 0 12px rgba(0,255,255,.12),inset 0 1px 0 rgba(255,255,255,.1)}
-.eda-bars{display:flex;align-items:flex-end;gap:18px;height:120px;padding:0 4px}
-.eda-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:opacity .2s}
-.eda-bar-group:hover .eda-bar{filter:brightness(1.3)}
-.eda-bars-inner{display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center}
-.eda-bar{border-radius:4px 4px 0 0;width:22px;transition:height .7s cubic-bezier(.34,1.56,.64,1),filter .2s}
-.eda-bar-goal{background:linear-gradient(180deg,#44ff88,rgba(68,255,136,.4))}
-.eda-bar-fail{background:linear-gradient(180deg,#ff6666,rgba(255,100,100,.3))}
-.eda-bar-label{font-size:8px;color:rgba(255,255,255,.35);text-align:center;letter-spacing:.04em;margin-top:2px;line-height:1.3}
-.eda-bar-val{font-size:9px;font-weight:700;text-align:center}
-.eda-tooltip{position:absolute;top:10px;right:12px;background:rgba(10,10,25,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(0,255,255,.2);border-radius:8px;padding:10px 14px;font-size:10px;min-width:160px;pointer-events:none;transition:opacity .2s;box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
-.eda-legend{display:flex;gap:14px;margin-top:10px}
-.eda-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;margin-top:1px}
-</style>
-<div class="eda-chart-wrap" id="eda-wrap">
+    <div class="eda-chart-wrap" id="eda-wrap">
   <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:10px">Distribución de Variables Clave: Goles vs Fallos</div>
   <div class="eda-chart-tabs">
     <button class="eda-chart-tab active" onclick="edaSetView('geo',this)">Geométricas</button>
@@ -934,25 +1000,7 @@ const WS = {
     </div>
   </div>
 </div>`,
-        training: `<style>
-.xg-pipe{display:flex;align-items:center;gap:0;margin:14px 0 10px;flex-wrap:wrap;justify-content:center}
-.xg-pipe-node{display:flex;flex-direction:column;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);cursor:pointer;transition:all .25s;min-width:76px;text-align:center}
-.xg-pipe-node:hover,.xg-pipe-node.active{border-color:var(--cyan);background:rgba(0,255,255,.07);box-shadow:0 0 18px rgba(0,255,255,.13)}
-.xg-pipe-node.active .xg-pipe-icon{filter:drop-shadow(0 0 7px var(--cyan))}
-.xg-pipe-icon{font-size:20px;margin-bottom:4px}
-.xg-pipe-label{font-size:9px;font-weight:700;letter-spacing:.06em;color:rgba(255,255,255,.55);text-transform:uppercase}
-.xg-pipe-sublabel{font-size:8px;color:rgba(255,255,255,.22);margin-top:2px}
-.xg-pipe-arrow{font-size:16px;color:rgba(0,255,255,.25);padding:0 3px;flex-shrink:0}
-.xg-pv{display:none;animation:pvIn .3s ease}
-.xg-pv.active{display:grid}
-@keyframes pvIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.xg-pv-text{font-size:11px;color:rgba(255,255,255,.5);line-height:1.7}
-.xg-pv-text strong{color:#fff}
-.xg-pv-kpi{padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.07);text-align:center}
-.xg-pv-kpi-val{font-size:22px;font-weight:200;color:var(--cyan);line-height:1}
-.xg-pv-kpi-lbl{font-size:9px;color:rgba(255,255,255,.3);margin-top:4px;letter-spacing:.08em}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+        training: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-eyebrow" style="margin-bottom:4px">PIPELINE · ENTRENAMIENTO xG</div>
 <div class="xg-phase-title" style="font-size:21px;margin-bottom:3px">La Máquina</div>
 <div class="xg-phase-sub" style="margin-bottom:0">Haz clic en cada etapa para ver su gráfico y decisión técnica.</div>
@@ -1296,54 +1344,7 @@ const WS = {
 
   </div>
 </div>`,
-        data: `<style>
-.xg-dis-section{margin-bottom:28px}
-.xg-dis-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:8px}
-.xg-dis-title{font-size:20px;font-weight:300;color:#fff;margin-bottom:14px;line-height:1.2}
-.xg-battle-table{width:100%;border-collapse:collapse}
-.xg-battle-table th{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:6px 12px;text-align:left;border-bottom:1px solid rgba(255,255,255,.06)}
-.xg-battle-row{opacity:0;transform:translateX(-10px);transition:opacity .35s ease,transform .35s ease}
-.xg-battle-row.vis{opacity:1;transform:translateX(0)}
-.xg-battle-row td{padding:9px 12px;font-size:12px;border-bottom:1px solid rgba(255,255,255,.04)}
-.xg-battle-row.winner td{background:rgba(0,255,255,.04);border-color:rgba(0,255,255,.1)}
-.xg-battle-row.winner td:first-child{border-left:2px solid var(--cyan)}
-.xg-battle-name{color:#fff;font-weight:500}
-.xg-battle-acc{color:rgba(255,255,255,.5)}
-.xg-battle-auc{color:var(--cyan);font-weight:600}
-.xg-battle-f1{color:rgba(255,255,255,.6)}
-.xg-battle-badge{font-size:9px;padding:2px 8px;border-radius:10px;font-weight:700;letter-spacing:.05em}
-.xg-battle-badge.best{background:rgba(0,255,255,.15);color:var(--cyan);border:1px solid rgba(0,255,255,.3)}
-.xg-or-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.xg-or-card{padding:12px 14px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);opacity:0;transform:translateY(8px);transition:opacity .3s ease,transform .3s ease}
-.xg-or-card.vis{opacity:1;transform:translateY(0)}
-.xg-or-card:hover{border-color:rgba(255,255,255,.12);background:rgba(255,255,255,.04)}
-.xg-or-feat{font-family:monospace;font-size:10px;color:var(--cyan);margin-bottom:4px}
-.xg-or-bar-wrap{height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden;margin:6px 0;position:relative}
-.xg-or-bar{height:100%;border-radius:4px;width:0;transition:width 1s ease}
-.xg-or-bar.pos{background:linear-gradient(90deg,rgba(0,255,255,.5),var(--cyan));transform-origin:left}
-.xg-or-bar.neg{background:linear-gradient(90deg,#ff4444,rgba(255,68,68,.4));transform-origin:left}
-.xg-or-vals{display:flex;justify-content:space-between;align-items:center}
-.xg-or-beta{font-size:11px;font-weight:600}
-.xg-or-beta.pos{color:var(--cyan)}
-.xg-or-beta.neg{color:#ff6666}
-.xg-or-odds{font-size:10px;color:rgba(255,255,255,.4)}
-.xg-or-interp{font-size:10px;color:rgba(255,255,255,.38);line-height:1.5;margin-top:5px}
-.xg-player-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
-.xg-player-card{padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);opacity:0;transform:scale(.92);transition:opacity .3s,transform .3s}
-.xg-player-card.vis{opacity:1;transform:scale(1)}
-.xg-player-card:hover{border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
-.xg-player-name{font-size:11px;font-weight:600;color:#fff;margin-bottom:3px}
-.xg-player-club{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.06em;margin-bottom:7px}
-.xg-player-bar-wrap{height:5px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:4px}
-.xg-player-bar{height:100%;border-radius:3px;width:0;transition:width 1s ease}
-.xg-player-beta-val{font-size:12px;font-weight:700}
-.xg-player-interp{font-size:9px;color:rgba(255,255,255,.3);line-height:1.4;margin-top:3px}
-.xg-summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.xg-summary-card{padding:12px;border-radius:8px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);text-align:center}
-.xg-summary-val{font-size:20px;font-weight:300;color:var(--cyan);margin-bottom:3px}
-.xg-summary-lbl{font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div></div>
+        data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div></div>
 
 <div class="xg-dis-section">
   <div class="xg-dis-eyebrow">SECCIÓN A · BATALLA DE VERSIONES</div>
@@ -1574,39 +1575,32 @@ const WS = {
     },
 
     match: {
-        overview: `<style>
-.m2-badge-activa{background:rgba(255,68,255,.15);color:#ff44ff;border:1px solid rgba(255,68,255,.35)}
-.m2-badge-elim{background:rgba(255,80,80,.15);color:#ff8080;border:1px solid rgba(255,80,80,.3)}
-.m2-imbalance-bar{height:28px;border-radius:6px;overflow:hidden;display:flex;margin-top:16px}
-.m2-bar-activa{background:linear-gradient(90deg,#cc00ff,#ff44ff);display:flex;align-items:center;padding-left:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.9);width:0;transition:width 1.2s ease}
-.m2-bar-elim{background:linear-gradient(90deg,rgba(255,60,60,.5),rgba(180,30,30,.4));display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:10px;font-weight:700;color:rgba(255,120,120,.8);width:0;transition:width 1.2s ease}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+        overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-split">
   <div>
     <div class="xg-eyebrow">MODELO 2 · LASSO REGRESIÓN</div>
     <div class="xg-phase-title">La Regla Oculta<br><span style="color:#ff44ff;font-weight:700">del Marcador</span></div>
     <div class="xg-phase-sub">18 variables candidatas. El penalizador L1 ejecutó a 14 de ellas. Solo 4 sobrevivieron — y revelan la mecánica real del gol en la Premier League.</div>
-    <div style="padding:14px 18px;border-left:3px solid #ff44ff;background:rgba(255,68,255,.04);border-radius:0 8px 8px 0;margin-bottom:16px">
+    <div style="padding:14px 18px;border-left:3px solid #ff44ff;background:rgba(255,68,255,.03);border-radius:0 8px 8px 0;margin-bottom:16px">
       <div style="font-size:9px;color:#ff44ff;letter-spacing:.15em;font-weight:700;margin-bottom:4px">EL DESCUBRIMIENTO</div>
-      <div style="font-size:15px;color:#fff;font-weight:300">"La agresión del visitante<br><span style="color:#44ff88;font-weight:700">dicta el ritmo de los goles"</span></div>
+      <div style="font-size:15px;color:#fff;font-weight:300">"La agresión del visitante<br><span style="color:#ff44ff;font-weight:700">dicta el ritmo de los goles"</span></div>
     </div>
     <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;letter-spacing:.1em">3,800+ PARTIDOS · 10 TEMPORADAS · 2015–2025</div>
-    <div class="m2-imbalance-bar">
-      <div class="m2-bar-activa" id="m2-bar-activa">4 ACTIVAS</div>
-      <div class="m2-bar-elim" id="m2-bar-elim">14 ELIMINADAS</div>
+    <div class="m2-imbalance-bar" id="m2-imbal-bar">
+      <div class="m2-bar-activa" style="width:0%" id="m2-bar-activa">4 ACTIVAS</div>
+      <div class="m2-bar-elim" style="width:0%" id="m2-bar-elim">14 ELIMINADAS</div>
     </div>
     <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:rgba(255,255,255,.3)"><span style="color:#ff44ff">22% — señal real</span><span>78% — β = 0</span></div>
-    <button class="xg-next-btn" style="border-color:rgba(255,68,255,.35);color:#ff44ff;background:linear-gradient(135deg,rgba(255,68,255,.08),rgba(180,0,255,.04));box-shadow:0 0 0 0.5px rgba(255,68,255,.2),inset 0 1px 0 rgba(255,255,255,.08)" onclick="document.querySelector('.ws-tab[data-tab=metrics]').click()">La Autopsia →</button>
+    <button class="xg-next-btn" style="border-color:rgba(255,68,255,.28);background:rgba(255,68,255,.06);color:#ff44ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(255,68,255,.08)" onmouseover="this.style.background='rgba(255,68,255,.14)';this.style.borderColor='rgba(255,68,255,.6)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.15),0 0 22px rgba(255,68,255,.18)'" onmouseout="this.style.background='rgba(255,68,255,.06)';this.style.borderColor='rgba(255,68,255,.28)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(255,68,255,.08)'" onclick="document.querySelector('.ws-tab[data-tab=metrics]').click()">La Autopsia →</button>
   </div>
-  <div>
-    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:10px;text-transform:uppercase">Inventario de Variables (18 candidatas)</div>
-    <div class="xg-var-row" style="border-color:rgba(68,255,136,.2);background:rgba(68,255,136,.03)"><span class="xg-var-name" style="color:#44ff88">Away_Avg_AST</span><span class="xg-var-desc">Tiros prom. visitante · rolling avg</span><span class="xg-badge m2-badge-activa">β=+0.041</span></div>
-    <div class="xg-var-row" style="border-color:rgba(68,255,136,.2);background:rgba(68,255,136,.03)"><span class="xg-var-name" style="color:#44ff88">Home_Sum_influence</span><span class="xg-var-desc">Suma influencia FPL estrellas local</span><span class="xg-badge m2-badge-activa">β=+0.070</span></div>
-    <div class="xg-var-row" style="border-color:rgba(255,80,80,.2);background:rgba(255,80,80,.03)"><span class="xg-var-name" style="color:#ff8080">Home_Avg_FTHG</span><span class="xg-var-desc">Goles promedio histórico local</span><span class="xg-badge m2-badge-activa">β=−0.060</span></div>
-    <div class="xg-var-row" style="border-color:rgba(255,80,80,.2);background:rgba(255,80,80,.03)"><span class="xg-var-name" style="color:#ff8080">Home_Days_Rest</span><span class="xg-var-desc">Días de descanso equipo local</span><span class="xg-badge m2-badge-activa">β=−0.050</span></div>
-    <div class="xg-var-row" style="opacity:.5"><span class="xg-var-name" style="color:rgba(255,80,80,.6);text-decoration:line-through">Home_ELO · Away_ELO</span><span class="xg-var-desc">ELO dinámico — redundante con cuotas</span><span class="xg-badge m2-badge-elim">β = 0</span></div>
-    <div class="xg-var-row" style="opacity:.4"><span class="xg-var-name" style="color:rgba(255,80,80,.5);text-decoration:line-through">referee_bias · season_stage…</span><span class="xg-var-desc">12 variables más — sin señal estadística</span><span class="xg-badge m2-badge-elim">β = 0</span></div>
+  <div style="display:flex;flex-direction:column;gap:5px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:10px;text-transform:uppercase">Inventario de Datos</div>
+    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Away_Avg_AST</span><span class="xg-var-desc">Tiros prom. visitante · rolling avg</span><span class="xg-badge m2-badge-activa">β=+0.041</span></div>
+    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Sum_influence</span><span class="xg-var-desc">Suma influencia FPL estrellas local</span><span class="xg-badge m2-badge-activa">β=+0.070</span></div>
+    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Avg_FTHG</span><span class="xg-var-desc">Goles promedio histórico local</span><span class="xg-badge m2-badge-activa">β=−0.060</span></div>
+    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Days_Rest</span><span class="xg-var-desc">Días de descanso equipo local</span><span class="xg-badge m2-badge-activa">β=−0.050</span></div>
+    <div class="xg-var-row" style="opacity:.5"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">Home_ELO · Away_ELO</span><span class="xg-var-desc">Redundante con cuotas (colineal)</span><span class="xg-badge m2-badge-elim">β = 0</span></div>
+    <div class="xg-var-row" style="opacity:.45"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">referee_bias · season_stage…</span><span class="xg-var-desc">12 vars más — sin señal estadística</span><span class="xg-badge m2-badge-elim">ELIMINADAS</span></div>
   </div>
 </div>`,
         metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
@@ -1623,47 +1617,37 @@ const WS = {
 <div class="xg-phase-block open" onclick="this.classList.toggle('open')">
   <div class="xg-phase-head">
     <span class="xg-phase-icon">📊</span>
-    <div style="flex:1">
-      <div class="xg-phase-ht">FASE 1 — Diagnóstico del Target</div>
-      <div class="xg-phase-hsub">¿Qué forma tiene la distribución de goles por partido?</div>
-    </div>
+    <div style="flex:1"><div class="xg-phase-ht">FASE 1 — Diagnóstico del Target</div><div class="xg-phase-hsub">¿Qué forma tiene la distribución de goles por partido?</div></div>
     <span class="xg-phase-arrow">▾</span>
   </div>
   <div class="xg-phase-body"><div class="xg-phase-inner">
-    <div class="xg-phase-divider"></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:8px">SIN TRANSFORMAR — cola pesada</div>
-        <svg viewBox="0 0 200 120" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="100" x2="190" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <rect x="28" y="30" width="24" height="70" rx="2" fill="rgba(255,68,255,.45)" stroke="rgba(255,68,255,.6)" stroke-width="0.5"/>
-          <rect x="58" y="15" width="24" height="85" rx="2" fill="rgba(255,68,255,.55)" stroke="rgba(255,68,255,.7)" stroke-width="0.5"/>
-          <rect x="88" y="32" width="24" height="68" rx="2" fill="rgba(255,68,255,.4)" stroke="rgba(255,68,255,.55)" stroke-width="0.5"/>
-          <rect x="118" y="55" width="24" height="45" rx="2" fill="rgba(255,68,255,.28)" stroke="rgba(255,68,255,.4)" stroke-width="0.5"/>
-          <rect x="148" y="78" width="24" height="22" rx="2" fill="rgba(255,68,255,.18)" stroke="rgba(255,68,255,.28)" stroke-width="0.5"/>
-          <rect x="168" y="92" width="14" height="8"  rx="2" fill="rgba(255,68,255,.1)"  stroke="rgba(255,68,255,.18)" stroke-width="0.5"/>
-          <text x="40"  y="112" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">1</text>
-          <text x="70"  y="112" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">2</text>
-          <text x="100" y="112" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">3</text>
-          <text x="130" y="112" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">4</text>
-          <text x="160" y="112" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">5+</text>
-          <text x="110" y="22" font-size="7" fill="rgba(255,150,0,.7)" text-anchor="middle">Shapiro-Wilk p=9.46×10⁻⁹ — no normal</text>
-        </svg>
+    <div style="padding:16px;background:rgba(255,255,255,.01);border:1px solid rgba(255,255,255,.04);border-radius:10px;margin-bottom:12px;display:flex;gap:20px">
+      <!-- Unstyled Target -->
+      <div style="flex:1">
+        <div style="font-size:9px;color:#ff44ff;font-weight:700;letter-spacing:.1em;margin-bottom:10px;text-align:center">Y: GOLES (Sin transformar)</div>
+        <div style="display:flex;align-items:flex-end;gap:4px;height:100px;justify-content:center;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:5px">
+          ${[15,35,30,15,5,2].map((v,i)=>`
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;width:20px">
+              <div style="width:100%;background:linear-gradient(180deg,#ff44ff,rgba(255,68,255,.2));border-radius:3px 3px 0 0;height:${v*2.5}px"></div>
+              <div style="font-size:8px;color:rgba(255,255,255,.4)">${i+1}</div>
+            </div>`).join('')}
+        </div>
+        <div style="text-align:center;font-size:8px;color:#ff8080;margin-top:6px">Shapiro-Wilk p=9.46×10⁻⁹<br>Cola pesada (Asimétrica)</div>
       </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:8px">log(y+1) — simétrica y modelable</div>
-        <svg viewBox="0 0 200 120" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="100" x2="190" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <path d="M28,95 Q60,82 85,18 Q110,82 145,95 Q165,98 185,97" fill="rgba(255,68,255,.1)" stroke="rgba(255,68,255,.75)" stroke-width="1.8"/>
-          <text x="100" y="38" font-size="7.5" fill="#ff44ff" text-anchor="middle" font-weight="600">Campana simétrica</text>
-          <text x="100" y="112" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">Lasso asume linealidad — transformación necesaria</text>
-        </svg>
+      <!-- Log Transformed Target -->
+      <div style="flex:1">
+        <div style="font-size:9px;color:#ff44ff;font-weight:700;letter-spacing:.1em;margin-bottom:10px;text-align:center">LOG(Y+1): Transformada</div>
+        <div style="display:flex;align-items:flex-end;gap:4px;height:100px;justify-content:center;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:5px;position:relative">
+          <!-- Campana Gaussiana aproximada -->
+          <svg style="position:absolute;bottom:5px;width:100%;height:100px;left:0" preserveAspectRatio="none" viewBox="0 0 100 100">
+            <path d="M0,95 Q25,95 40,50 Q50,10 60,50 Q75,95 100,95" fill="rgba(255,68,255,.1)" stroke="#ff44ff" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div style="text-align:center;font-size:8px;color:#44ff88;margin-top:6px">Distribución Simétrica<br>Lasso asume linealidad</div>
       </div>
     </div>
-    <div style="padding:11px 16px;background:rgba(255,68,255,.04);border-left:3px solid #ff44ff;border-radius:0 8px 8px 0;font-size:11px;color:rgba(255,255,255,.48);line-height:1.65">
-      <strong style="color:#ff44ff">Conclusión:</strong> El target total_goals tiene sesgo positivo (media 2.77, moda 2). log(y+1) simetriza y garantiza que Lasso no viole la linealidad. La predicción final: <strong style="color:#fff">exp(ŷ) − 1</strong>.
+    <div style="padding:10px 14px;background:rgba(255,68,255,.04);border-left:3px solid #ff44ff;border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6">
+      <strong style="color:#ff44ff">Conclusión:</strong> El target <span style="font-family:monospace;color:#ff44ff">total_goals</span> tiene sesgo positivo. <span style="font-family:monospace;color:#ff44ff">log(y+1)</span> simetriza y garantiza que Lasso no viole la linealidad. La predicción final requerirá <span style="font-family:monospace;color:#ff44ff">exp(ŷ) − 1</span>.
     </div>
   </div></div>
 </div>
@@ -1672,26 +1656,33 @@ const WS = {
 <div class="xg-phase-block" onclick="this.classList.toggle('open')">
   <div class="xg-phase-head">
     <span class="xg-phase-icon">🔬</span>
-    <div style="flex:1">
-      <div class="xg-phase-ht">FASE 2 — Brute-Force Scan (18 variables)</div>
-      <div class="xg-phase-hsub">Correlación Spearman + VIF sobre todas las candidatas</div>
-    </div>
+    <div style="flex:1"><div class="xg-phase-ht">FASE 2 — Brute-Force Scan (18 vars)</div><div class="xg-phase-hsub">Correlación Spearman con Goles Totales</div></div>
     <span class="xg-phase-arrow">▾</span>
   </div>
   <div class="xg-phase-body"><div class="xg-phase-inner">
-    <div class="xg-phase-divider"></div>
-    <div style="display:flex;flex-direction:column;gap:3px">
-      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#44ff88">Away_Avg_AST</span><span class="xg-rho" style="color:#44ff88">ρ = +0.31</span><span class="xg-pval">p &lt; 0.001</span><span class="xg-badge xg-badge-green">✓ activa</span></div>
-      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#44ff88">Home_Sum_influence</span><span class="xg-rho" style="color:#44ff88">ρ = +0.24</span><span class="xg-pval">p &lt; 0.001</span><span class="xg-badge xg-badge-green">✓ activa</span></div>
-      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#ff8080">Home_Avg_FTHG</span><span class="xg-rho" style="color:#ff8080">ρ = −0.19</span><span class="xg-pval">p &lt; 0.001</span><span class="xg-badge xg-badge-red">✓ activa ↓</span></div>
-      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#ff8080">Home_Days_Rest</span><span class="xg-rho" style="color:#ff8080">ρ = −0.15</span><span class="xg-pval">p = 0.009</span><span class="xg-badge xg-badge-red">✓ activa ↓</span></div>
-      <div class="xg-spearman-row eliminated"><span style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.5)">Home_ELO</span><span class="xg-rho" style="color:rgba(255,255,255,.25)">ρ = +0.04</span><span class="xg-pval">p = 0.48</span><span class="xg-badge xg-badge-red">β = 0</span></div>
-      <div class="xg-spearman-row eliminated"><span style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.5)">Away_ELO</span><span class="xg-rho" style="color:rgba(255,255,255,.25)">ρ = +0.02</span><span class="xg-pval">p = 0.71</span><span class="xg-badge xg-badge-red">β = 0</span></div>
-      <div class="xg-spearman-row eliminated"><span style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.5)">referee_bias · rest_home…</span><span class="xg-rho" style="color:rgba(255,255,255,.25)">ρ ≈ 0</span><span class="xg-pval">p &gt; 0.15</span><span class="xg-badge xg-badge-red">12 más → β = 0</span></div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      ${[
+        {v:'Away_Avg_AST', rho:0.31, sig:true},
+        {v:'Home_Sum_influence', rho:0.24, sig:true},
+        {v:'Home_Avg_FTHG', rho:-0.19, sig:true},
+        {v:'Home_Days_Rest', rho:-0.15, sig:true},
+        {v:'Home_ELO', rho:0.04, sig:false},
+        {v:'Away_ELO', rho:0.02, sig:false},
+      ].map(r=>`
+      <div style="display:grid;grid-template-columns:130px 1fr 60px 40px;align-items:center;gap:10px">
+        <span style="font-family:monospace;font-size:11px;color:${r.sig?'#ff44ff':'rgba(255,80,80,.5)'}">${r.v}</span>
+        <div class="xg-vif-bar"><div class="xg-vif-fill" style="width:${Math.abs(r.rho)*300}%;background:${r.sig?'#ff44ff':'rgba(255,80,80,.3)'}"></div></div>
+        <span style="font-size:11px;color:${r.sig?'#ff44ff':'rgba(255,80,80,.5)'};text-align:right">ρ=${r.rho.toFixed(2)}</span>
+        <span class="xg-badge ${r.sig?'m2-badge-activa':'m2-badge-elim'}" style="text-align:center">${r.sig?'✓':'β=0'}</span>
+      </div>`).join('')}
+      <div style="display:grid;grid-template-columns:130px 1fr 60px 40px;align-items:center;gap:10px">
+        <span style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.5)">12 vars más...</span>
+        <div class="xg-vif-bar"><div class="xg-vif-fill" style="width:2%;background:rgba(255,80,80,.3)"></div></div>
+        <span style="font-size:11px;color:rgba(255,80,80,.5);text-align:right">ρ≈0</span>
+        <span class="xg-badge m2-badge-elim" style="text-align:center">β=0</span>
+      </div>
     </div>
-    <div style="margin-top:12px;padding:10px 14px;background:rgba(255,80,80,.05);border-left:2px solid #ff5555;border-radius:0 8px 8px 0;font-size:10px;color:rgba(255,255,255,.42)">
-      <strong style="color:#ff8080">ELO eliminado:</strong> Las cuotas de Bet365 ya incorporan ELO implícitamente — añadirlo generaría colinealidad en n=3,800. VIF máx final: 2.91 — muy por debajo del umbral de 10.
-    </div>
+    <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,.3)">✓ El penalizador L1 (Lasso) redujo todas las variables redundantes o no significativas a exactamente 0.0.</div>
   </div></div>
 </div>
 
@@ -1699,274 +1690,229 @@ const WS = {
 <div class="xg-phase-block" onclick="this.classList.toggle('open')">
   <div class="xg-phase-head">
     <span class="xg-phase-icon">⚗️</span>
-    <div style="flex:1">
-      <div class="xg-phase-ht">FASE 3 — Supuestos Gauss-Markov</div>
-      <div class="xg-phase-hsub">Validación estadística del modelo lineal</div>
-    </div>
+    <div style="flex:1"><div class="xg-phase-ht">FASE 3 — Supuestos Gauss-Markov</div><div class="xg-phase-hsub">Validación estadística del modelo lineal</div></div>
     <span class="xg-phase-arrow">▾</span>
   </div>
   <div class="xg-phase-body"><div class="xg-phase-inner">
-    <div class="xg-phase-divider"></div>
-    <div style="display:flex;flex-direction:column;gap:3px">
-      <div class="xg-spearman-row" style="background:rgba(68,255,136,.03);border-color:rgba(68,255,136,.12)">
-        <span style="font-size:11px;color:rgba(255,255,255,.6)">Breusch-Pagan (homocedasticidad)</span>
-        <span class="xg-rho" style="color:#44ff88">p = 0.492</span><span class="xg-pval">α = 0.05</span><span class="xg-badge xg-badge-green">✓ pasa</span>
-      </div>
-      <div class="xg-spearman-row" style="background:rgba(68,255,136,.03);border-color:rgba(68,255,136,.12)">
-        <span style="font-size:11px;color:rgba(255,255,255,.6)">VIF max (multicolinealidad)</span>
-        <span class="xg-rho" style="color:#44ff88">2.91</span><span class="xg-pval">umbral 10</span><span class="xg-badge xg-badge-green">✓ pasa</span>
-      </div>
-      <div class="xg-spearman-row eliminated" style="background:rgba(255,80,80,.03);border-color:rgba(255,80,80,.1)">
-        <span style="font-size:11px;color:rgba(255,255,255,.5)">Shapiro-Wilk (normalidad residuos)</span>
-        <span class="xg-rho" style="color:rgba(255,255,255,.3)">p &lt; 0.05</span><span class="xg-pval">residuos</span><span class="xg-badge xg-badge-red">✗ falla</span>
-      </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#ff44ff">Breusch-Pagan</span><span class="xg-rho" style="color:#44ff88">p=0.492</span><span class="xg-pval">homocedasticidad</span><span class="xg-badge xg-badge-green">✓ Pasa</span></div>
+      <div class="xg-spearman-row"><span style="font-family:monospace;font-size:11px;color:#ff44ff">VIF max</span><span class="xg-rho" style="color:#44ff88">2.91</span><span class="xg-pval">multicolinealidad</span><span class="xg-badge xg-badge-green">✓ Pasa</span></div>
+      <div class="xg-spearman-row eliminated"><span style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.7)">Shapiro-Wilk</span><span class="xg-rho" style="color:rgba(255,255,255,.3)">p&lt;0.05</span><span class="xg-pval">residuos</span><span class="xg-badge xg-badge-red">❌ Falla</span></div>
     </div>
-    <div style="margin-top:12px;padding:10px 14px;background:rgba(255,200,0,.05);border-left:2px solid #ffcc00;border-radius:0 8px 8px 0;font-size:10px;color:rgba(255,255,255,.42)">
-      <strong style="color:#ffcc00">2/3 supuestos cumplidos.</strong> La normalidad de residuos falla — esperado para conteos de goles. Lasso es robusto a esta violación; el bootstrap confirma estabilidad de coeficientes.
+    <div style="margin-top:10px;padding:8px 12px;background:rgba(255,200,0,.06);border-left:2px solid #ffcc00;border-radius:0 6px 6px 0;font-size:10px;color:rgba(255,255,255,.45)">
+      <strong style="color:#ffcc00">Normalidad fallida:</strong> Esperado para conteos de goles (Poisson). Lasso sigue siendo consistente y robusto; el bootstrap confirma la estabilidad de coeficientes.
     </div>
   </div></div>
 </div>
 
 <!-- FEATURES FINALES -->
-<div style="margin-top:14px;padding:14px 18px;border-radius:10px;background:rgba(255,68,255,.03);border:1px solid rgba(255,68,255,.18);display:flex;align-items:center;gap:16px;justify-content:space-between">
+<div style="margin-top:18px;padding:16px 20px;border-radius:14px;background:linear-gradient(135deg,rgba(255,68,255,.05) 0%,rgba(120,0,180,.1) 100%);border:1px solid rgba(255,68,255,.25);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);box-shadow:0 8px 25px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.1);display:flex;align-items:center;gap:18px;justify-content:space-between">
   <div style="flex:1">
-    <div style="font-size:8px;color:#ff44ff;letter-spacing:.18em;margin-bottom:8px;font-weight:700">FEATURES FINALES — 4 VARIABLES INAMOVIBLES</div>
-    <div style="display:flex;flex-wrap:wrap;gap:6px">
-      ${[['Away_Avg_AST','#44ff88'],['Home_Sum_influence','#44ff88'],['Home_Avg_FTHG','#ff8080'],['Home_Days_Rest','#ff8080']].map(([v,c])=>`<span style="font-family:monospace;font-size:10px;padding:4px 10px;border-radius:20px;background:rgba(255,68,255,.07);border:1px solid rgba(255,68,255,.2);color:${c}">${v}</span>`).join('')}
+    <div style="font-size:9px;color:#ff44ff;letter-spacing:.2em;margin-bottom:10px;font-weight:700;text-shadow:0 0 8px rgba(255,68,255,.4)">FEATURES FINALES — 4 VARIABLES INAMOVIBLES</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px">
+      ${[['Away_Avg_AST','#44ff88'],['Home_Sum_influence','#44ff88'],['Home_Avg_FTHG','#ff8080'],['Home_Days_Rest','#ff8080']].map(([v,c])=>`<span style="font-family:monospace;font-size:11px;padding:6px 12px;border-radius:8px;background:rgba(255,68,255,.08);border:1px solid rgba(255,68,255,.3);color:${c};box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">${v}</span>`).join('')}
     </div>
   </div>
-  <button class="xg-next-btn" style="border-color:rgba(255,68,255,.3);color:#ff44ff" onclick="event.stopPropagation();document.querySelector('.ws-tab[data-tab=training]').click()">La Navaja de Occam →</button>
+  <button class="xg-next-btn" style="border-radius:10px;border:1px solid rgba(255,68,255,.4);color:#ff44ff;background:linear-gradient(135deg,rgba(255,68,255,.1),rgba(180,0,255,.05));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 4px 15px rgba(255,68,255,.15);transition:all .3s" onmouseover="this.style.background='linear-gradient(135deg,rgba(255,68,255,.2),rgba(180,0,255,.1))';this.style.borderColor='rgba(255,68,255,.8)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.15),0 8px 25px rgba(255,68,255,.25)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(255,68,255,.1),rgba(180,0,255,.05))';this.style.borderColor='rgba(255,68,255,.4)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.1),0 4px 15px rgba(255,68,255,.15)'" onclick="event.stopPropagation();document.querySelector('.ws-tab[data-tab=training]').click()">La Navaja de Occam →</button>
 </div>`,
-        training: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
-<div class="xg-eyebrow" style="margin-bottom:6px">PIPELINE · MODELO LASSO</div>
-<div class="xg-phase-title" style="font-size:22px;margin-bottom:4px">La Navaja de Occam</div>
-<div class="xg-phase-sub">Pipeline de 5 etapas — haz clic en cada bloque para explorar su papel.</div>
+        training: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+<div class="xg-eyebrow" style="margin-bottom:4px;color:rgba(255,68,255,.6)">PIPELINE · MODELO LASSO</div>
+<div class="xg-phase-title" style="font-size:21px;margin-bottom:3px">La Navaja de Occam</div>
+<div class="xg-phase-sub" style="margin-bottom:0">Haz clic en cada etapa para ver su gráfico y decisión técnica.</div>
 
-<div class="xg-pipe" id="m2-pipe-row">
-  <div class="xg-pipe-node sel" onclick="m2Pipe(this,0)"><span class="xg-pipe-icon">📋</span><span class="xg-pipe-lbl">Datos</span><span class="xg-pipe-sub">3,800+ partidos</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="m2Pipe(this,1)"><span class="xg-pipe-icon">🔬</span><span class="xg-pipe-lbl">Feature Eng.</span><span class="xg-pipe-sub">Rolling avg · 18 vars</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="m2Pipe(this,2)"><span class="xg-pipe-icon">✂️</span><span class="xg-pipe-lbl">Lasso L1</span><span class="xg-pipe-sub">α = 0.0117</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="m2Pipe(this,3)"><span class="xg-pipe-icon">🌿</span><span class="xg-pipe-lbl">log(y+1)</span><span class="xg-pipe-sub">Target transform</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="m2Pipe(this,4)"><span class="xg-pipe-icon">⚽</span><span class="xg-pipe-lbl">Goles</span><span class="xg-pipe-sub">MAE 1.26</span></div>
+<div class="m2-pipe" id="m2-pipe-row">
+  <div class="m2-pipe-node active" onclick="m2PipeSelect(this,0)"><span class="m2-pipe-icon">📋</span><span class="m2-pipe-label">Datos</span><span class="m2-pipe-sublabel">3,800+ partidos</span></div>
+  <span class="m2-pipe-arrow">→</span>
+  <div class="m2-pipe-node" onclick="m2PipeSelect(this,1)"><span class="m2-pipe-icon">🔬</span><span class="m2-pipe-label">Feat. Eng.</span><span class="m2-pipe-sublabel">18 candidatas</span></div>
+  <span class="m2-pipe-arrow">→</span>
+  <div class="m2-pipe-node" onclick="m2PipeSelect(this,2)"><span class="m2-pipe-icon">✂️</span><span class="m2-pipe-label">Lasso L1</span><span class="m2-pipe-sublabel">α = 0.0117</span></div>
+  <span class="m2-pipe-arrow">→</span>
+  <div class="m2-pipe-node" onclick="m2PipeSelect(this,3)"><span class="m2-pipe-icon">🌿</span><span class="m2-pipe-label">log(y+1)</span><span class="m2-pipe-sublabel">Transform</span></div>
+  <span class="m2-pipe-arrow">→</span>
+  <div class="m2-pipe-node" onclick="m2PipeSelect(this,4)"><span class="m2-pipe-icon">⚽</span><span class="m2-pipe-label">Output</span><span class="m2-pipe-sublabel">MAE 1.26</span></div>
 </div>
 
-<div class="xg-pdetail" id="m2-pdetail">3,800+ partidos PL (2015–2025). Split 80/20: ~3,040 train / ~760 test. Sin data leakage — solo información disponible antes del pitido inicial.</div>
-
-<div class="xg-vis-panel" style="margin-top:16px">
-
-  <!-- Panel 0: DATOS -->
-  <div class="m2-vp" id="m2-vp-0">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SPLIT TRAIN / TEST</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <rect x="16" y="20" width="128" height="30" rx="4" fill="rgba(255,68,255,.18)" stroke="rgba(255,68,255,.4)" stroke-width="0.7"/>
-          <text x="80" y="40" font-size="10" fill="#ff44ff" text-anchor="middle" font-weight="700">TRAIN — 3,040</text>
-          <rect x="148" y="20" width="36" height="30" rx="4" fill="rgba(255,200,0,.18)" stroke="rgba(255,200,0,.4)" stroke-width="0.7"/>
-          <text x="166" y="40" font-size="8" fill="#ffcc00" text-anchor="middle" font-weight="700">TEST 760</text>
-          <text x="80"  y="68" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">80% — entrenamiento histórico</text>
-          <text x="166" y="68" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">20%</text>
-          <text x="100" y="88" font-size="7" fill="rgba(255,255,255,.25)" text-anchor="middle">10 temporadas · cero Data Leakage garantizado</text>
-        </svg>
-      </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">DISTRIBUCIÓN DE GOLES</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="95" x2="195" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <rect x="28" y="38" width="22" height="57" rx="2" fill="rgba(255,68,255,.35)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <rect x="55" y="18" width="22" height="77" rx="2" fill="rgba(255,68,255,.5)" stroke="rgba(255,68,255,.7)" stroke-width="0.5"/>
-          <rect x="82" y="28" width="22" height="67" rx="2" fill="rgba(255,68,255,.4)" stroke="rgba(255,68,255,.6)" stroke-width="0.5"/>
-          <rect x="109" y="55" width="22" height="40" rx="2" fill="rgba(255,68,255,.28)" stroke="rgba(255,68,255,.4)" stroke-width="0.5"/>
-          <rect x="136" y="75" width="22" height="20" rx="2" fill="rgba(255,68,255,.18)" stroke="rgba(255,68,255,.3)" stroke-width="0.5"/>
-          <rect x="163" y="87" width="22" height="8" rx="2" fill="rgba(255,68,255,.1)" stroke="rgba(255,68,255,.2)" stroke-width="0.5"/>
-          <text x="39"  y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">1</text>
-          <text x="66"  y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">2</text>
-          <text x="93"  y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">3</text>
-          <text x="120" y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">4</text>
-          <text x="147" y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">5</text>
-          <text x="174" y="108" font-size="6" fill="rgba(255,255,255,.28)" text-anchor="middle">6+</text>
-          <text x="100" y="14" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">Sesgo a marcadores bajos → log(y+1)</text>
-        </svg>
-      </div>
+<!-- Panel 0: Datos -->
+<div class="m2-pv active" id="m2-pv-0" style="grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+  <div class="m2-pv-text">
+    <strong style="color:#ff44ff">3,800+ partidos PL</strong> (2015–2025). Split <strong>80/20 temporal</strong>: train en pasado, test en presente. Cero data leakage — solo información disponible <em>antes del pitido inicial</em>. Los rolling averages se calculan con datos previos a cada partido.
+    <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+      <span style="padding:2px 8px;border-radius:10px;background:rgba(255,68,255,.1);border:1px solid rgba(255,68,255,.25);font-size:10px;color:#ff44ff">3,040 Train · 80%</span>
+      <span style="padding:2px 8px;border-radius:10px;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.2);font-size:10px;color:#ffcc00">760 Test · 20%</span>
+    </div>
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val">3,800+</div><div class="m2-pv-kpi-lbl">Partidos</div></div>
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val">10 años</div><div class="m2-pv-kpi-lbl">Cobertura</div></div>
     </div>
   </div>
+  <svg viewBox="0 0 180 128" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="14" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle" letter-spacing=".1em">DISTRIBUCIÓN DE GOLES/PARTIDO</text>
+    <line x1="22" y1="22" x2="22" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
+    <line x1="22" y1="100" x2="168" y2="100" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
+    <!-- bars: goles 1-6+ -->
+    <rect x="30"  y="52" width="18" height="48" rx="2" fill="rgba(255,68,255,.28)" stroke="rgba(255,68,255,.45)" stroke-width="0.6"/>
+    <rect x="54"  y="28" width="18" height="72" rx="2" fill="rgba(255,68,255,.45)" stroke="rgba(255,68,255,.65)" stroke-width="0.6"/>
+    <rect x="78"  y="40" width="18" height="60" rx="2" fill="rgba(255,68,255,.36)" stroke="rgba(255,68,255,.55)" stroke-width="0.6"/>
+    <rect x="102" y="62" width="18" height="38" rx="2" fill="rgba(255,68,255,.22)" stroke="rgba(255,68,255,.38)" stroke-width="0.6"/>
+    <rect x="126" y="80" width="18" height="20" rx="2" fill="rgba(255,68,255,.14)" stroke="rgba(255,68,255,.28)" stroke-width="0.6"/>
+    <rect x="150" y="91" width="18" height="9"  rx="2" fill="rgba(255,68,255,.08)" stroke="rgba(255,68,255,.18)" stroke-width="0.6"/>
+    <text x="39"  y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">1</text>
+    <text x="63"  y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">2</text>
+    <text x="87"  y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">3</text>
+    <text x="111" y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">4</text>
+    <text x="135" y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">5</text>
+    <text x="159" y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">6+</text>
+    <text x="95" y="124" font-size="7" fill="rgba(255,200,0,.5)" text-anchor="middle">⚠ Cola pesada → requiere log(y+1)</text>
+  </svg>
+</div>
 
-  <!-- Panel 1: FEATURE ENGINEERING -->
-  <div class="m2-vp" id="m2-vp-1" style="display:none">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">18 CANDIDATAS → BRUTE-FORCE SCAN</div>
-        <svg viewBox="0 0 200 130" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <text x="100" y="14" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">Variables candidatas evaluadas</text>
-          <rect x="12" y="22" width="176" height="14" rx="3" fill="rgba(255,80,80,.12)" stroke="rgba(255,80,80,.2)" stroke-width="0.5"/>
-          <text x="100" y="32" font-size="6.5" fill="rgba(255,80,80,.6)" text-anchor="middle">Home_ELO · Away_ELO · avg_shots · referee_bias…</text>
-          <text x="100" y="50" font-size="9" fill="rgba(255,80,80,.5)" text-anchor="middle">✗ 14 variables → β = 0 (aniquiladas)</text>
-          <line x1="100" y1="55" x2="100" y2="68" stroke="rgba(255,255,255,.15)" stroke-width="1" marker-end="url(#arr)"/>
-          <rect x="40" y="70" width="120" height="14" rx="3" fill="rgba(255,68,255,.15)" stroke="rgba(255,68,255,.3)" stroke-width="0.5"/>
-          <text x="100" y="80" font-size="7" fill="#ff44ff" text-anchor="middle" font-weight="700">4 supervivientes — señal real</text>
-          <text x="52" y="102" font-size="6.5" fill="rgba(68,255,136,.7)" text-anchor="middle">Away_Avg_AST</text>
-          <text x="52" y="112" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">β=+0.041</text>
-          <text x="100" y="102" font-size="6.5" fill="rgba(68,255,136,.7)" text-anchor="middle">Home_Influence</text>
-          <text x="100" y="112" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">β=+0.070</text>
-          <text x="148" y="102" font-size="6.5" fill="rgba(255,80,80,.7)" text-anchor="middle">Home_FTHG · Rest</text>
-          <text x="148" y="112" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">β=−0.060 / −0.050</text>
-        </svg>
-      </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">VIF — COLINEALIDAD CONTROLADA</div>
-        <svg viewBox="0 0 200 130" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="110" x2="190" y2="110" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="38" x2="190" y2="38" stroke="rgba(255,200,0,.2)" stroke-width="0.6" stroke-dasharray="3,3"/>
-          <text x="192" y="41" font-size="5.5" fill="rgba(255,200,0,.5)">10</text>
-          <rect x="30" y="75" width="28" height="35" rx="2" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <rect x="68" y="68" width="28" height="42" rx="2" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <rect x="106" y="80" width="28" height="30" rx="2" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <rect x="144" y="72" width="28" height="38" rx="2" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <text x="44"  y="120" font-size="5.5" fill="rgba(255,255,255,.28)" text-anchor="middle">AST</text>
-          <text x="82"  y="120" font-size="5.5" fill="rgba(255,255,255,.28)" text-anchor="middle">Infl.</text>
-          <text x="120" y="120" font-size="5.5" fill="rgba(255,255,255,.28)" text-anchor="middle">FTHG</text>
-          <text x="158" y="120" font-size="5.5" fill="rgba(255,255,255,.28)" text-anchor="middle">Rest</text>
-          <text x="44"  y="72" font-size="6" fill="rgba(255,68,255,.8)" text-anchor="middle">1.28</text>
-          <text x="82"  y="65" font-size="6" fill="rgba(255,68,255,.8)" text-anchor="middle">1.54</text>
-          <text x="120" y="77" font-size="6" fill="rgba(255,68,255,.8)" text-anchor="middle">2.11</text>
-          <text x="158" y="69" font-size="6" fill="rgba(255,68,255,.8)" text-anchor="middle">2.91</text>
-          <text x="100" y="24" font-size="7" fill="rgba(68,255,136,.7)" text-anchor="middle">✓ Todos VIF &lt; 10 — sin multicolinealidad</text>
-        </svg>
-      </div>
+<!-- Panel 1: Feature Engineering -->
+<div class="m2-pv" id="m2-pv-1" style="grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+  <div class="m2-pv-text">
+    <strong>18 candidatas → Brute-Force Scan</strong> con correlación Spearman + VIF. <strong style="color:#ff6666">14 variables resultaron ruido puro</strong> (β = 0 tras Lasso).<br><br>
+    Las 4 supervivientes no tienen colinealidad severa — <strong style="color:#44ff88">VIF &lt; 3</strong> en todas. ELO, sesgo de árbitro y días de descanso no pasaron el corte estadístico con n=3,800.
+    <div style="margin-top:10px;display:flex;gap:5px;flex-wrap:wrap">
+      <span style="padding:2px 7px;border-radius:8px;background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.2);font-size:9px;color:#44ff88">AST ✓</span>
+      <span style="padding:2px 7px;border-radius:8px;background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.2);font-size:9px;color:#44ff88">Infl. ✓</span>
+      <span style="padding:2px 7px;border-radius:8px;background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.2);font-size:9px;color:#44ff88">FTHG ✓</span>
+      <span style="padding:2px 7px;border-radius:8px;background:rgba(68,255,136,.08);border:1px solid rgba(68,255,136,.2);font-size:9px;color:#44ff88">Rest ✓</span>
+      <span style="padding:2px 7px;border-radius:8px;background:rgba(255,80,80,.07);border:1px solid rgba(255,80,80,.18);font-size:9px;color:#ff8080">+14 descartadas</span>
     </div>
   </div>
+  <svg viewBox="0 0 180 128" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="14" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle" letter-spacing=".08em">VIF — COLINEALIDAD CONTROLADA</text>
+    <line x1="22" y1="22" x2="22" y2="96" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
+    <line x1="22" y1="96" x2="168" y2="96" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
+    <!-- danger line VIF=10 -->
+    <line x1="22" y1="30" x2="168" y2="30" stroke="rgba(255,80,80,.2)" stroke-width="0.7" stroke-dasharray="3,3"/>
+    <text x="165" y="29" font-size="5.5" fill="rgba(255,80,80,.45)" text-anchor="end">VIF=10</text>
+    <!-- safe zone -->
+    <line x1="22" y1="62" x2="168" y2="62" stroke="rgba(68,255,136,.15)" stroke-width="0.6" stroke-dasharray="2,4"/>
+    <text x="165" y="61" font-size="5.5" fill="rgba(68,255,136,.4)" text-anchor="end">VIF=3</text>
+    <!-- bars 4 winners -->
+    <rect x="32"  y="78" width="26" height="18" rx="3" fill="rgba(255,68,255,.35)" stroke="rgba(255,68,255,.55)" stroke-width="0.6"/>
+    <rect x="68"  y="72" width="26" height="24" rx="3" fill="rgba(255,68,255,.35)" stroke="rgba(255,68,255,.55)" stroke-width="0.6"/>
+    <rect x="104" y="58" width="26" height="38" rx="3" fill="rgba(255,68,255,.3)"  stroke="rgba(255,68,255,.5)"  stroke-width="0.6"/>
+    <rect x="140" y="44" width="26" height="52" rx="3" fill="rgba(255,68,255,.25)" stroke="rgba(255,68,255,.45)" stroke-width="0.6"/>
+    <text x="45"  y="74" font-size="6.5" fill="#ff44ff" text-anchor="middle" font-weight="700">1.28</text>
+    <text x="81"  y="68" font-size="6.5" fill="#ff44ff" text-anchor="middle" font-weight="700">1.54</text>
+    <text x="117" y="54" font-size="6.5" fill="#ff44ff" text-anchor="middle" font-weight="700">2.11</text>
+    <text x="153" y="40" font-size="6.5" fill="#ff44ff" text-anchor="middle" font-weight="700">2.91</text>
+    <text x="45"  y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">AST</text>
+    <text x="81"  y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Infl.</text>
+    <text x="117" y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">FTHG</text>
+    <text x="153" y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Rest</text>
+    <text x="90" y="122" font-size="6.5" fill="rgba(68,255,136,.65)" text-anchor="middle">✓ Todas por debajo del umbral de riesgo</text>
+  </svg>
+</div>
 
-  <!-- Panel 2: LASSO L1 -->
-  <div class="m2-vp" id="m2-vp-2" style="display:none">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">RIDGE (L2) — NO ELIMINA VARIABLES</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <text x="100" y="16" font-size="7.5" fill="rgba(255,255,255,.3)" text-anchor="middle">Coeficientes Ridge (encogen, no anulan)</text>
-          <rect x="20" y="28" width="24" height="55" rx="2" fill="rgba(255,150,0,.35)" stroke="rgba(255,150,0,.5)" stroke-width="0.5"/>
-          <rect x="50" y="35" width="24" height="48" rx="2" fill="rgba(255,150,0,.3)" stroke="rgba(255,150,0,.45)" stroke-width="0.5"/>
-          <rect x="80" y="42" width="24" height="41" rx="2" fill="rgba(255,150,0,.25)" stroke="rgba(255,150,0,.4)" stroke-width="0.5"/>
-          <rect x="110" y="50" width="24" height="33" rx="2" fill="rgba(255,150,0,.2)" stroke="rgba(255,150,0,.35)" stroke-width="0.5"/>
-          <rect x="140" y="60" width="24" height="23" rx="2" fill="rgba(255,150,0,.15)" stroke="rgba(255,150,0,.3)" stroke-width="0.5"/>
-          <rect x="170" y="72" width="14" height="11" rx="2" fill="rgba(255,150,0,.1)" stroke="rgba(255,150,0,.2)" stroke-width="0.5"/>
-          <text x="100" y="98" font-size="7" fill="rgba(255,150,0,.6)" text-anchor="middle">14 ruidos sobreviven con β pequeño</text>
-          <text x="100" y="108" font-size="6" fill="rgba(255,255,255,.25)" text-anchor="middle">MAE: 1.27 — modelo más ruidoso</text>
-        </svg>
-      </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">LASSO (L1) — SELECCIÓN AUTOMÁTICA</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <text x="100" y="16" font-size="7.5" fill="rgba(255,255,255,.3)" text-anchor="middle">Coeficientes Lasso — poda quirúrgica</text>
-          <rect x="20" y="25" width="24" height="58" rx="2" fill="rgba(255,68,255,.4)" stroke="rgba(255,68,255,.6)" stroke-width="0.5"/>
-          <rect x="50" y="30" width="24" height="53" rx="2" fill="rgba(255,68,255,.35)" stroke="rgba(255,68,255,.55)" stroke-width="0.5"/>
-          <rect x="80" y="38" width="24" height="45" rx="2" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
-          <rect x="110" y="42" width="24" height="41" rx="2" fill="rgba(255,68,255,.25)" stroke="rgba(255,68,255,.45)" stroke-width="0.5"/>
-          <line x1="140" y1="83" x2="190" y2="83" stroke="rgba(255,255,255,.08)" stroke-width="0.5"/>
-          <text x="165" y="79" font-size="7" fill="rgba(255,255,255,.18)" text-anchor="middle">β = 0</text>
-          <text x="20"  y="96" font-size="5.5" fill="rgba(255,255,255,.28)">AST</text>
-          <text x="50"  y="96" font-size="5.5" fill="rgba(255,255,255,.28)">Infl.</text>
-          <text x="80"  y="96" font-size="5.5" fill="rgba(255,255,255,.28)">FTHG</text>
-          <text x="110" y="96" font-size="5.5" fill="rgba(255,255,255,.28)">Rest</text>
-          <text x="100" y="108" font-size="6.5" fill="rgba(68,255,136,.7)" text-anchor="middle">✓ 14 ruidos = β 0 · MAE 1.26</text>
-        </svg>
-      </div>
+<!-- Panel 2: Lasso L1 -->
+<div class="m2-pv" id="m2-pv-2" style="grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+  <div class="m2-pv-text">
+    <strong>LassoCV · Regularización L1</strong><br>
+    Ridge (L2) solo <em>encoge</em> coeficientes. <strong style="color:#ff44ff">Lasso los fuerza a exactamente cero</strong> — selección automática de features. De 18 candidatas, 14 quedan eliminadas.<br><br>
+    <span style="color:#ffcc00">α = 0.0117</span> seleccionado por 5-fold CV. Lasso gana a Ridge por <strong style="color:#44ff88">MAE 1.26 vs 1.27</strong> — parsimonia y precisión juntas.
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val" style="font-size:16px">4/18</div><div class="m2-pv-kpi-lbl">Features activas</div></div>
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val" style="color:#44ff88;font-size:16px">0.0117</div><div class="m2-pv-kpi-lbl">α óptimo</div></div>
     </div>
   </div>
+  <svg viewBox="0 0 180 128" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="14" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle" letter-spacing=".08em">PODA QUIRÚRGICA L1</text>
+    <!-- active features -->
+    <rect x="15" y="28" width="22" height="55" rx="3" fill="rgba(255,68,255,.42)" stroke="rgba(255,68,255,.65)" stroke-width="0.7"/>
+    <rect x="42" y="34" width="22" height="49" rx="3" fill="rgba(255,68,255,.36)" stroke="rgba(255,68,255,.58)" stroke-width="0.7"/>
+    <rect x="69" y="42" width="22" height="41" rx="3" fill="rgba(255,68,255,.28)" stroke="rgba(255,68,255,.48)" stroke-width="0.7"/>
+    <rect x="96" y="48" width="22" height="35" rx="3" fill="rgba(255,68,255,.22)" stroke="rgba(255,68,255,.4)"  stroke-width="0.7"/>
+    <!-- zero bar line -->
+    <line x1="123" y1="83" x2="168" y2="83" stroke="rgba(255,255,255,.07)" stroke-width="0.5"/>
+    <!-- 14 dead variables zone -->
+    <rect x="123" y="80" width="45" height="3" rx="1" fill="rgba(255,255,255,.05)"/>
+    <text x="146" y="76" font-size="6.5" fill="rgba(255,255,255,.2)" text-anchor="middle">14 vars · β=0</text>
+    <text x="26"  y="97" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">AST</text>
+    <text x="53"  y="97" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Infl.</text>
+    <text x="80"  y="97" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">FTHG</text>
+    <text x="107" y="97" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Rest</text>
+    <!-- alpha path -->
+    <path d="M15,112 Q55,100 90,108 Q125,116 168,105" fill="none" stroke="rgba(255,200,0,.35)" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="90" y="122" font-size="6.5" fill="rgba(68,255,136,.65)" text-anchor="middle">✓ Lasso: MAE 1.260 · Ridge: MAE 1.270</text>
+  </svg>
+</div>
 
-  <!-- Panel 3: log(y+1) TRANSFORM -->
-  <div class="m2-vp" id="m2-vp-3" style="display:none">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SIN TRANSFORMAR — sesgo positivo</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="95" x2="190" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <path d="M25,92 Q40,30 55,25 Q70,22 85,30 Q110,45 140,68 Q160,80 185,90" fill="rgba(255,150,0,.15)" stroke="rgba(255,150,0,.7)" stroke-width="1.5"/>
-          <text x="60" y="18" font-size="7" fill="rgba(255,150,0,.7)">Cola pesada →</text>
-          <text x="100" y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Shapiro-Wilk: p = 9.46×10⁻⁹ — no normal</text>
-        </svg>
-      </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CON log(y+1) — distribución simétrica</div>
-        <svg viewBox="0 0 200 110" style="width:100%;background:rgba(255,255,255,.02);border-radius:8px;border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
-          <line x1="20" y1="10" x2="20" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <line x1="20" y1="95" x2="190" y2="95" stroke="rgba(255,255,255,.12)" stroke-width="0.6"/>
-          <path d="M25,90 Q50,88 75,50 Q100,18 125,50 Q150,88 175,90" fill="rgba(255,68,255,.1)" stroke="rgba(255,68,255,.7)" stroke-width="1.5"/>
-          <text x="100" y="40" font-size="7" fill="rgba(255,68,255,.8)" text-anchor="middle">Campana simétrica</text>
-          <text x="100" y="108" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">Lasso asume linealidad — la transformación lo satisface</text>
-        </svg>
-      </div>
+<!-- Panel 3: log(y+1) Transform -->
+<div class="m2-pv" id="m2-pv-3" style="grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+  <div class="m2-pv-text">
+    <strong>log(y+1) · Target Transform</strong><br>
+    Los goles por partido siguen una distribución de Poisson con cola pesada a la derecha. Los modelos lineales asumen linealidad — sin transformar, el error se dispara en partidos de muchos goles.<br><br>
+    Aplicar <strong style="color:var(--cyan)">ln(y+1)</strong> simetriza la distribución. La salida final: <code style="color:#ff44ff">exp(ŷ)−1</code> = goles predichos.
+    <div style="margin-top:10px">
+      <span style="padding:2px 8px;border-radius:8px;background:rgba(255,200,0,.08);border:1px solid rgba(255,200,0,.2);font-size:9px;color:#ffcc00">Shapiro-Wilk p=9.46×10⁻⁹ · Lasso es robusto</span>
     </div>
   </div>
+  <svg viewBox="0 0 180 128" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="14" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle" letter-spacing=".08em">ANTES vs DESPUÉS</text>
+    <!-- Before: skewed -->
+    <text x="52" y="27" font-size="7" fill="rgba(255,255,255,.28)" text-anchor="middle">Sin transformar</text>
+    <line x1="18" y1="28" x2="18" y2="62" stroke="rgba(255,255,255,.1)" stroke-width="0.5"/>
+    <line x1="18" y1="62" x2="100" y2="62" stroke="rgba(255,255,255,.1)" stroke-width="0.5"/>
+    <path d="M20,62 Q28,30 36,62 Q44,55 52,62 Q60,60 68,62 Q76,61 84,62 Q92,62 100,62" fill="rgba(255,80,80,.12)" stroke="rgba(255,80,80,.55)" stroke-width="1.2"/>
+    <text x="52" y="74" font-size="6.5" fill="rgba(255,80,80,.6)" text-anchor="middle">Poisson · cola derecha</text>
+    <!-- Arrow -->
+    <text x="90" y="80" font-size="13" fill="rgba(0,255,255,.35)" text-anchor="middle">↓ log(y+1)</text>
+    <!-- After: symmetric -->
+    <text x="52" y="94" font-size="7" fill="rgba(255,255,255,.28)" text-anchor="middle">Transformada</text>
+    <line x1="18" y1="96" x2="18" y2="120" stroke="rgba(255,255,255,.1)" stroke-width="0.5"/>
+    <line x1="18" y1="120" x2="100" y2="120" stroke="rgba(255,255,255,.1)" stroke-width="0.5"/>
+    <path d="M20,120 Q36,96 52,96 Q68,96 84,120" fill="rgba(255,68,255,.12)" stroke="rgba(255,68,255,.7)" stroke-width="1.4"/>
+    <text x="52" y="128" font-size="6.5" fill="rgba(255,68,255,.7)" text-anchor="middle">Simétrica ✓</text>
+    <!-- exp inverse -->
+    <text x="145" y="90" font-size="7" fill="rgba(0,255,255,.5)" text-anchor="middle">Salida:</text>
+    <text x="145" y="102" font-size="7.5" fill="rgba(0,255,255,.8)" text-anchor="middle">exp(ŷ)−1</text>
+    <text x="145" y="113" font-size="6.5" fill="rgba(255,255,255,.3)" text-anchor="middle">= goles</text>
+  </svg>
+</div>
 
-  <!-- Panel 4: RESULTADOS — CV folds + métricas finales -->
-  <div class="m2-vp" id="m2-vp-4" style="display:none">
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CV — MAE POR FOLD</div>
-        <div style="display:flex;flex-direction:column;gap:7px">
-          <div style="display:grid;grid-template-columns:22px 1fr 52px;align-items:center;gap:8px">
-            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4)">F1</span>
-            <div style="height:10px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden"><div class="m2-fold-bar" data-pct="72" style="height:100%;width:0;background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff);border-radius:4px;transition:width .9s ease"></div></div>
-            <span style="font-size:11px;color:#ff44ff;text-align:right;font-weight:600">1.24</span>
-          </div>
-          <div style="display:grid;grid-template-columns:22px 1fr 52px;align-items:center;gap:8px">
-            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4)">F2</span>
-            <div style="height:10px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden"><div class="m2-fold-bar" data-pct="78" style="height:100%;width:0;background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff);border-radius:4px;transition:width .9s ease"></div></div>
-            <span style="font-size:11px;color:#ff44ff;text-align:right;font-weight:600">1.31</span>
-          </div>
-          <div style="display:grid;grid-template-columns:22px 1fr 52px;align-items:center;gap:8px">
-            <span style="font-size:9px;font-weight:700;color:#44ff88">F3</span>
-            <div style="height:10px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden"><div class="m2-fold-bar" data-pct="68" style="height:100%;width:0;background:linear-gradient(90deg,rgba(68,255,136,.6),#44ff88);border-radius:4px;transition:width .9s ease"></div></div>
-            <span style="font-size:11px;color:#44ff88;text-align:right;font-weight:600">1.19</span>
-          </div>
-          <div style="display:grid;grid-template-columns:22px 1fr 52px;align-items:center;gap:8px">
-            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4)">F4</span>
-            <div style="height:10px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden"><div class="m2-fold-bar" data-pct="74" style="height:100%;width:0;background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff);border-radius:4px;transition:width .9s ease"></div></div>
-            <span style="font-size:11px;color:#ff44ff;text-align:right;font-weight:600">1.27</span>
-          </div>
-          <div style="display:grid;grid-template-columns:22px 1fr 52px;align-items:center;gap:8px">
-            <span style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4)">F5</span>
-            <div style="height:10px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden"><div class="m2-fold-bar" data-pct="71" style="height:100%;width:0;background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff);border-radius:4px;transition:width .9s ease"></div></div>
-            <span style="font-size:11px;color:#ff44ff;text-align:right;font-weight:600">1.22</span>
-          </div>
-        </div>
-        <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,.35)">MAE promedio: <strong style="color:#ff44ff">1.246 ± 0.042</strong></div>
-      </div>
-      <div>
-        <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">MÉTRICAS FINALES</div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="display:flex;justify-content:space-between;padding:7px 11px;border-radius:7px;background:rgba(255,68,255,.05);border:1px solid rgba(255,68,255,.15)">
-            <span style="font-size:9px;color:rgba(255,255,255,.4)">MAE (test)</span>
-            <span style="font-size:14px;font-weight:700;color:#ff44ff">1.26</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:7px 11px;border-radius:7px;background:rgba(255,255,255,.025)">
-            <span style="font-size:9px;color:rgba(255,255,255,.4)">RMSE</span>
-            <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.7)">1.613</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:7px 11px;border-radius:7px;background:rgba(255,255,255,.025)">
-            <span style="font-size:9px;color:rgba(255,255,255,.4)">R²</span>
-            <span style="font-size:13px;font-weight:600;color:rgba(255,255,255,.7)">0.41</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:7px 11px;border-radius:7px;background:rgba(255,255,255,.025)">
-            <span style="font-size:9px;color:rgba(255,255,255,.4)">α óptimo (LassoCV)</span>
-            <span style="font-size:13px;font-weight:600;color:#ffcc00">0.0117</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;padding:7px 11px;border-radius:7px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.12)">
-            <span style="font-size:9px;color:rgba(255,255,255,.4)">Lasso vs Ridge</span>
-            <span style="font-size:11px;font-weight:700;color:#44ff88">1.260 &lt; 1.270 ✓</span>
-          </div>
-        </div>
-      </div>
+<!-- Panel 4: Output -->
+<div class="m2-pv" id="m2-pv-4" style="grid-template-columns:1fr 1fr;gap:12px;align-items:start">
+  <div class="m2-pv-text">
+    Salida final: <strong style="color:#ff44ff">exp(ŷ)−1 = goles predichos por partido</strong>. MAE = 1.26 goles. R² = 0.41 — el modelo explica el 41% de la varianza del marcador con <strong style="color:#44ff88">solo 4 variables pre-partido</strong>.
+    <div style="margin-top:10px;display:grid;grid-template-columns:1fr 1fr;gap:6px">
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val">1.26</div><div class="m2-pv-kpi-lbl">MAE goles</div></div>
+      <div class="m2-pv-kpi"><div class="m2-pv-kpi-val" style="color:#44ff88">0.41</div><div class="m2-pv-kpi-lbl">R² score</div></div>
     </div>
+    <div style="margin-top:8px;font-size:9px;color:rgba(255,255,255,.35);line-height:1.6">5-Fold CV MAE: <strong style="color:#44ff88">1.246 ± 0.042</strong> · varianza baja → modelo robusto sin overfitting</div>
   </div>
+  <svg viewBox="0 0 180 128" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
+    <text x="90" y="14" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle" letter-spacing=".08em">MAE POR FOLD (K-FOLD k=5)</text>
+    <!-- fold bars -->
+    <rect x="16"  y="42" width="22" height="56" rx="3" fill="rgba(255,68,255,.25)" stroke="rgba(255,68,255,.4)" stroke-width="0.7"/>
+    <rect x="48"  y="34" width="22" height="64" rx="3" fill="rgba(255,68,255,.2)"  stroke="rgba(255,68,255,.35)" stroke-width="0.7"/>
+    <rect x="80"  y="50" width="22" height="48" rx="3" fill="rgba(68,255,136,.28)" stroke="rgba(68,255,136,.5)"  stroke-width="0.7"/>
+    <rect x="112" y="40" width="22" height="58" rx="3" fill="rgba(255,68,255,.22)" stroke="rgba(255,68,255,.38)" stroke-width="0.7"/>
+    <rect x="144" y="46" width="22" height="52" rx="3" fill="rgba(255,68,255,.24)" stroke="rgba(255,68,255,.4)"  stroke-width="0.7"/>
+    <text x="27"  y="38"  font-size="7.5" fill="rgba(255,68,255,.8)"  text-anchor="middle">1.24</text>
+    <text x="59"  y="30"  font-size="7.5" fill="rgba(255,68,255,.75)" text-anchor="middle">1.31</text>
+    <text x="91"  y="46"  font-size="7.5" fill="rgba(68,255,136,.9)"  text-anchor="middle">1.19</text>
+    <text x="123" y="36"  font-size="7.5" fill="rgba(255,68,255,.78)" text-anchor="middle">1.27</text>
+    <text x="155" y="42"  font-size="7.5" fill="rgba(255,68,255,.8)"  text-anchor="middle">1.22</text>
+    <text x="27"  y="112" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">F1</text>
+    <text x="59"  y="112" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">F2</text>
+    <text x="91"  y="112" font-size="7" fill="rgba(68,255,136,.5)"  text-anchor="middle">F3 ✓</text>
+    <text x="123" y="112" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">F4</text>
+    <text x="155" y="112" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">F5</text>
+    <!-- mean line -->
+    <line x1="10" y1="41" x2="172" y2="41" stroke="rgba(255,200,0,.35)" stroke-width="0.8" stroke-dasharray="3,2"/>
+    <text x="172" y="39" font-size="6.5" fill="rgba(255,200,0,.6)" text-anchor="end">μ=1.246</text>
+    <text x="90" y="125" font-size="6.5" fill="rgba(255,255,255,.2)" text-anchor="middle">Baja varianza → sin overfitting</text>
+  </svg>
+</div>
 
+<div style="margin-top:12px;padding:10px 14px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.18);border-radius:8px;backdrop-filter:blur(6px)">
+  <span style="font-size:9px;color:#ff44ff;font-weight:700;letter-spacing:.12em">LASSO VS RIDGE · </span>
+  <span style="font-size:11px;color:rgba(255,255,255,.5)">Lasso gana por 0.01 MAE — irrelevante en bruto, pero decisivo: <strong style="color:#fff">14 variables con β=0</strong> en lugar de coeficientes pequeños. Parsimonia e interpretabilidad garantizadas.</span>
+</div>
+<div style="text-align:right;margin-top:12px">
+  <button class="xg-next-btn" onclick="document.querySelector('.ws-tab[data-tab=predictions]').click()" style="border-color:rgba(255,68,255,.5);color:#ff44ff">El Laboratorio →</button>
 </div>`,
         predictions: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div></div>
 <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px">
@@ -2023,153 +1969,415 @@ const WS = {
   <!-- Lasso vs Ridge comparison -->
   <div>
     <div class="xg-dis-eyebrow" style="color:rgba(255,68,255,.6)">LASSO vs RIDGE — BATALLA DE PENALIZADORES</div>
-    <div style="display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:4px;margin-bottom:10px">
+    <div style="display:grid;grid-template-columns:auto 1fr 1fr;grid-template-rows:auto 1fr 1fr;gap:6px;margin-bottom:14px">
       <div></div>
-      <div style="font-size:8px;color:rgba(255,255,255,.3);text-align:center;padding:2px;letter-spacing:.08em">MAE</div>
-      <div style="font-size:8px;color:rgba(255,255,255,.3);text-align:center;padding:2px;letter-spacing:.08em">RMSE</div>
-      <div style="font-size:8px;color:rgba(255,255,255,.25);writing-mode:vertical-rl;text-align:center;letter-spacing:.08em;transform:rotate(180deg);padding:2px">Ridge</div>
-      <div class="xg-cm-cell" style="background:rgba(255,150,0,.08);border:1px solid rgba(255,150,0,.18)">
-        <div style="font-size:20px;font-weight:700;color:#ffaa00">1.270</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:1px">perdedor</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.5);text-align:center;padding:2px;letter-spacing:.1em;font-weight:700">MAE</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.5);text-align:center;padding:2px;letter-spacing:.1em;font-weight:700">RMSE</div>
+      <div style="font-size:8px;color:rgba(255,255,255,.4);writing-mode:vertical-rl;text-align:center;letter-spacing:.1em;transform:rotate(180deg);padding:2px;font-weight:700">Ridge</div>
+      <div class="xg-cm-cell" style="border-radius:10px;background:linear-gradient(135deg,rgba(255,150,0,.12),rgba(180,100,0,.04));border:1px solid rgba(255,150,0,.3);backdrop-filter:blur(8px);box-shadow:0 4px 15px rgba(0,0,0,.2)">
+        <div style="font-size:22px;font-weight:700;color:#ffaa00;text-shadow:0 0 10px rgba(255,150,0,.4)">1.270</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.5);margin-top:2px;text-transform:uppercase;letter-spacing:.1em">perdedor</div>
       </div>
-      <div class="xg-cm-cell" style="background:rgba(255,150,0,.08);border:1px solid rgba(255,150,0,.18)">
-        <div style="font-size:20px;font-weight:700;color:#ffaa00">1.616</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:1px">perdedor</div>
+      <div class="xg-cm-cell" style="border-radius:10px;background:linear-gradient(135deg,rgba(255,150,0,.12),rgba(180,100,0,.04));border:1px solid rgba(255,150,0,.3);backdrop-filter:blur(8px);box-shadow:0 4px 15px rgba(0,0,0,.2)">
+        <div style="font-size:22px;font-weight:700;color:#ffaa00;text-shadow:0 0 10px rgba(255,150,0,.4)">1.616</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.5);margin-top:2px;text-transform:uppercase;letter-spacing:.1em">perdedor</div>
       </div>
-      <div style="font-size:8px;color:rgba(255,255,255,.25);writing-mode:vertical-rl;text-align:center;letter-spacing:.08em;transform:rotate(180deg);padding:2px">Lasso★</div>
-      <div class="xg-cm-cell" style="background:rgba(255,68,255,.12);border:1px solid rgba(255,68,255,.3)">
-        <div style="font-size:20px;font-weight:700;color:#ff44ff">1.260</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:1px">ganador ✓</div>
+      <div style="font-size:9px;color:#ff44ff;writing-mode:vertical-rl;text-align:center;letter-spacing:.1em;transform:rotate(180deg);padding:2px;font-weight:800;text-shadow:0 0 8px rgba(255,68,255,.4)">Lasso★</div>
+      <div class="xg-cm-cell" style="border-radius:10px;background:linear-gradient(135deg,rgba(255,68,255,.15),rgba(120,0,180,.05));border:1px solid rgba(255,68,255,.4);backdrop-filter:blur(8px);box-shadow:0 4px 15px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.1)">
+        <div style="font-size:22px;font-weight:700;color:#ff44ff;text-shadow:0 0 12px rgba(255,68,255,.5)">1.260</div>
+        <div style="font-size:8px;color:#ff44ff;margin-top:2px;text-transform:uppercase;letter-spacing:.1em;font-weight:700">ganador ✓</div>
       </div>
-      <div class="xg-cm-cell" style="background:rgba(255,68,255,.12);border:1px solid rgba(255,68,255,.3)">
-        <div style="font-size:20px;font-weight:700;color:#ff44ff">1.613</div>
-        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:1px">ganador ✓</div>
-      </div>
-    </div>
-    <div style="display:flex;flex-direction:column;gap:4px">
-      <div style="display:flex;justify-content:space-between;padding:5px 9px;border-radius:5px;background:rgba(255,255,255,.025)">
-        <span style="font-size:10px;color:rgba(255,255,255,.4)">R² Score</span>
-        <span style="font-size:11px;font-weight:600;color:#ff44ff">0.41</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;padding:5px 9px;border-radius:5px;background:rgba(255,255,255,.025)">
-        <span style="font-size:10px;color:rgba(255,255,255,.4)">α óptimo (LassoCV)</span>
-        <span style="font-size:11px;font-weight:600;color:#ffcc00">0.0117</span>
-      </div>
-      <div style="display:flex;justify-content:space-between;padding:5px 9px;border-radius:5px;background:rgba(255,68,255,.05);border:1px solid rgba(255,68,255,.12)">
-        <span style="font-size:10px;color:rgba(255,255,255,.4)">Features activas (L1)</span>
-        <span style="font-size:12px;font-weight:700;color:#ff44ff">4 / 18</span>
+      <div class="xg-cm-cell" style="border-radius:10px;background:linear-gradient(135deg,rgba(255,68,255,.15),rgba(120,0,180,.05));border:1px solid rgba(255,68,255,.4);backdrop-filter:blur(8px);box-shadow:0 4px 15px rgba(0,0,0,.2),inset 0 1px 0 rgba(255,255,255,.1)">
+        <div style="font-size:22px;font-weight:700;color:#ff44ff;text-shadow:0 0 12px rgba(255,68,255,.5)">1.613</div>
+        <div style="font-size:8px;color:#ff44ff;margin-top:2px;text-transform:uppercase;letter-spacing:.1em;font-weight:700">ganador ✓</div>
       </div>
     </div>
-    <div style="margin-top:8px;font-size:10px;color:rgba(255,255,255,.3);line-height:1.6;padding:8px 10px;background:rgba(255,255,255,.02);border-radius:6px">Lasso gana por 0.01 de MAE — insignificante en bruto, pero decisivo: 14 variables con β=0 en lugar de coeficientes pequeños. Parsimonia e interpretabilidad garantizadas.</div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(4px)">
+        <span style="font-size:10px;color:rgba(255,255,255,.5)">R² Score</span>
+        <span style="font-size:12px;font-weight:600;color:#ff44ff;text-shadow:0 0 8px rgba(255,68,255,.3)">0.41</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(4px)">
+        <span style="font-size:10px;color:rgba(255,255,255,.5)">α óptimo (LassoCV)</span>
+        <span style="font-size:12px;font-weight:600;color:#ffcc00;text-shadow:0 0 8px rgba(255,200,0,.3)">0.0117</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 12px;border-radius:8px;background:linear-gradient(135deg,rgba(255,68,255,.1),rgba(120,0,180,.05));border:1px solid rgba(255,68,255,.3);backdrop-filter:blur(4px)">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Features activas (L1)</span>
+        <span style="font-size:13px;font-weight:700;color:#ff44ff;text-shadow:0 0 8px rgba(255,68,255,.4)">4 / 18</span>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:10px;color:rgba(255,255,255,.6);line-height:1.6;padding:12px 14px;background:linear-gradient(135deg,rgba(255,68,255,.08),rgba(120,0,180,.03));border-left:3px solid #ff44ff;border-radius:0 8px 8px 0;backdrop-filter:blur(4px)">Lasso gana por 0.01 de MAE — insignificante en bruto, pero decisivo: 14 variables con β=0 en lugar de coeficientes pequeños. Parsimonia e interpretabilidad garantizadas.</div>
   </div>
 </div>
 
 <div class="xg-dis-section">
   <div class="xg-dis-eyebrow" style="color:rgba(255,68,255,.6)">SECCIÓN A · BATALLA DE VERSIONES</div>
   <div class="xg-dis-title">Evolución del modelo Lasso</div>
-  <table class="xg-battle-table">
-    <thead><tr>
-      <th>Versión</th><th>MAE</th><th>RMSE</th><th>R²</th><th>Notas</th>
-    </tr></thead>
-    <tbody>
-      <tr class="xg-battle-row" id="m2-brow-0">
-        <td><span style="color:#fff;font-weight:500">Baseline (media)</span></td>
-        <td><span style="color:#ff6666;font-weight:600">1.54</span></td>
-        <td><span style="color:rgba(255,255,255,.5)">1.94</span></td>
-        <td><span style="color:rgba(255,255,255,.5)">0.00</span></td>
-        <td><span style="font-size:10px;color:rgba(255,255,255,.4)">Siempre predice 2.77 goles. Cero poder predictivo.</span></td>
-      </tr>
-      <tr class="xg-battle-row" id="m2-brow-1">
-        <td><span style="color:#fff;font-weight:500">Ridge (L2) — 18 vars</span></td>
-        <td><span style="color:#ffaa00;font-weight:600">1.270</span></td>
-        <td><span style="color:rgba(255,255,255,.5)">1.616</span></td>
-        <td><span style="color:rgba(255,255,255,.5)">0.40</span></td>
-        <td><span style="font-size:10px;color:rgba(255,255,255,.4)">Encoge coeficientes pero conserva las 18 variables activas.</span></td>
-      </tr>
-      <tr class="xg-battle-row winner" id="m2-brow-2">
-        <td><span style="color:#fff;font-weight:500">Lasso★ α=0.0117</span> <span class="xg-battle-badge best" style="background:rgba(255,68,255,.15);color:#ff44ff;border-color:rgba(255,68,255,.3)">FINAL</span></td>
-        <td><span style="color:#ff44ff;font-weight:600">1.260</span></td>
-        <td><span style="color:#ff44ff;font-weight:600">1.613</span></td>
-        <td><span style="color:#ff44ff;font-weight:600">0.41</span></td>
-        <td><span style="font-size:10px;color:rgba(255,255,255,.4)">L1 poda 14 vars · log(y+1) · CV 5-fold · parsimonia máxima</span></td>
-      </tr>
-    </tbody>
-  </table>
+  <div style="border-radius:8px;border:1px solid rgba(255,255,255,.05);overflow:hidden">
+    <table class="xg-battle-table" style="background:transparent;border:none;margin:0">
+      <thead style="background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.1)"><tr>
+        <th style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.1em">Versión</th><th style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.1em">MAE</th><th style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.1em">RMSE</th><th style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.1em">R²</th><th style="color:rgba(255,255,255,.5);font-size:10px;letter-spacing:.1em">Notas</th>
+      </tr></thead>
+      <tbody>
+        <tr class="xg-battle-row" id="m2-brow-0" style="border-bottom:1px solid rgba(255,255,255,.05)">
+          <td><span style="color:#fff;font-weight:500">Baseline (media)</span></td>
+          <td><span style="color:#ff6666;font-weight:600">1.54</span></td>
+          <td><span style="color:rgba(255,255,255,.5)">1.94</span></td>
+          <td><span style="color:rgba(255,255,255,.5)">0.00</span></td>
+          <td><span style="font-size:10px;color:rgba(255,255,255,.4)">Siempre predice 2.77 goles. Cero poder predictivo.</span></td>
+        </tr>
+        <tr class="xg-battle-row" id="m2-brow-1" style="border-bottom:1px solid rgba(255,255,255,.05)">
+          <td><span style="color:#fff;font-weight:500">Ridge (L2) — 18 vars</span></td>
+          <td><span style="color:#ffaa00;font-weight:700">1.270</span></td>
+          <td><span style="color:rgba(255,255,255,.6)">1.616</span></td>
+          <td><span style="color:rgba(255,255,255,.6)">0.40</span></td>
+          <td><span style="font-size:10px;color:rgba(255,255,255,.4)">Encoge coeficientes pero conserva las 18 variables activas.</span></td>
+        </tr>
+        <tr class="xg-battle-row winner" id="m2-brow-2" style="background:rgba(255,68,255,.05)">
+          <td><span style="color:#fff;font-weight:600;text-shadow:0 0 10px rgba(255,68,255,.4)">Lasso★ α=0.0117</span> <span class="xg-battle-badge best" style="background:rgba(255,68,255,.15);color:#ff44ff;border-color:rgba(255,68,255,.4);box-shadow:0 0 10px rgba(255,68,255,.3)">FINAL</span></td>
+          <td><span style="color:#ff44ff;font-weight:800;text-shadow:0 0 10px rgba(255,68,255,.4)">1.260</span></td>
+          <td><span style="color:#ff44ff;font-weight:700">1.613</span></td>
+          <td><span style="color:#ff44ff;font-weight:700">0.41</span></td>
+          <td><span style="font-size:10px;color:rgba(255,255,255,.6)">L1 poda 14 vars · log(y+1) · CV 5-fold · parsimonia máxima</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
 
 <div class="xg-dis-section">
   <div class="xg-dis-eyebrow" style="color:rgba(255,68,255,.6)">SECCIÓN B · COEFICIENTES — ANATOMÍA DEL MODELO</div>
   <div class="xg-dis-title">¿Qué variable pesa y en qué dirección?</div>
-  <div class="xg-or-grid">
-    <div class="xg-or-card xg-or-card-m2">
-      <div class="xg-or-feat" style="color:#44ff88">Home_Sum_influence</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar pos" data-pct="100" style="background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta pos" style="color:#ff44ff">β = +0.070</span><span class="xg-or-odds">mayor β activo</span></div>
-      <div class="xg-or-interp">El local tiene estrellas FPL → el visitante se abre → el partido genera más goles totales.</div>
+  <!-- ecuación glass -->
+  <div style="padding:12px 16px;border-radius:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.18);backdrop-filter:blur(10px);font-family:monospace;font-size:11px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:12px">
+    <span style="color:#ff44ff;font-weight:700">log(goles+1)</span> = <span style="color:rgba(255,255,255,.5)">1.224</span><span style="color:#44ff88"> +0.041</span>·<span style="color:#ff44ff">AST</span><span style="color:#44ff88"> +0.070</span>·<span style="color:#ff44ff">INF</span><span style="color:#ff8080"> −0.060</span>·<span style="color:#ff44ff">FTHG</span><span style="color:#ff8080"> −0.050</span>·<span style="color:#ff44ff">REST</span>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.18);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#44ff88;margin-bottom:4px;font-weight:700">Home_Sum_influence</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">El local tiene estrellas FPL → el visitante se abre → el partido genera más goles totales.</div>
+        <div style="margin-top:6px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:100%;background:linear-gradient(90deg,rgba(68,255,136,.4),#44ff88);border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right;min-width:80px">
+        <div style="font-size:18px;font-weight:300;color:#44ff88;line-height:1">+0.070</div>
+        <div style="font-size:8px;color:rgba(68,255,136,.5);letter-spacing:.08em;margin-top:2px">mayor β activo</div>
+      </div>
     </div>
-    <div class="xg-or-card xg-or-card-m2">
-      <div class="xg-or-feat" style="color:#44ff88">Away_Avg_AST</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar pos" data-pct="58" style="background:linear-gradient(90deg,rgba(255,68,255,.5),#ff44ff)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta pos" style="color:#ff44ff">β = +0.041</span><span class="xg-or-odds">↑ ritmo ofensivo</span></div>
-      <div class="xg-or-interp">Visitante que históricamente dispara más → ritmo de partido más alto → más goles para ambos.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(68,255,136,.03);border:1px solid rgba(68,255,136,.14);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#44ff88;margin-bottom:4px;font-weight:700">Away_Avg_AST</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Visitante que históricamente dispara más → ritmo de partido más alto → más goles para ambos.</div>
+        <div style="margin-top:6px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:59%;background:linear-gradient(90deg,rgba(68,255,136,.4),#44ff88);border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right;min-width:80px">
+        <div style="font-size:18px;font-weight:300;color:#44ff88;line-height:1">+0.041</div>
+        <div style="font-size:8px;color:rgba(68,255,136,.5);letter-spacing:.08em;margin-top:2px">↑ ritmo ofensivo</div>
+      </div>
     </div>
-    <div class="xg-or-card xg-or-card-m2">
-      <div class="xg-or-feat" style="color:#ff8080">Home_Avg_FTHG</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar neg" data-pct="86" style="background:linear-gradient(90deg,#ff4444,rgba(255,68,68,.4))"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta neg">β = −0.060</span><span class="xg-or-odds">↓ total goles</span></div>
-      <div class="xg-or-interp">Local goleador → visitante estaciona el bus → partido más cerrado de lo esperado.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.04);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#ff8080;margin-bottom:4px;font-weight:700">Home_Avg_FTHG</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Local goleador → visitante estaciona el bus → partido más cerrado de lo esperado.</div>
+        <div style="margin-top:6px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:86%;background:linear-gradient(90deg,rgba(255,80,80,.4),#ff8080);border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right;min-width:80px">
+        <div style="font-size:18px;font-weight:300;color:#ff8080;line-height:1">−0.060</div>
+        <div style="font-size:8px;color:rgba(255,80,80,.5);letter-spacing:.08em;margin-top:2px">↓ total goles</div>
+      </div>
     </div>
-    <div class="xg-or-card xg-or-card-m2">
-      <div class="xg-or-feat" style="color:#ff8080">Home_Days_Rest</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar neg" data-pct="71" style="background:linear-gradient(90deg,#ff4444,rgba(255,68,68,.4))"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta neg">β = −0.050</span><span class="xg-or-odds">↓ apertura táctica</span></div>
-      <div class="xg-or-interp">Más descanso = candado táctico perfecto → el local no necesita abrirse → menos goles.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.04);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#ff8080;margin-bottom:4px;font-weight:700">Home_Days_Rest</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Más descanso = candado táctico perfecto → el local no necesita abrirse → menos goles.</div>
+        <div style="margin-top:6px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:71%;background:linear-gradient(90deg,rgba(255,80,80,.4),#ff8080);border-radius:2px"></div></div>
+      </div>
+      <div style="text-align:right;min-width:80px">
+        <div style="font-size:18px;font-weight:300;color:#ff8080;line-height:1">−0.050</div>
+        <div style="font-size:8px;color:rgba(255,80,80,.5);letter-spacing:.08em;margin-top:2px">↓ apertura táctica</div>
+      </div>
     </div>
-    <div class="xg-or-card" style="background:rgba(255,80,80,.03);border-color:rgba(255,80,80,.1)">
-      <div class="xg-or-feat" style="color:#ff8888">Home_ELO · Away_ELO ✗ eliminadas</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar" style="width:0;background:rgba(255,80,80,.2)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta" style="color:#ff6666">p &gt; 0.48</span><span class="xg-or-odds" style="color:rgba(255,80,80,.5)">colineales</span></div>
-      <div class="xg-or-interp">Las cuotas Bet365 ya integran ELO implícitamente — añadirlo duplica la señal y destruye el modelo.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(6px);opacity:.6">
+      <div>
+        <div style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.7);text-decoration:line-through;margin-bottom:3px">Home_ELO · Away_ELO</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35)">Cuotas Bet365 integran ELO implícitamente — colineales, p &gt; 0.48</div>
+      </div>
+      <div style="text-align:right;min-width:80px"><div style="font-size:16px;font-weight:300;color:rgba(255,80,80,.6)">β = 0</div><div style="font-size:8px;color:rgba(255,80,80,.4);letter-spacing:.06em">L1 aniquilado</div></div>
     </div>
-    <div class="xg-or-card" style="background:rgba(255,80,80,.03);border-color:rgba(255,80,80,.1)">
-      <div class="xg-or-feat" style="color:#ff8888">12 variables restantes ✗</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar" style="width:0;background:rgba(255,80,80,.2)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta" style="color:#ff6666">β = 0.000</span><span class="xg-or-odds" style="color:rgba(255,80,80,.5)">aniquiladas L1</span></div>
-      <div class="xg-or-interp">referee_bias, season_stage, rest_days_away y otras 9 variables — Lasso las forzó exactamente a cero.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:10px 16px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);backdrop-filter:blur(6px);opacity:.5">
+      <div>
+        <div style="font-family:monospace;font-size:11px;color:rgba(255,80,80,.6);text-decoration:line-through;margin-bottom:3px">12 variables restantes</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35)">referee_bias, season_stage, rest_days_away y 9 más — Lasso las forzó a cero exacto</div>
+      </div>
+      <div style="text-align:right;min-width:80px"><div style="font-size:16px;font-weight:300;color:rgba(255,80,80,.5)">β = 0</div><div style="font-size:8px;color:rgba(255,80,80,.35);letter-spacing:.06em">sin señal</div></div>
     </div>
+
   </div>
 </div>
 
 <div class="xg-dis-section">
   <div class="xg-dis-eyebrow" style="color:rgba(255,68,255,.6)">SECCIÓN C · VALIDACIÓN ESTADÍSTICA</div>
   <div class="xg-dis-title">El modelo pasa los supuestos que importan</div>
-  <div class="xg-or-grid">
-    <div class="xg-or-card" style="background:rgba(68,255,136,.03);border-color:rgba(68,255,136,.12)">
-      <div class="xg-or-feat" style="color:#44ff88">Breusch-Pagan</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar pos" data-pct="100" style="background:linear-gradient(90deg,rgba(68,255,136,.5),#44ff88)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta pos" style="color:#44ff88">p = 0.492</span><span class="xg-or-odds">✓ homocedasticidad</span></div>
-      <div class="xg-or-interp">Los residuos no tienen varianza creciente — el modelo no es más impreciso en partidos de alta intensidad.</div>
+  <div style="display:flex;flex-direction:column;gap:7px">
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.2);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#44ff88;margin-bottom:4px;font-weight:700">Breusch-Pagan</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Los residuos no tienen varianza creciente — el modelo no es más impreciso en partidos de alta intensidad.</div>
+      </div>
+      <div style="text-align:right;min-width:90px">
+        <div style="font-size:18px;font-weight:300;color:#44ff88;line-height:1">p=0.492</div>
+        <div style="font-size:8px;color:rgba(68,255,136,.5);letter-spacing:.06em;margin-top:2px">✓ homocedasticidad</div>
+      </div>
     </div>
-    <div class="xg-or-card" style="background:rgba(68,255,136,.03);border-color:rgba(68,255,136,.12)">
-      <div class="xg-or-feat" style="color:#44ff88">VIF máximo</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar pos" data-pct="29" style="background:linear-gradient(90deg,rgba(68,255,136,.5),#44ff88)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta pos" style="color:#44ff88">2.91</span><span class="xg-or-odds">umbral = 10</span></div>
-      <div class="xg-or-interp">Sin multicolinealidad problemática. Las 4 variables supervivientes son independientes entre sí.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.2);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#44ff88;margin-bottom:4px;font-weight:700">VIF máximo</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Sin multicolinealidad problemática. Las 4 variables supervivientes son independientes entre sí.</div>
+      </div>
+      <div style="text-align:right;min-width:90px">
+        <div style="font-size:18px;font-weight:300;color:#44ff88;line-height:1">2.91</div>
+        <div style="font-size:8px;color:rgba(68,255,136,.5);letter-spacing:.06em;margin-top:2px">✓ umbral &lt; 10</div>
+      </div>
     </div>
-    <div class="xg-or-card" style="background:rgba(255,200,0,.03);border-color:rgba(255,200,0,.12)">
-      <div class="xg-or-feat" style="color:#ffcc00">Kruskal-Wallis (b365h)</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar pos" data-pct="100" style="background:linear-gradient(90deg,rgba(255,200,0,.5),#ffcc00)"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta" style="color:#ffcc00">p = 9.88×10⁻⁹</span><span class="xg-or-odds">✓ discrimina</span></div>
-      <div class="xg-or-interp">Las cuotas de Bet365 predicen significativamente el resultado — evidencia de que las features tienen señal real.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,200,0,.05);border:1px solid rgba(255,200,0,.22);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.06)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#ffcc00;margin-bottom:4px;font-weight:700">Kruskal-Wallis (b365h)</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Las cuotas de Bet365 predicen significativamente el resultado — evidencia de señal real en las features.</div>
+      </div>
+      <div style="text-align:right;min-width:90px">
+        <div style="font-size:14px;font-weight:300;color:#ffcc00;line-height:1.2">9.88×10⁻⁹</div>
+        <div style="font-size:8px;color:rgba(255,200,0,.5);letter-spacing:.06em;margin-top:2px">✓ discrimina</div>
+      </div>
     </div>
-    <div class="xg-or-card" style="background:rgba(255,80,80,.03);border-color:rgba(255,80,80,.1)">
-      <div class="xg-or-feat" style="color:#ff8888">Shapiro-Wilk (residuos)</div>
-      <div class="xg-or-bar-wrap"><div class="xg-or-bar neg" data-pct="40" style="background:linear-gradient(90deg,#ff4444,rgba(255,68,68,.4))"></div></div>
-      <div class="xg-or-vals"><span class="xg-or-beta neg">p &lt; 0.05</span><span class="xg-or-odds">✗ esperado</span></div>
-      <div class="xg-or-interp">Los residuos no son normales — esperado para conteos de goles. Lasso es robusto a esta violación menor.</div>
+
+    <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.04);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)">
+      <div>
+        <div style="font-family:monospace;font-size:12px;color:#ff8080;margin-bottom:4px;font-weight:700">Shapiro-Wilk (residuos)</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.45);line-height:1.5">Los residuos no son normales — esperado para conteos de goles (distribución Poisson). Lasso es robusto.</div>
+      </div>
+      <div style="text-align:right;min-width:90px">
+        <div style="font-size:18px;font-weight:300;color:#ff8080;line-height:1">p&lt;0.05</div>
+        <div style="font-size:8px;color:rgba(255,80,80,.5);letter-spacing:.06em;margin-top:2px">✗ esperado</div>
+      </div>
     </div>
+
   </div>
-</div>`
+</div>
+<!-- SECCIÓN B: COEFICIENTES + ODDS RATIOS -->
+<div class="xg-phase-block" onclick="this.classList.toggle('open')">
+  <div class="xg-phase-head">
+    <span class="xg-phase-icon">🧮</span>
+    <div style="flex:1"><div class="xg-phase-ht">B — Coeficientes &amp; Odds Ratios</div><div class="xg-phase-hsub">β en escala log(y+1) · OR = exp(β) — multiplicador de goles por unidad de variable</div></div>
+    <span class="xg-phase-arrow">▾</span>
+  </div>
+  <div class="xg-phase-body"><div class="xg-phase-inner">
+    <!-- Ecuación glass -->
+    <div style="padding:12px 16px;border-radius:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.18);backdrop-filter:blur(10px);font-family:monospace;font-size:11px;color:rgba(255,255,255,.65);line-height:1.9;margin-bottom:14px">
+      <span style="color:#ff44ff;font-weight:700">log(goles+1)</span> = <span style="color:rgba(255,255,255,.5)">1.224</span><span style="color:#44ff88"> +0.041</span>·<span style="color:#ff44ff">AST</span><span style="color:#44ff88"> +0.070</span>·<span style="color:#ff44ff">INF</span><span style="color:#ff8080"> −0.060</span>·<span style="color:#ff44ff">FTHG</span><span style="color:#ff8080"> −0.050</span>·<span style="color:#ff44ff">REST</span>
+    </div>
+
+    <!-- Tabla coef + OR -->
+    <div style="border-radius:10px;border:1px solid rgba(255,255,255,.06);overflow:hidden;margin-bottom:12px">
+      <div style="display:grid;grid-template-columns:1.4fr .5fr .5fr .55fr 1fr;gap:0;padding:7px 14px;background:rgba(255,255,255,.03);border-bottom:1px solid rgba(255,255,255,.07)">
+        <span style="font-size:8px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.35)">VARIABLE</span>
+        <span style="font-size:8px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.35);text-align:right">β</span>
+        <span style="font-size:8px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.35);text-align:right">OR=exp(β)</span>
+        <span style="font-size:8px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.35);text-align:center">EFECTO</span>
+        <span style="font-size:8px;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.35)">INTERPRETACIÓN</span>
+      </div>
+      ${[
+        {v:'B₀ intercepto', b:1.224, or:3.399, col:'rgba(255,255,255,.5)', orcol:'rgba(255,255,255,.5)', dir:'—', desc:'Sin más info → predicción base de 3.4 goles/partido (exp(1.224)−1)'},
+        {v:'Home_Sum_influence', b:0.070, or:1.073, col:'#44ff88', orcol:'#44ff88', dir:'↑', desc:'Cada punto de influencia FPL extra del local multiplica los goles esperados ×1.07'},
+        {v:'Away_Avg_AST', b:0.041, or:1.042, col:'#44ff88', orcol:'#44ff88', dir:'↑', desc:'Un tiro más al arco del visitante por partido → ×1.04 goles totales esperados'},
+        {v:'Home_Avg_FTHG', b:-0.060, or:0.942, col:'#ff8080', orcol:'#ff8080', dir:'↓', desc:'Local goleador histórico → rivales se cierran → ×0.94 goles (−6% por gol extra)'},
+        {v:'Home_Days_Rest', b:-0.050, or:0.951, col:'#ff8080', orcol:'#ff8080', dir:'↓', desc:'Un día más de descanso local → partido más cerrado → ×0.95 goles totales'},
+      ].map(r=>`
+      <div style="display:grid;grid-template-columns:1.4fr .5fr .55fr .55fr 1fr;gap:0;padding:9px 14px;border-bottom:1px solid rgba(255,255,255,.04);align-items:center;background:${r.b>0?'rgba(68,255,136,.02)':r.b<0?'rgba(255,80,80,.02)':'transparent'}">
+        <span style="font-family:monospace;font-size:10px;color:${r.col};font-weight:600">${r.v}</span>
+        <span style="font-size:11px;font-weight:700;color:${r.col};text-align:right">${r.b>0?'+':''}${r.b.toFixed(3)}</span>
+        <span style="font-size:11px;font-weight:700;color:${r.orcol};text-align:right">${r.or.toFixed(3)}</span>
+        <span style="font-size:12px;font-weight:700;color:${r.col};text-align:center">${r.dir}</span>
+        <span style="font-size:9px;color:rgba(255,255,255,.4);line-height:1.4">${r.desc}</span>
+      </div>`).join('')}
+    </div>
+
+    <!-- OR visual bars -->
+    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.12em;margin-bottom:8px">MAGNITUD ODDS RATIO — distancia desde 1.0 (sin efecto)</div>
+    <div style="display:flex;flex-direction:column;gap:5px;margin-bottom:12px">
+      ${[
+        {v:'Home_Sum_influence', or:1.073, pct:73, col:'#44ff88'},
+        {v:'Away_Avg_AST', or:1.042, pct:42, col:'#44ff88'},
+        {v:'Home_Avg_FTHG', or:0.942, pct:58, col:'#ff8080', neg:true},
+        {v:'Home_Days_Rest', or:0.951, pct:49, col:'#ff8080', neg:true},
+      ].map(r=>`
+      <div style="display:grid;grid-template-columns:130px 1fr 52px;align-items:center;gap:8px">
+        <span style="font-family:monospace;font-size:9px;color:${r.col};overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${r.v}</span>
+        <div style="height:6px;background:rgba(255,255,255,.05);border-radius:3px;overflow:hidden">
+          <div style="height:100%;width:${r.pct}%;background:linear-gradient(90deg,${r.neg?'rgba(255,80,80,.3)':'rgba(68,255,136,.3)'},${r.col});border-radius:3px;transition:width .8s ease"></div>
+        </div>
+        <span style="font-size:10px;font-weight:600;color:${r.col};text-align:right">×${r.or.toFixed(3)}</span>
+      </div>`).join('')}
+    </div>
+
+    <div style="padding:10px 14px;background:rgba(255,68,255,.04);border-left:3px solid #ff44ff;border-radius:0 6px 6px 0;font-size:10px;color:rgba(255,255,255,.45);line-height:1.6">
+      <strong style="color:#ff44ff">Lectura OR:</strong> OR=1.073 significa que cada punto de influencia FPL extra del local <em>multiplica</em> los goles esperados por 1.073. OR=0.942 del FTHG significa que cada gol extra en el historial local <em>reduce</em> el marcador un 5.8% — los rivales se preparan tácticamente contra equipos goleadores conocidos.
+    </div>
+  </div></div>
+</div>
+
+<!-- SECCIÓN C: FASE 7 GAUSS-MARKOV PANEL -->
+<div class="xg-phase-block" onclick="this.classList.toggle('open')">
+  <div class="xg-phase-head">
+    <span class="xg-phase-icon">🔬</span>
+    <div style="flex:1"><div class="xg-phase-ht">C — Fase 7: Panel Gauss-Markov</div><div class="xg-phase-hsub">Validación de supuestos OLS: homocedasticidad · independencia · normalidad · media cero</div></div>
+    <span class="xg-phase-arrow">▾</span>
+  </div>
+  <div class="xg-phase-body"><div class="xg-phase-inner">
+    <!-- 4 KPI badges -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:14px">
+      <div style="padding:10px 12px;border-radius:10px;background:rgba(68,255,136,.05);border:1px solid rgba(68,255,136,.22);backdrop-filter:blur(8px);text-align:center">
+        <div style="font-size:8px;color:rgba(68,255,136,.6);letter-spacing:.1em;margin-bottom:4px">HOMOCEDASTICIDAD</div>
+        <div style="font-size:16px;font-weight:300;color:#44ff88">p=0.735</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Spearman |ε| vs ŷ</div>
+        <div style="font-size:9px;color:#44ff88;margin-top:4px">✓ Pasa</div>
+      </div>
+      <div style="padding:10px 12px;border-radius:10px;background:rgba(68,255,136,.05);border:1px solid rgba(68,255,136,.22);backdrop-filter:blur(8px);text-align:center">
+        <div style="font-size:8px;color:rgba(68,255,136,.6);letter-spacing:.1em;margin-bottom:4px">INDEPENDENCIA</div>
+        <div style="font-size:16px;font-weight:300;color:#44ff88">p=0.899</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Spearman ε vs tiempo</div>
+        <div style="font-size:9px;color:#44ff88;margin-top:4px">✓ Pasa</div>
+      </div>
+      <div style="padding:10px 12px;border-radius:10px;background:rgba(68,255,136,.05);border:1px solid rgba(68,255,136,.22);backdrop-filter:blur(8px);text-align:center">
+        <div style="font-size:8px;color:rgba(68,255,136,.6);letter-spacing:.1em;margin-bottom:4px">MEDIA CERO</div>
+        <div style="font-size:16px;font-weight:300;color:#44ff88">≈ 0</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Garantía intercepto OLS</div>
+        <div style="font-size:9px;color:#44ff88;margin-top:4px">✓ Garantizado</div>
+      </div>
+      <div style="padding:10px 12px;border-radius:10px;background:rgba(255,200,0,.05);border:1px solid rgba(255,200,0,.2);backdrop-filter:blur(8px);text-align:center">
+        <div style="font-size:8px;color:rgba(255,200,0,.6);letter-spacing:.1em;margin-bottom:4px">NORMALIDAD</div>
+        <div style="font-size:16px;font-weight:300;color:#ffcc00">p≈0</div>
+        <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:3px">Shapiro-Wilk residuos</div>
+        <div style="font-size:9px;color:#ffcc00;margin-top:4px">⚠ Marginal</div>
+      </div>
+    </div>
+
+    <!-- Panel 4 gráficos SVG -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+      <!-- Gráfico 1: Histograma de residuos -->
+      <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:8px;color:rgba(255,68,255,.6);letter-spacing:.12em;margin-bottom:8px">① HISTOGRAMA DE RESIDUOS</div>
+        <svg viewBox="0 0 200 110" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- ejes -->
+          <line x1="20" y1="90" x2="190" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <!-- curva normal teórica -->
+          <path d="M22,88 Q40,87 60,75 Q80,55 100,30 Q120,10 130,18 Q145,35 160,65 Q175,82 190,88" fill="none" stroke="rgba(255,68,255,.6)" stroke-width="1.2" stroke-dasharray="3,2"/>
+          <!-- barras histograma (aprox distribución residuos) -->
+          <rect x="28" y="85" width="12" height="5"  rx="1" fill="rgba(255,68,255,.25)" stroke="rgba(255,68,255,.4)" stroke-width="0.5"/>
+          <rect x="42" y="78" width="12" height="12" rx="1" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.4)" stroke-width="0.5"/>
+          <rect x="56" y="62" width="12" height="28" rx="1" fill="rgba(255,68,255,.4)" stroke="rgba(255,68,255,.5)" stroke-width="0.5"/>
+          <rect x="70" y="42" width="12" height="48" rx="1" fill="rgba(255,68,255,.55)" stroke="rgba(255,68,255,.7)" stroke-width="0.5"/>
+          <rect x="84" y="28" width="12" height="62" rx="1" fill="rgba(255,68,255,.7)" stroke="#ff44ff" stroke-width="0.5"/>
+          <rect x="98" y="32" width="12" height="58" rx="1" fill="rgba(255,68,255,.65)" stroke="#ff44ff" stroke-width="0.5"/>
+          <rect x="112" y="50" width="12" height="40" rx="1" fill="rgba(255,68,255,.45)" stroke="rgba(255,68,255,.6)" stroke-width="0.5"/>
+          <rect x="126" y="68" width="12" height="22" rx="1" fill="rgba(255,68,255,.3)" stroke="rgba(255,68,255,.4)" stroke-width="0.5"/>
+          <rect x="140" y="82" width="12" height="8"  rx="1" fill="rgba(255,68,255,.2)" stroke="rgba(255,68,255,.35)" stroke-width="0.5"/>
+          <rect x="154" y="87" width="12" height="3"  rx="1" fill="rgba(255,68,255,.15)" stroke="rgba(255,68,255,.3)" stroke-width="0.5"/>
+          <!-- etiquetas eje x -->
+          <text x="34"  y="98" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">-3</text>
+          <text x="90"  y="98" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">0</text>
+          <text x="160" y="98" font-size="6" fill="rgba(255,255,255,.3)" text-anchor="middle">+3</text>
+          <text x="105" y="106" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle">residuos — colas algo anchas por conteos enteros</text>
+          <!-- línea central -->
+          <line x1="90" y1="10" x2="90" y2="90" stroke="rgba(255,255,255,.1)" stroke-width="0.5" stroke-dasharray="2,2"/>
+        </svg>
+      </div>
+
+      <!-- Gráfico 2: Q-Q Plot -->
+      <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:8px;color:rgba(255,68,255,.6);letter-spacing:.12em;margin-bottom:8px">② Q-Q PLOT (NORMALIDAD)</div>
+        <svg viewBox="0 0 200 110" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="90" x2="190" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <!-- línea teórica 45° -->
+          <line x1="30" y1="80" x2="180" y2="18" stroke="rgba(255,68,255,.35)" stroke-width="0.8" stroke-dasharray="3,2"/>
+          <!-- puntos Q-Q: centro sigue la línea, colas se desvían -->
+          <circle cx="35"  cy="84" r="2" fill="rgba(255,68,255,.5)"/>
+          <circle cx="50"  cy="74" r="2" fill="rgba(255,68,255,.6)"/>
+          <circle cx="65"  cy="63" r="2" fill="rgba(255,68,255,.7)"/>
+          <circle cx="80"  cy="54" r="2" fill="#ff44ff"/>
+          <circle cx="95"  cy="46" r="2" fill="#ff44ff"/>
+          <circle cx="110" cy="40" r="2" fill="#ff44ff"/>
+          <circle cx="125" cy="34" r="2" fill="rgba(255,68,255,.7)"/>
+          <circle cx="140" cy="30" r="2" fill="rgba(255,68,255,.6)"/>
+          <circle cx="155" cy="22" r="2" fill="rgba(255,68,255,.5)"/>
+          <circle cx="170" cy="15" r="2" fill="rgba(255,68,255,.4)"/>
+          <!-- colas desviadas (puntos fuera de la línea) -->
+          <circle cx="35"  cy="88" r="1.5" fill="rgba(255,200,0,.7)"/>
+          <circle cx="170" cy="10" r="1.5" fill="rgba(255,200,0,.7)"/>
+          <text x="105" y="98" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle">cuantiles teóricos</text>
+          <text x="10" y="52" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle" transform="rotate(-90,10,52)">cuantiles muestra</text>
+          <text x="148" y="26" font-size="5.5" fill="rgba(255,200,0,.6)">colas ⚠</text>
+        </svg>
+      </div>
+
+      <!-- Gráfico 3: Residuos vs Predichos (homocedasticidad) -->
+      <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:8px;color:rgba(68,255,136,.6);letter-spacing:.12em;margin-bottom:8px">③ RESIDUOS vs PREDICHOS · p=0.735</div>
+        <svg viewBox="0 0 200 110" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="90" x2="190" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <!-- línea cero residuos -->
+          <line x1="20" y1="50" x2="190" y2="50" stroke="rgba(68,255,136,.3)" stroke-width="0.7" stroke-dasharray="4,2"/>
+          <!-- nube homogénea de puntos (sin embudo — homocedasticidad ok) -->
+          ${Array.from({length:30},(_,i)=>{
+            const x=25+i*5.5, y=50+(Math.sin(i*1.7+0.3)*18)+(Math.cos(i*2.3)*12);
+            return `<circle cx="${x.toFixed(1)}" cy="${Math.max(15,Math.min(85,y)).toFixed(1)}" r="1.5" fill="rgba(68,255,136,.45)"/>`;
+          }).join('')}
+          <text x="105" y="100" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle">valores predichos ŷ</text>
+          <text x="10"  y="52" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle" transform="rotate(-90,10,52)">residuos ε</text>
+          <text x="150" y="18" font-size="5.5" fill="rgba(68,255,136,.6)">nube uniforme ✓</text>
+        </svg>
+      </div>
+
+      <!-- Gráfico 4: Independencia temporal -->
+      <div style="padding:12px;border-radius:10px;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07)">
+        <div style="font-size:8px;color:rgba(68,255,136,.6);letter-spacing:.12em;margin-bottom:8px">④ INDEPENDENCIA TEMPORAL · p=0.899</div>
+        <svg viewBox="0 0 200 110" style="width:100%" xmlns="http://www.w3.org/2000/svg">
+          <line x1="20" y1="90" x2="190" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <line x1="20" y1="10" x2="20" y2="90" stroke="rgba(255,255,255,.12)" stroke-width="0.5"/>
+          <!-- línea cero -->
+          <line x1="20" y1="50" x2="190" y2="50" stroke="rgba(68,255,136,.3)" stroke-width="0.7" stroke-dasharray="4,2"/>
+          <!-- residuos vs orden temporal — sin tendencia ni ciclo -->
+          ${Array.from({length:28},(_,i)=>{
+            const x=25+i*6, y=50+(Math.sin(i*3.1+1.2)*15)+(Math.cos(i*1.8+0.5)*10);
+            return `<circle cx="${x.toFixed(1)}" cy="${Math.max(15,Math.min(85,y)).toFixed(1)}" r="1.5" fill="rgba(68,255,136,.4)"/>`;
+          }).join('')}
+          <text x="105" y="100" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle">orden temporal (jornada)</text>
+          <text x="10"  y="52" font-size="5.5" fill="rgba(255,255,255,.2)" text-anchor="middle" transform="rotate(-90,10,52)">residuos ε</text>
+          <text x="140" y="18" font-size="5.5" fill="rgba(68,255,136,.6)">sin tendencia ✓</text>
+        </svg>
+      </div>
+
+    </div>
+
+    <div style="margin-top:10px;padding:10px 14px;background:rgba(68,255,136,.03);border-left:3px solid rgba(68,255,136,.4);border-radius:0 6px 6px 0;font-size:10px;color:rgba(255,255,255,.45);line-height:1.6">
+      <strong style="color:#44ff88">Veredicto:</strong> Los 3 supuestos clave (homocedasticidad p=0.735, independencia p=0.899, media cero) se cumplen — los estimadores β son <strong style="color:#fff">BLUE</strong> (Best Linear Unbiased Estimators) por Gauss-Markov. La normalidad fallida (Shapiro-Wilk p≈0) es esperada para conteos enteros de goles; no invalida los coeficientes.
+    </div>
+  </div></div>
+</div>
+
+`
     },
     result: {
         overview: `<div class="xg-progress-dots" style="margin-bottom:14px"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div><div class="ws-grid">
@@ -2251,15 +2459,15 @@ const WS = {
 <div class="xg-phase-sub">Pipeline de 5 etapas — haz clic en cada bloque para explorar su decisión.</div>
 
 <div class="xg-pipe" id="r2-pipe-row">
-  <div class="xg-pipe-node sel" onclick="r2Pipe(this,0)"><span class="xg-pipe-icon">📋</span><span class="xg-pipe-lbl">Datos</span><span class="xg-pipe-sub">291 partidos</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,1)"><span class="xg-pipe-icon">🔍</span><span class="xg-pipe-lbl">Spearman</span><span class="xg-pipe-sub">Filtro α=0.15</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,2)"><span class="xg-pipe-icon">⚖️</span><span class="xg-pipe-lbl">Balanced</span><span class="xg-pipe-sub">class_weight</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,3)"><span class="xg-pipe-icon">🧮</span><span class="xg-pipe-lbl">LogReg</span><span class="xg-pipe-sub">lbfgs · H/D/A</span></div>
-  <span class="xg-pipe-arr">→</span>
-  <div class="xg-pipe-node" onclick="r2Pipe(this,4)"><span class="xg-pipe-icon">🏆</span><span class="xg-pipe-lbl">Resultado</span><span class="xg-pipe-sub">55.93% acc.</span></div>
+  <div class="xg-pipe-node active" onclick="r2Pipe(this,0)"><span class="xg-pipe-icon">📋</span><span class="xg-pipe-label">Datos</span><span class="xg-pipe-sublabel">291 partidos</span></div>
+  <span class="xg-pipe-arrow">→</span>
+  <div class="xg-pipe-node" onclick="r2Pipe(this,1)"><span class="xg-pipe-icon">🔍</span><span class="xg-pipe-label">Spearman</span><span class="xg-pipe-sublabel">Filtro α=0.15</span></div>
+  <span class="xg-pipe-arrow">→</span>
+  <div class="xg-pipe-node" onclick="r2Pipe(this,2)"><span class="xg-pipe-icon">⚖️</span><span class="xg-pipe-label">Balanced</span><span class="xg-pipe-sublabel">class_weight</span></div>
+  <span class="xg-pipe-arrow">→</span>
+  <div class="xg-pipe-node" onclick="r2Pipe(this,3)"><span class="xg-pipe-icon">🧮</span><span class="xg-pipe-label">LogReg</span><span class="xg-pipe-sublabel">lbfgs · H/D/A</span></div>
+  <span class="xg-pipe-arrow">→</span>
+  <div class="xg-pipe-node" onclick="r2Pipe(this,4)"><span class="xg-pipe-icon">🏆</span><span class="xg-pipe-label">Resultado</span><span class="xg-pipe-sublabel">55.93% acc.</span></div>
 </div>
 
 <div class="xg-pdetail" id="r2-pdetail">291 partidos PL 24/25. Split 80/20 estratificado: ~232 train / ~59 test. StratifiedKFold(k=5) preserva proporciones H/D/A en cada fold.</div>
@@ -2267,7 +2475,7 @@ const WS = {
 <div class="xg-vis-panel" style="margin-top:16px">
 
   <!-- Panel 0: DATOS — distribución H/D/A + split -->
-  <div class="r2-vp" id="r2-vp-0">
+  <div class="xg-pv active" id="r2-vp-0">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">DISTRIBUCIÓN DE CLASES</div>
@@ -2298,7 +2506,7 @@ const WS = {
   </div>
 
   <!-- Panel 1: SPEARMAN — selección de features -->
-  <div class="r2-vp" id="r2-vp-1" style="display:none">
+  <div class="xg-pv" id="r2-vp-1">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CORRELACIONES SPEARMAN (ρ)</div>
@@ -2340,7 +2548,7 @@ const WS = {
   </div>
 
   <!-- Panel 2: BALANCED — el truco del empate -->
-  <div class="r2-vp" id="r2-vp-2" style="display:none">
+  <div class="xg-pv" id="r2-vp-2">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SIN balanced — trampa estadística</div>
@@ -2374,7 +2582,7 @@ const WS = {
   </div>
 
   <!-- Panel 3: LOGREG — softmax multinomial -->
-  <div class="r2-vp" id="r2-vp-3" style="display:none">
+  <div class="xg-pv" id="r2-vp-3">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">SOFTMAX — 3 PROBABILIDADES</div>
@@ -2417,7 +2625,7 @@ const WS = {
   </div>
 
   <!-- Panel 4: RESULTADO — CV + matriz multiclase -->
-  <div class="r2-vp" id="r2-vp-4" style="display:none">
+  <div class="xg-pv" id="r2-vp-4">
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
       <div>
         <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px">CV — ACCURACY POR FOLD (V2b)</div>
@@ -2634,14 +2842,7 @@ const WS = {
         </div>`
     },
     live: {
-        overview: `<style>
-.live-pulse{animation:livePulse 2s ease-in-out infinite}
-@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.92)}}
-.live-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
-.live-conn-line{height:2px;background:linear-gradient(90deg,rgba(255,68,255,0),rgba(255,68,255,.6),rgba(255,204,0,.6),rgba(255,68,255,0));border-radius:2px;margin:10px 0}
-.live-node-card{padding:14px 16px;border-radius:10px;border:1px solid;display:flex;align-items:center;gap:12px}
-</style>
-<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
+        overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 
 <div class="xg-phase-header" style="margin-top:18px">
   <div>
@@ -3049,6 +3250,17 @@ class CinematicEngine {
                 if(tabName==='data'){
                     const first=body.querySelector('.xg-phase-block');
                     if(first) first.classList.add('open');
+                    body.querySelectorAll('.xg-battle-row').forEach((r,i)=>{
+                        setTimeout(()=>r.classList.add('vis'), 200+i*150);
+                    });
+                    setTimeout(()=>{
+                        body.querySelectorAll('.xg-or-card').forEach((c,i)=>{
+                            setTimeout(()=>c.classList.add('vis'), i*80);
+                        });
+                        body.querySelectorAll('.xg-player-card').forEach((c,i)=>{
+                            setTimeout(()=>c.classList.add('vis'), i*60);
+                        });
+                    }, 400);
                 }
             }
 
@@ -3083,7 +3295,7 @@ class CinematicEngine {
                     // Lasso model panels
                     body.querySelectorAll('.m2-vp').forEach((p,i)=>{ p.style.display=i===0?'block':'none'; });
                     // Result model panels
-                    body.querySelectorAll('.r2-vp').forEach((p,i)=>{ p.style.display=i===0?'block':'none'; });
+                    body.querySelectorAll('[id^="r2-vp-"]').forEach((p,i)=>p.classList.toggle('active',i===0));
                 }
                 // Tab 5: battle rows, OR cards, player cards, ROC2, CM
                 if(tabName==='data'){
@@ -4483,9 +4695,10 @@ class CinematicEngine {
     if(liveEl) liveEl.classList.add('intro-hide');
     const C=canvas.getContext('2d'), W=canvas.width, H=canvas.height;
     let candidatePositions=[];
-    if(typeof PL_PTS!=='undefined' && PL_PTS.length>0){
+    const pts = window.PL_PTS;
+    if(typeof pts!=='undefined' && pts.length>0){
       let minX=Infinity, maxX=-Infinity, minY=Infinity, maxY=-Infinity;
-      PL_PTS.forEach(pt=>{
+      pts.forEach(pt=>{
         if(pt[0]<minX) minX=pt[0]; if(pt[0]>maxX) maxX=pt[0];
         if(pt[1]<minY) minY=pt[1]; if(pt[1]>maxY) maxY=pt[1];
       });
@@ -4493,7 +4706,7 @@ class CinematicEngine {
       const scale = Math.min(W/ptsW, H/ptsH) * 0.75;
       const offsetX = W/2 - (minX + ptsW/2)*scale;
       const offsetY = H/2 - (minY + ptsH/2)*scale;
-      candidatePositions = PL_PTS.map(pt=>[pt[0]*scale+offsetX, pt[1]*scale+offsetY]);
+      candidatePositions = pts.map(pt=>[pt[0]*scale+offsetX, pt[1]*scale+offsetY]);
       
       // Enrich with extra particles for density
       const enriched = [];
@@ -4597,6 +4810,16 @@ class CinematicEngine {
     if(idx===4){ setTimeout(()=>{ document.querySelectorAll('.xg-fold-bar').forEach((b,i)=>{ const pct=b.dataset.pct||'0'; setTimeout(()=>{ b.style.width=pct+'%'; },i*120); }); },100); }
   };
 
+  window.m2PipeSelect=function(el,idx){
+    const row=el.closest('.m2-pipe');
+    if(row) row.querySelectorAll('.m2-pipe-node').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
+    const container=row?row.parentElement:el.closest('[id]');
+    if(container) container.querySelectorAll('.m2-pv').forEach((p,i)=>p.classList.toggle('active',i===idx));
+    const pv=document.querySelector('#m2-pv-'+idx);
+    if(pv) pv.classList.add('active');
+  };
+
   window.m2Pipe=function(el,idx){
     const details=['3,800+ partidos PL (2015–2025). Split 80/20 temporal: train en pasado, test en presente. Cero data leakage — rolling averages calculados solo con datos previos a cada partido.','Brute-force sobre 18 variables candidatas usando correlación Spearman y VIF. Lasso eliminará las irrelevantes con L1, pero primero se descartan las que no tienen señal estadística.','LassoCV selecciona α=0.0117 mediante 5-fold CV. La penalización L1 fuerza coeficientes exactamente a 0 — selección automática de features. 14 de 18 variables quedan en β=0.','El target total_goals tiene distribución sesgada a la derecha (Shapiro-Wilk p=9.46×10⁻⁹). La transformación log(y+1) simetriza la distribución y satisface el supuesto de linealidad de Lasso.','Salida: exp(ŷ)−1 = goles predichos por partido. MAE=1.26 goles. Lasso gana a Ridge (1.27). R²=0.41 — el modelo explica el 41% de la varianza del marcador con solo 4 variables pre-partido.'];
     document.querySelectorAll('#m2-pipe-row .xg-pipe-node').forEach(n=>n.classList.remove('sel'));
@@ -4609,11 +4832,11 @@ class CinematicEngine {
 
   window.r2Pipe=function(el,idx){
     const details=['291 partidos PL 24/25. Split 80/20 estratificado: ~232 train / ~59 test. StratifiedKFold(k=5) preserva proporciones H/D/A. El desafío: predecir 3 clases superando a Bet365 (54.24%).','Spearman con α=0.15 filtra las 4 variables con señal real. ELO, sesgo de árbitro y dias de descanso fallan el umbral — en n=291 no tienen poder estadístico suficiente y generan colinealidad.','class_weight="balanced" asigna pesos inversamente proporcionales a la frecuencia de cada clase. Los empates (26%) reciben w=1.28 para que el modelo aprenda a predecirlos y no los ignore.','LogisticRegression multinomial con softmax: genera P(H), P(D), P(A) que suman 1. argmax da la predicción final. Solver lbfgs es eficiente para clasificación multiclase con pocas features.','V2b (balanced) alcanza ~55% accuracy y predice empates en serio. V1 llega a 55.93% pero nunca predice D — trampa estadística. El costo de la honestidad multiclase es menos de 1pp de accuracy.'];
-    document.querySelectorAll('#r2-pipe-row .xg-pipe-node').forEach(n=>n.classList.remove('sel'));
-    el.classList.add('sel');
+    document.querySelectorAll('#r2-pipe-row .xg-pipe-node').forEach(n=>n.classList.remove('active'));
+    el.classList.add('active');
     const det=document.getElementById('r2-pdetail');
     if(det){ det.style.opacity='0'; setTimeout(()=>{ det.textContent=details[idx]; det.style.opacity='1'; },150); }
-    document.querySelectorAll('.r2-vp').forEach((p,i)=>{ p.style.display=i===idx?'block':'none'; });
+    document.querySelectorAll('[id^="r2-vp-"]').forEach((p,i)=>p.classList.toggle('active',i===idx));
     if(idx===4){ setTimeout(()=>{ document.querySelectorAll('.r2-fold-bar').forEach((b,i)=>{ const pct=b.dataset.pct||'0'; setTimeout(()=>{ b.style.width=pct+'%'; },i*120); }); },100); }
   };
 
