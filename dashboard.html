@@ -4373,8 +4373,8 @@ class CinematicEngine {
       const enriched = [];
       candidatePositions.forEach(pt => {
         enriched.push(pt);
-        for(let k=0; k<3; k++) {
-           enriched.push([pt[0] + (Math.random()-0.5)*10, pt[1] + (Math.random()-0.5)*10]);
+        for(let k=0; k<4; k++) {
+           enriched.push([pt[0] + (Math.random()-0.5)*2.0, pt[1] + (Math.random()-0.5)*2.0]);
         }
       });
       candidatePositions = enriched;
@@ -4387,12 +4387,12 @@ class CinematicEngine {
       return; 
     }
     for(let i=candidatePositions.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [candidatePositions[i],candidatePositions[j]]=[candidatePositions[j],candidatePositions[i]]; }
-    const N=Math.min(3000,candidatePositions.length);
+    const N=Math.min(6500,candidatePositions.length);
     const targets=candidatePositions.slice(0,N);
-    const COLORS=['#ff44ff','#00ffff','#44ff88','#ffcc00','#ffffff','#a855f7','#ff00aa'];
+    const COLORS=['#00ffff', '#00ffff', '#44ff88', '#ffffff', '#a855f7', '#ff00aa'];
     const particles=targets.map(([tx,ty])=>{
       const angle=Math.random()*Math.PI*2, dist=Math.max(W,H)*0.8+Math.random()*300;
-      return { x:W/2+Math.cos(angle)*dist, y:H/2+Math.sin(angle)*dist, tx, ty, r:Math.random()*1.8+0.5, baseR:Math.random()*1.8+0.5, color:COLORS[Math.floor(Math.random()*COLORS.length)], alpha:0, speed:0.04+Math.random()*0.05 };
+      return { x:W/2+Math.cos(angle)*dist, y:H/2+Math.sin(angle)*dist, tx, ty, r:Math.random()*0.8+0.25, baseR:Math.random()*0.8+0.25, color:COLORS[Math.floor(Math.random()*COLORS.length)], alpha:0, speed:0.04+Math.random()*0.05 };
     });
     const PHASE_GATHER=0,PHASE_HOLD=1,PHASE_PULSE=2,PHASE_FLASH=3;
     let phase=PHASE_GATHER, phaseT=0, rafId=null, lastT=0;
