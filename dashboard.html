@@ -807,72 +807,7 @@ const WS = {
     <div id="eda-tt-insight" style="margin-top:8px;font-size:9px;color:rgba(255,255,255,.45);line-height:1.5;border-top:1px solid rgba(255,255,255,.06);padding-top:6px"></div>
   </div>
 </div>
-<script>(function(){
-  const VIEWS={
-    geo:[
-      {v:'goal_mouth_z',g:12.9,f:25.3,rho:'−0.184',p:'<10⁻⁵⁵',unit:'cm',pct_g:100,pct_f:196,col:'#c084fc',insight:'Menor altura = más goles. Los disparos bajos son más difíciles de detener para el portero.'},
-      {v:'aim_central',g:2.6,f:5.4,rho:'−0.043',p:'0.0002',unit:'cm',pct_g:100,pct_f:208,col:'#c084fc',insight:'Los tiros al centro de la portería tienen menor desviación — mayor probabilidad de gol.'},
-      {v:'angulo_tiro',g:28.4,f:18.1,rho:'+0.157',p:'<10⁻⁴⁰',unit:'°',pct_g:100,pct_f:64,col:'#00ffff',insight:'Mayor ángulo de tiro aumenta la probabilidad de gol — se apunta a más superficie de portería.'},
-      {v:'dist_al_arco',g:11.2,f:19.8,rho:'−0.200',p:'<10⁻⁶⁰',unit:'m',pct_g:100,pct_f:177,col:'#00ffff',insight:'La distancia es el predictor geométrico más fuerte. A mayor distancia, menor precisión posible.'},
-    ],
-    binary:[
-      {v:'is_BigChance',g:0.41,f:0.06,rho:'+0.309',p:'<10⁻¹⁵⁰',unit:'',pct_g:100,pct_f:15,col:'#44ff88',insight:'El predictor binario más potente del modelo. Una gran oportunidad triplica la probabilidad de gol.'},
-      {v:'is_Penalty',g:0.21,f:0.03,rho:'+0.155',p:'<10⁻³⁸',unit:'',pct_g:100,pct_f:14,col:'#44ff88',insight:'Los penales tienen una conversión muy superior — prácticamente la distancia mínima y sin defensas.'},
-      {v:'is_OneOnOne',g:0.18,f:0.04,rho:'+0.051',p:'0.0001',unit:'',pct_g:100,pct_f:22,col:'#ffcc00',insight:'El mano a mano reduce los ángulos de defensa y aumenta la probabilidad de marcar.'},
-    ],
-    pos:[
-      {v:'pos_x_media',g:90.1,f:81.4,rho:'+0.144',p:'<10⁻³³',unit:'m',pct_g:100,pct_f:90,col:'#ffcc00',insight:'Los goles ocurren en la franja de 85-105m. Disparos desde fuera del área tienen poca eficacia.'},
-    ]
-  };
-  let current='geo';
-  function render(view){
-    const data=VIEWS[view];
-    const maxF=Math.max(...data.map(d=>d.pct_f));
-    const H=90;
-    const bars=document.getElementById('eda-bars');
-    if(!bars) return;
-    bars.innerHTML=data.map((d,i)=>{
-      const hg=Math.round((d.pct_g/Math.max(d.pct_g,maxF))*H);
-      const hf=Math.round((d.pct_f/Math.max(d.pct_g,maxF))*H);
-      return `<div class="eda-bar-group" onmouseenter="edaTT(${i},'${view}')" onmouseleave="edaTTHide()">
-        <div class="eda-bars-inner">
-          <div class="eda-bar eda-bar-goal" id="edabg${i}" style="height:0"></div>
-          <div class="eda-bar eda-bar-fail" id="edabf${i}" style="height:0"></div>
-        </div>
-        <div class="eda-bar-label" style="color:${d.col}">${d.v.replace('_','_\u200B')}</div>
-      </div>`;
-    }).join('');
-    setTimeout(()=>{
-      data.forEach((d,i)=>{
-        const hg=Math.round((d.pct_g/Math.max(d.pct_g,maxF))*H);
-        const hf=Math.round((d.pct_f/Math.max(d.pct_g,maxF))*H);
-        const bg=document.getElementById('edabg'+i);
-        const bf=document.getElementById('edabf'+i);
-        if(bg) bg.style.height=hg+'px';
-        if(bf) bf.style.height=hf+'px';
-      });
-    },80);
-  }
-  window.edaSetView=function(view,btn){
-    current=view;
-    document.querySelectorAll('.eda-chart-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    render(view);
-  };
-  window.edaTT=function(i,view){
-    const d=VIEWS[view][i];
-    const tt=document.getElementById('eda-tooltip');
-    if(!tt) return;
-    document.getElementById('eda-tt-var').textContent=d.v;
-    document.getElementById('eda-tt-g').textContent=d.g+d.unit;
-    document.getElementById('eda-tt-f').textContent=d.f+d.unit;
-    document.getElementById('eda-tt-rho').textContent=d.rho+' (p '+d.p+')';
-    document.getElementById('eda-tt-insight').textContent=d.insight;
-    tt.style.opacity='1';
-  };
-  window.edaTTHide=function(){const tt=document.getElementById('eda-tooltip');if(tt)tt.style.opacity='0';};
-  setTimeout(()=>render('geo'),200);
-}());</script>
+
     <div style="padding:10px 14px;background:rgba(68,255,136,.04);border-left:3px solid #44ff88;border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6">
       <strong style="color:#44ff88">Conclusión:</strong> Los goles ocurren a ras de suelo y apuntando al centro. El portero cubre mejor el alto que el bajo — un disparo pegado al piso y al centro es físicamente más difícil de detener.
     </div>
@@ -3204,10 +3139,11 @@ class CinematicEngine {
                         });
                     }, 80);
                 }
-                // Tab 2: phase accordions expand first one
+                // Tab 2: phase accordions expand first one + init EDA chart
                 if(tabName==='metrics'){
                     const first=body.querySelector('.xg-phase-block');
                     if(first) first.classList.add('open');
+                    setTimeout(()=>{ if(window.edaRender) window.edaRender('geo'); }, 150);
                 }
                 // Tab 3: pipeline nodes entrance, show panel 0 by default
                 if(tabName==='training'){
@@ -3896,6 +3832,61 @@ class CinematicEngine {
     ov.style.display='flex';
     requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ ov.classList.add('visible'); }); });
   };
+
+  // ── EDA interactive chart logic ────────────────────────────────────────
+  const EDA_VIEWS={
+    geo:[
+      {v:'goal_mouth_z',g:12.9,f:25.3,rho:'\u22120.184',p:'<10\u207b\u2075\u2075',unit:'cm',pct_g:100,pct_f:196,col:'#c084fc',insight:'Menor altura = m\u00e1s goles. Los disparos bajos son m\u00e1s dif\u00edciles de detener para el portero.'},
+      {v:'aim_central',g:2.6,f:5.4,rho:'\u22120.043',p:'0.0002',unit:'cm',pct_g:100,pct_f:208,col:'#c084fc',insight:'Los tiros al centro de la porter\u00eda tienen menor desviaci\u00f3n \u2014 mayor probabilidad de gol.'},
+      {v:'angulo_tiro',g:28.4,f:18.1,rho:'+0.157',p:'<10\u207b\u2074\u2070',unit:'\u00b0',pct_g:100,pct_f:64,col:'#00ffff',insight:'Mayor \u00e1ngulo de tiro aumenta la probabilidad de gol \u2014 se apunta a m\u00e1s superficie de porter\u00eda.'},
+      {v:'dist_al_arco',g:11.2,f:19.8,rho:'\u22120.200',p:'<10\u207b\u2076\u2070',unit:'m',pct_g:100,pct_f:177,col:'#00ffff',insight:'La distancia es el predictor geom\u00e9trico m\u00e1s fuerte. A mayor distancia, menor precisi\u00f3n posible.'},
+    ],
+    binary:[
+      {v:'is_BigChance',g:0.41,f:0.06,rho:'+0.309',p:'<10\u207b\u00b9\u2075\u2070',unit:'',pct_g:100,pct_f:15,col:'#44ff88',insight:'El predictor binario m\u00e1s potente del modelo. Una gran oportunidad triplica la probabilidad de gol.'},
+      {v:'is_Penalty',g:0.21,f:0.03,rho:'+0.155',p:'<10\u207b\u00b3\u2078',unit:'',pct_g:100,pct_f:14,col:'#44ff88',insight:'Los penales tienen una conversi\u00f3n muy superior \u2014 pr\u00e1cticamente la distancia m\u00ednima y sin defensas.'},
+      {v:'is_OneOnOne',g:0.18,f:0.04,rho:'+0.051',p:'0.0001',unit:'',pct_g:100,pct_f:22,col:'#ffcc00',insight:'El mano a mano reduce los \u00e1ngulos de defensa y aumenta la probabilidad de marcar.'},
+    ],
+    pos:[
+      {v:'pos_x_media',g:90.1,f:81.4,rho:'+0.144',p:'<10\u207b\u00b3\u00b3',unit:'m',pct_g:100,pct_f:90,col:'#ffcc00',insight:'Los goles ocurren en la franja de 85-105m. Disparos desde fuera del \u00e1rea tienen poca eficacia.'},
+    ]
+  };
+  window.edaRender=function(view){
+    const data=EDA_VIEWS[view];
+    const maxF=Math.max(...data.map(d=>d.pct_f));
+    const H=90;
+    const bars=document.getElementById('eda-bars');
+    if(!bars) return;
+    bars.innerHTML=data.map((d,i)=>{
+      return '<div class="eda-bar-group" onmouseenter="edaTT('+i+',\''+view+'\')" onmouseleave="edaTTHide()">'+'<div class="eda-bars-inner"><div class="eda-bar eda-bar-goal" id="edabg'+i+'" style="height:0"></div><div class="eda-bar eda-bar-fail" id="edabf'+i+'" style="height:0"></div></div><div class="eda-bar-label" style="color:'+d.col+'">'+d.v+'</div></div>';
+    }).join('');
+    setTimeout(()=>{
+      data.forEach((d,i)=>{
+        const hg=Math.round((d.pct_g/Math.max(d.pct_g,maxF))*H);
+        const hf=Math.round((d.pct_f/Math.max(d.pct_g,maxF))*H);
+        const bg=document.getElementById('edabg'+i);
+        const bf=document.getElementById('edabf'+i);
+        if(bg) bg.style.height=hg+'px';
+        if(bf) bf.style.height=hf+'px';
+      });
+    },80);
+  };
+  window.edaSetView=function(view,btn){
+    document.querySelectorAll('.eda-chart-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    window.edaRender(view);
+  };
+  window.edaTT=function(i,view){
+    const d=EDA_VIEWS[view][i];
+    const tt=document.getElementById('eda-tooltip');
+    if(!tt) return;
+    document.getElementById('eda-tt-var').textContent=d.v;
+    document.getElementById('eda-tt-g').textContent=d.g+d.unit;
+    document.getElementById('eda-tt-f').textContent=d.f+d.unit;
+    document.getElementById('eda-tt-rho').textContent=d.rho+' (p '+d.p+')';
+    document.getElementById('eda-tt-insight').textContent=d.insight;
+    tt.style.opacity='1';
+  };
+  window.edaTTHide=function(){const tt=document.getElementById('eda-tooltip');if(tt)tt.style.opacity='0';};
 
   // ── Player data stats (PL 24/25, from xg_train.csv) ─────────────────
   const PLAYER_STATS={
