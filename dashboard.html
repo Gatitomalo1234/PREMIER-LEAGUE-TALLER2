@@ -3399,41 +3399,50 @@ const WS = {
   <div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;max-width:600px">Este ecosistema integra <strong style="color:#fff">444,252 eventos</strong> y <strong style="color:#fff">291 partidos</strong> para resolver un problema fundamental: ¿es posible batir al mercado de apuestas usando Machine Learning? A través de 3 modelos especializados, transformamos la geometría del juego y las cuotas en probabilidades accionables.</div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-  <!-- Pillar 1: M1 & M2 -->
-  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
-      <div style="width:32px;height:32px;background:rgba(68,255,136,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#44ff88;font-size:18px">⚽</div>
+<div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-bottom:24px">
+  <!-- Pillar 1: M1 -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:28px;height:28px;background:rgba(68,255,136,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#44ff88;font-size:14px">🎯</div>
       <div>
-        <div style="font-size:14px;font-weight:700;color:#fff">M1 (xG) &amp; M2 (Goles)</div>
-        <div style="font-size:9px;color:#44ff88;letter-spacing:.1em;text-transform:uppercase">Análisis de Eventos Crudos</div>
+        <div style="font-size:12px;font-weight:700;color:#fff">M1: xG Model</div>
+        <div style="font-size:8px;color:#44ff88;letter-spacing:.1em;text-transform:uppercase">Probabilidad de Gol</div>
       </div>
     </div>
-    <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:12px">
-      M1 calcula la probabilidad de gol de cada tiro basándose en su geometría espacial (ángulo, distancia). M2 usa estos valores para predecir el número total de goles por partido mediante regresión Lasso.
+    <p style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:10px">
+      Transforma la geometría de <strong style="color:#fff">128,407 disparos</strong> en una probabilidad 0-1. Usa LogReg calibrada para detectar peligro real.
     </p>
-    <div style="display:flex;gap:8px">
-      <span style="font-size:9px;padding:3px 8px;background:rgba(68,255,136,.1);color:#44ff88;border-radius:4px;border:1px solid rgba(68,255,136,.2)">AUC-ROC: 0.72</span>
-      <span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);border-radius:4px;border:1px solid rgba(255,255,255,.1)">MAEv2: 1.15</span>
-    </div>
+    <span style="font-size:8px;padding:2px 6px;background:rgba(68,255,136,.1);color:#44ff88;border-radius:4px;border:1px solid rgba(68,255,136,.2)">AUC: 0.72</span>
   </div>
 
-  <!-- Pillar 2: M3 -->
-  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:15px">
-      <div style="width:32px;height:32px;background:rgba(255,200,0,.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#ffcc00;font-size:18px">⚖️</div>
+  <!-- Pillar 2: M2 -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:28px;height:28px;background:rgba(255,68,255,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ff44ff;font-size:14px">📉</div>
       <div>
-        <div style="font-size:14px;font-weight:700;color:#fff">M3 (H/D/A)</div>
-        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;text-transform:uppercase">El Oráculo del Mercado</div>
+        <div style="font-size:12px;font-weight:700;color:#fff">M2: Lasso Reg</div>
+        <div style="font-size:8px;color:#ff44ff;letter-spacing:.1em;text-transform:uppercase">Volumen de Goles</div>
       </div>
     </div>
-    <p style="font-size:11px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:12px">
-      Un clasificador multiclase que predice Local/Empate/Visitante. El EDA confirmó que las cuotas de Bet365 ya "digieren" la mayoría de la información pública (FPL, stats), actuando como una base de referencia altamente eficiente.
+    <p style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:10px">
+      Predice el total de goles por partido. La regularización <strong style="color:#fff">Lasso</strong> filtró 41 variables para quedarse solo con las de mayor impacto neto.
     </p>
-    <div style="display:flex;gap:8px">
-      <span style="font-size:9px;padding:3px 8px;background:rgba(255,200,0,.1);color:#ffcc00;border-radius:4px;border:1px solid rgba(255,200,0,.2)">Acc: 55.9%</span>
-      <span style="font-size:9px;padding:3px 8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.5);border-radius:4px;border:1px solid rgba(255,255,255,.1)">Signal: b365h/a</span>
+    <span style="font-size:8px;padding:2px 6px;background:rgba(255,68,255,.1);color:#ff44ff;border-radius:4px;border:1px solid rgba(255,68,255,.2)">MAE: 1.15</span>
+  </div>
+
+  <!-- Pillar 3: M3 -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:16px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <div style="width:28px;height:28px;background:rgba(255,200,0,.1);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#ffcc00;font-size:14px">⚖️</div>
+      <div>
+        <div style="font-size:12px;font-weight:700;color:#fff">M3: H/D/A</div>
+        <div style="font-size:8px;color:#ffcc00;letter-spacing:.1em;text-transform:uppercase">Resultado Final</div>
+      </div>
     </div>
+    <p style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5;margin-bottom:10px">
+      Clasificador de 3 clases. Demostró que las cuotas Bet365 son el mejor predictor base, superando a cualquier métrica individual aislada.
+    </p>
+    <span style="font-size:8px;padding:2px 6px;background:rgba(255,200,0,.1);color:#ffcc00;border-radius:4px;border:1px solid rgba(255,200,0,.2)">Acc: 55.9%</span>
   </div>
 </div>
 
@@ -3492,7 +3501,11 @@ const WS = {
         <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">El empate es la variable más difícil de predecir (correlación cuota-resultado casi nula). Nuestra solución fue usar <strong style="color:#fff">class_weight='balanced'</strong> para evitar que el modelo ignore esta clase.</div>
       </div>
       <div style="padding:12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
-        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:4px">2. La Superioridad de la Geometría</div>
+        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:4px">2. Parsimonia en Modelo 2</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">La regresión <strong style="color:#fff">Lasso</strong> permitió reducir 41 dimensiones a solo 8 variables críticas, eliminando ruido de "tarjetas" y "corners" que no correlacionaban con el total de goles final.</div>
+      </div>
+      <div style="padding:12px;background:rgba(255,255,255,.03);border-radius:10px;border:1px solid rgba(255,255,255,.06)">
+        <div style="font-size:12px;color:#fff;font-weight:700;margin-bottom:4px">3. La Superioridad de la Geometría</div>
         <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.5">Añadir el ángulo y la distancia del tiro mejoró el AUC del xG en <strong style="color:#44ff88">+0.08</strong> comparado con modelos basados solo en descripción de texto.</div>
       </div>
     </div>
