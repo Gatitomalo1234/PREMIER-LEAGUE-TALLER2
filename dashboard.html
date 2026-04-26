@@ -4382,10 +4382,11 @@ class CinematicEngine {
       return { x:W/2+Math.cos(angle)*dist, y:H/2+Math.sin(angle)*dist, tx, ty, r:Math.random()*1.8+0.5, baseR:Math.random()*1.8+0.5, color:COLORS[Math.floor(Math.random()*COLORS.length)], alpha:0, speed:0.04+Math.random()*0.05 };
     });
     const PHASE_GATHER=0,PHASE_HOLD=1,PHASE_PULSE=2,PHASE_FLASH=3;
-    let phase=PHASE_GATHER, phaseT=0, rafId=null, lastT=performance.now();
+    let phase=PHASE_GATHER, phaseT=0, rafId=null, lastT=0;
     const GATHER_DUR=1800,HOLD_DUR=500,PULSE_DUR=1000,FLASH_DUR=400;
     function drawFrame(now){
-      const dt=Math.min(32,now-lastT); lastT=now; phaseT+=dt;
+      if(!lastT) lastT = now;
+      const dt=Math.max(0, Math.min(32,now-lastT)); lastT=now; phaseT+=dt;
       C.clearRect(0,0,W,H); C.fillStyle='rgba(2,0,10,1)'; C.fillRect(0,0,W,H);
       if(phase===PHASE_GATHER){
         const ease=1-Math.pow(1-Math.min(1,phaseT/GATHER_DUR),3);
