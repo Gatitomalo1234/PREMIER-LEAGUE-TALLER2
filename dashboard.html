@@ -684,8 +684,8 @@ const WS = {
 .xg-eyebrow{font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.35)}
 .xg-phase-title{font-size:26px;font-weight:300;color:#fff;margin:0 0 6px 0;line-height:1.1}
 .xg-phase-sub{font-size:12px;color:rgba(255,255,255,.4);line-height:1.6;margin:0 0 20px 0}
-.xg-next-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 20px;border:1px solid rgba(0,255,255,.25);border-radius:30px;background:rgba(0,255,255,.04);color:var(--cyan);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all .2s}
-.xg-next-btn:hover{background:rgba(0,255,255,.10);border-color:rgba(0,255,255,.5);transform:translateX(3px)}
+.xg-next-btn{display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:9px 20px;border:1px solid rgba(0,255,255,.28);border-radius:30px;background:rgba(0,255,255,.06);backdrop-filter:blur(12px) saturate(160%);-webkit-backdrop-filter:blur(12px) saturate(160%);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(0,255,255,.08);color:var(--cyan);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;transition:all .25s}
+.xg-next-btn:hover{background:rgba(0,255,255,.14);border-color:rgba(0,255,255,.6);box-shadow:inset 0 1px 0 rgba(255,255,255,.15),0 0 22px rgba(0,255,255,.18);transform:translateX(3px)}
 .xg-progress-dots{display:flex;gap:6px;margin-bottom:18px}
 .xg-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.15);transition:all .3s}
 .xg-dot.active{background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:18px;border-radius:3px}
@@ -767,29 +767,112 @@ const WS = {
     <span class="xg-phase-arrow">▾</span>
   </div>
   <div class="xg-phase-body"><div class="xg-phase-inner">
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px">
-      <div style="padding:12px;border-radius:8px;background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2);text-align:center">
-        <div style="font-size:9px;color:#c084fc;letter-spacing:.1em;margin-bottom:6px">GOAL_MOUTH_Z</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Media goles</div>
-        <div style="font-size:22px;font-weight:700;color:#44ff88">12.9</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">vs <span style="color:#ff8080">25.3</span> en fallos</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:6px">ρ = −0.184 · p &lt; 10⁻⁵⁵</div>
-      </div>
-      <div style="padding:12px;border-radius:8px;background:rgba(168,85,247,.06);border:1px solid rgba(168,85,247,.2);text-align:center">
-        <div style="font-size:9px;color:#c084fc;letter-spacing:.1em;margin-bottom:6px">AIM_CENTRAL</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Media goles</div>
-        <div style="font-size:22px;font-weight:700;color:#44ff88">2.6</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">vs <span style="color:#ff8080">5.4</span> en fallos</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:6px">ρ = −0.043 · p = 0.0002</div>
-      </div>
-      <div style="padding:12px;border-radius:8px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.12);text-align:center">
-        <div style="font-size:9px;color:var(--cyan);letter-spacing:.1em;margin-bottom:6px">POSICIÓN X</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-bottom:4px">Media goles</div>
-        <div style="font-size:22px;font-weight:700;color:#ffcc00">90.1m</div>
-        <div style="font-size:10px;color:rgba(255,255,255,.3);margin-top:2px">vs <span style="color:rgba(255,255,255,.5)">81.4m</span> en fallos</div>
-        <div style="font-size:9px;color:rgba(255,255,255,.25);margin-top:6px">ρ = +0.144 · p &lt; 10⁻³³</div>
-      </div>
+    <style>
+.eda-chart-wrap{position:relative;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;margin-bottom:12px}
+.eda-chart-tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.eda-chart-tab{padding:4px 12px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:.06em;cursor:pointer;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.03);color:rgba(255,255,255,.4);transition:all .2s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.eda-chart-tab.active{background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.4);color:var(--cyan);box-shadow:0 0 12px rgba(0,255,255,.12),inset 0 1px 0 rgba(255,255,255,.1)}
+.eda-bars{display:flex;align-items:flex-end;gap:18px;height:120px;padding:0 4px}
+.eda-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:opacity .2s}
+.eda-bar-group:hover .eda-bar{filter:brightness(1.3)}
+.eda-bars-inner{display:flex;gap:5px;align-items:flex-end;width:100%;justify-content:center}
+.eda-bar{border-radius:4px 4px 0 0;width:22px;transition:height .7s cubic-bezier(.34,1.56,.64,1),filter .2s}
+.eda-bar-goal{background:linear-gradient(180deg,#44ff88,rgba(68,255,136,.4))}
+.eda-bar-fail{background:linear-gradient(180deg,#ff6666,rgba(255,100,100,.3))}
+.eda-bar-label{font-size:8px;color:rgba(255,255,255,.35);text-align:center;letter-spacing:.04em;margin-top:2px;line-height:1.3}
+.eda-bar-val{font-size:9px;font-weight:700;text-align:center}
+.eda-tooltip{position:absolute;top:10px;right:12px;background:rgba(10,10,25,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(0,255,255,.2);border-radius:8px;padding:10px 14px;font-size:10px;min-width:160px;pointer-events:none;transition:opacity .2s;box-shadow:0 4px 20px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08)}
+.eda-legend{display:flex;gap:14px;margin-top:10px}
+.eda-leg-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;margin-top:1px}
+</style>
+<div class="eda-chart-wrap" id="eda-wrap">
+  <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:10px">Distribución de Variables Clave: Goles vs Fallos</div>
+  <div class="eda-chart-tabs">
+    <button class="eda-chart-tab active" onclick="edaSetView('geo',this)">Geométricas</button>
+    <button class="eda-chart-tab" onclick="edaSetView('binary',this)">Binarias</button>
+    <button class="eda-chart-tab" onclick="edaSetView('pos',this)">Posición X</button>
+  </div>
+  <div class="eda-bars" id="eda-bars"></div>
+  <div class="eda-legend">
+    <div style="display:flex;align-items:center;gap:5px"><div class="eda-leg-dot" style="background:#44ff88"></div><span style="font-size:9px;color:rgba(255,255,255,.4)">Media en GOLES</span></div>
+    <div style="display:flex;align-items:center;gap:5px"><div class="eda-leg-dot" style="background:#ff6666"></div><span style="font-size:9px;color:rgba(255,255,255,.4)">Media en FALLOS</span></div>
+  </div>
+  <div class="eda-tooltip" id="eda-tooltip" style="opacity:0">
+    <div id="eda-tt-var" style="font-weight:700;color:var(--cyan);margin-bottom:6px;font-family:monospace"></div>
+    <div style="display:flex;justify-content:space-between;gap:16px">
+      <div><div style="color:#44ff88;font-size:9px;margin-bottom:2px">GOLES</div><div id="eda-tt-g" style="font-size:16px;font-weight:700;color:#44ff88"></div></div>
+      <div><div style="color:#ff6666;font-size:9px;margin-bottom:2px">FALLOS</div><div id="eda-tt-f" style="font-size:16px;font-weight:700;color:#ff6666"></div></div>
+      <div><div style="color:rgba(255,255,255,.35);font-size:9px;margin-bottom:2px">Spearman ρ</div><div id="eda-tt-rho" style="font-size:12px;font-weight:600;color:#fff"></div></div>
     </div>
+    <div id="eda-tt-insight" style="margin-top:8px;font-size:9px;color:rgba(255,255,255,.45);line-height:1.5;border-top:1px solid rgba(255,255,255,.06);padding-top:6px"></div>
+  </div>
+</div>
+<script>(function(){
+  const VIEWS={
+    geo:[
+      {v:'goal_mouth_z',g:12.9,f:25.3,rho:'−0.184',p:'<10⁻⁵⁵',unit:'cm',pct_g:100,pct_f:196,col:'#c084fc',insight:'Menor altura = más goles. Los disparos bajos son más difíciles de detener para el portero.'},
+      {v:'aim_central',g:2.6,f:5.4,rho:'−0.043',p:'0.0002',unit:'cm',pct_g:100,pct_f:208,col:'#c084fc',insight:'Los tiros al centro de la portería tienen menor desviación — mayor probabilidad de gol.'},
+      {v:'angulo_tiro',g:28.4,f:18.1,rho:'+0.157',p:'<10⁻⁴⁰',unit:'°',pct_g:100,pct_f:64,col:'#00ffff',insight:'Mayor ángulo de tiro aumenta la probabilidad de gol — se apunta a más superficie de portería.'},
+      {v:'dist_al_arco',g:11.2,f:19.8,rho:'−0.200',p:'<10⁻⁶⁰',unit:'m',pct_g:100,pct_f:177,col:'#00ffff',insight:'La distancia es el predictor geométrico más fuerte. A mayor distancia, menor precisión posible.'},
+    ],
+    binary:[
+      {v:'is_BigChance',g:0.41,f:0.06,rho:'+0.309',p:'<10⁻¹⁵⁰',unit:'',pct_g:100,pct_f:15,col:'#44ff88',insight:'El predictor binario más potente del modelo. Una gran oportunidad triplica la probabilidad de gol.'},
+      {v:'is_Penalty',g:0.21,f:0.03,rho:'+0.155',p:'<10⁻³⁸',unit:'',pct_g:100,pct_f:14,col:'#44ff88',insight:'Los penales tienen una conversión muy superior — prácticamente la distancia mínima y sin defensas.'},
+      {v:'is_OneOnOne',g:0.18,f:0.04,rho:'+0.051',p:'0.0001',unit:'',pct_g:100,pct_f:22,col:'#ffcc00',insight:'El mano a mano reduce los ángulos de defensa y aumenta la probabilidad de marcar.'},
+    ],
+    pos:[
+      {v:'pos_x_media',g:90.1,f:81.4,rho:'+0.144',p:'<10⁻³³',unit:'m',pct_g:100,pct_f:90,col:'#ffcc00',insight:'Los goles ocurren en la franja de 85-105m. Disparos desde fuera del área tienen poca eficacia.'},
+    ]
+  };
+  let current='geo';
+  function render(view){
+    const data=VIEWS[view];
+    const maxF=Math.max(...data.map(d=>d.pct_f));
+    const H=90;
+    const bars=document.getElementById('eda-bars');
+    if(!bars) return;
+    bars.innerHTML=data.map((d,i)=>{
+      const hg=Math.round((d.pct_g/Math.max(d.pct_g,maxF))*H);
+      const hf=Math.round((d.pct_f/Math.max(d.pct_g,maxF))*H);
+      return `<div class="eda-bar-group" onmouseenter="edaTT(${i},'${view}')" onmouseleave="edaTTHide()">
+        <div class="eda-bars-inner">
+          <div class="eda-bar eda-bar-goal" id="edabg${i}" style="height:0"></div>
+          <div class="eda-bar eda-bar-fail" id="edabf${i}" style="height:0"></div>
+        </div>
+        <div class="eda-bar-label" style="color:${d.col}">${d.v.replace('_','_\u200B')}</div>
+      </div>`;
+    }).join('');
+    setTimeout(()=>{
+      data.forEach((d,i)=>{
+        const hg=Math.round((d.pct_g/Math.max(d.pct_g,maxF))*H);
+        const hf=Math.round((d.pct_f/Math.max(d.pct_g,maxF))*H);
+        const bg=document.getElementById('edabg'+i);
+        const bf=document.getElementById('edabf'+i);
+        if(bg) bg.style.height=hg+'px';
+        if(bf) bf.style.height=hf+'px';
+      });
+    },80);
+  }
+  window.edaSetView=function(view,btn){
+    current=view;
+    document.querySelectorAll('.eda-chart-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    render(view);
+  };
+  window.edaTT=function(i,view){
+    const d=VIEWS[view][i];
+    const tt=document.getElementById('eda-tooltip');
+    if(!tt) return;
+    document.getElementById('eda-tt-var').textContent=d.v;
+    document.getElementById('eda-tt-g').textContent=d.g+d.unit;
+    document.getElementById('eda-tt-f').textContent=d.f+d.unit;
+    document.getElementById('eda-tt-rho').textContent=d.rho+' (p '+d.p+')';
+    document.getElementById('eda-tt-insight').textContent=d.insight;
+    tt.style.opacity='1';
+  };
+  window.edaTTHide=function(){const tt=document.getElementById('eda-tooltip');if(tt)tt.style.opacity='0';};
+  setTimeout(()=>render('geo'),200);
+}());</script>
     <div style="padding:10px 14px;background:rgba(68,255,136,.04);border-left:3px solid #44ff88;border-radius:0 6px 6px 0;font-size:11px;color:rgba(255,255,255,.5);line-height:1.6">
       <strong style="color:#44ff88">Conclusión:</strong> Los goles ocurren a ras de suelo y apuntando al centro. El portero cubre mejor el alto que el bajo — un disparo pegado al piso y al centro es físicamente más difícil de detener.
     </div>
