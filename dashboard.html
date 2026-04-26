@@ -792,11 +792,201 @@
         "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm"
     }
 }
+
+// --- ORACLE ENGINE (M2 & M3) ---
+window._initOracle = function() {
+    const inputs = {
+        'b365h': document.getElementById('in-b365h'),
+        'b365a': document.getElementById('in-b365a'),
+        'home_pts': document.getElementById('in-home_pts'),
+        'away_gf': document.getElementById('in-away_gf'),
+        'away_ast': document.getElementById('in-away_ast')
+    };
+    
+    const calculate = () => {
+        if (!window.ORACLE_DATA) return;
+        const d = window.ORACLE_DATA;
+
+        // --- M3 CALCULATION (Softmax) ---
+        // Features: b365h, b365a, home_pts_last3, away_gf_last3
+        const x3_raw = [
+            parseFloat(inputs.b365h.value),
+            parseFloat(inputs.b365a.value),
+            parseFloat(inputs.home_pts.value),
+            parseFloat(inputs.away_gf.value)
+        ];
+        
+        // StandardScaler
+        const x3_s = x3_raw.map((v, i) => (v - d.m3.means[i]) / d.m3.scales[i]);
+        
+        // Logits
+        let logits = d.m3.intercepts.map((inter, i) => {
+            let sum = inter;
+            for(let j=0; j<x3_s.length; j++) sum += x3_s[j] * d.m3.coefs[i][j];
+            return sum;
+        });
+        
+        // Softmax
+        const maxLogit = Math.max(...logits);
+        const exps = logits.map(l => Math.exp(l - maxLogit));
+        const sumExps = exps.reduce((a, b) => a + b, 0);
+        const probs = exps.map(e => e / sumExps);
+        
+        // Probs map: ['A', 'D', 'H']
+        const pA = probs[0], pD = probs[1], pH = probs[2];
+        
+        // Update M3 UI
+        document.getElementById('prob-h').innerText = (pH * 100).toFixed(1) + '%';
+        document.getElementById('prob-d').innerText = (pD * 100).toFixed(1) + '%';
+        document.getElementById('prob-a').innerText = (pA * 100).toFixed(1) + '%';
+        
+        document.getElementById('bar-h').style.width = (pH * 100) + '%';
+        document.getElementById('bar-d').style.width = (pD * 100) + '%';
+        document.getElementById('bar-a').style.width = (pA * 100) + '%';
+        
+        document.getElementById('val-b365h').innerText = x3_raw[0].toFixed(2);
+        document.getElementById('val-b365a').innerText = x3_raw[1].toFixed(2);
+        document.getElementById('val-home_pts').innerText = x3_raw[2].toFixed(2);
+        document.getElementById('val-away_gf').innerText = x3_raw[3].toFixed(2);
+
+        // --- M2 CALCULATION (OLS) ---
+        // Features: H_fthg_cum, A_ast_cum, A_ac_w7, A_as__w7, gdiff_w7
+        // We simulate some missing ones from available inputs or constants
+        const h_fthg_cum = x3_raw[3]; // approximation: goles visita rec ~ goles local hist
+        const a_ast_cum = parseFloat(inputs.away_ast.value);
+        const a_ac_w7 = 5.0; // constant for simulation
+        const a_as_w7 = a_ast_cum * 2.5; // logic: shots ~ 2.5 * shots on target
+        const gdiff_w7 = (x3_raw[2] - 1.3) * 2; // derived from points momentum
+        
+        const x2_raw = [h_fthg_cum, a_ast_cum, a_ac_w7, a_as_w7, gdiff_w7];
+        const x2_s = x2_raw.map((v, i) => (v - d.m2.means[i]) / d.m2.scales[i]);
+        
+        let m2_pred = d.m2.intercept;
+        for(let j=0; j<x2_s.length; j++) m2_pred += x2_s[j] * d.m2.coefs[j];
+        
+        const final_goals = Math.max(0, m2_pred);
+        document.getElementById('val-total-goals').innerText = final_goals.toFixed(2);
+        document.getElementById('val-away_ast').innerText = a_ast_cum.toFixed(1);
+        
+        // --- VERDICT ---
+        let verdict = "";
+        const mProbH = 1/x3_raw[0]; // Market prob
+        if (pH > mProbH + 0.05) verdict = "<strong>VALOR LOCAL:</strong> El modelo asigna un " + (pH*100).toFixed(0) + "% vs el " + (mProbH*100).toFixed(0) + "% del mercado. Ventaja estadística.";
+        else if (pA > (1/x3_raw[1]) + 0.05) verdict = "<strong>VALOR VISITANTE:</strong> Señal fuerte a favor del visitante. El momentum supera la cuota.";
+        else if (final_goals > 3.0) verdict = "<strong>ALTO VOLUMEN:</strong> Escenario de lluvia de goles. Probable Over 2.5.";
+        else verdict = "<strong>MERCADO EFICIENTE:</strong> Las cuotas reflejan bien el riesgo. No hay ventaja clara.";
+        
+        document.getElementById('oracle-verdict').innerHTML = '<div style="font-size:20px">🧠</div><div>' + verdict + '</div>';
+    };
+
+    Object.values(inputs).forEach(inp => {
+        inp.addEventListener('input', calculate);
+    });
+    
+    calculate();
+};
+
 </script>
 
-<script src="pl_pts_tmp.js"></script>
+<script src="pl_pts_tmp.js">
+// --- ORACLE ENGINE (M2 & M3) ---
+window._initOracle = function() {
+    const inputs = {
+        'b365h': document.getElementById('in-b365h'),
+        'b365a': document.getElementById('in-b365a'),
+        'home_pts': document.getElementById('in-home_pts'),
+        'away_gf': document.getElementById('in-away_gf'),
+        'away_ast': document.getElementById('in-away_ast')
+    };
+    
+    const calculate = () => {
+        if (!window.ORACLE_DATA) return;
+        const d = window.ORACLE_DATA;
+
+        // --- M3 CALCULATION (Softmax) ---
+        // Features: b365h, b365a, home_pts_last3, away_gf_last3
+        const x3_raw = [
+            parseFloat(inputs.b365h.value),
+            parseFloat(inputs.b365a.value),
+            parseFloat(inputs.home_pts.value),
+            parseFloat(inputs.away_gf.value)
+        ];
+        
+        // StandardScaler
+        const x3_s = x3_raw.map((v, i) => (v - d.m3.means[i]) / d.m3.scales[i]);
+        
+        // Logits
+        let logits = d.m3.intercepts.map((inter, i) => {
+            let sum = inter;
+            for(let j=0; j<x3_s.length; j++) sum += x3_s[j] * d.m3.coefs[i][j];
+            return sum;
+        });
+        
+        // Softmax
+        const maxLogit = Math.max(...logits);
+        const exps = logits.map(l => Math.exp(l - maxLogit));
+        const sumExps = exps.reduce((a, b) => a + b, 0);
+        const probs = exps.map(e => e / sumExps);
+        
+        // Probs map: ['A', 'D', 'H']
+        const pA = probs[0], pD = probs[1], pH = probs[2];
+        
+        // Update M3 UI
+        document.getElementById('prob-h').innerText = (pH * 100).toFixed(1) + '%';
+        document.getElementById('prob-d').innerText = (pD * 100).toFixed(1) + '%';
+        document.getElementById('prob-a').innerText = (pA * 100).toFixed(1) + '%';
+        
+        document.getElementById('bar-h').style.width = (pH * 100) + '%';
+        document.getElementById('bar-d').style.width = (pD * 100) + '%';
+        document.getElementById('bar-a').style.width = (pA * 100) + '%';
+        
+        document.getElementById('val-b365h').innerText = x3_raw[0].toFixed(2);
+        document.getElementById('val-b365a').innerText = x3_raw[1].toFixed(2);
+        document.getElementById('val-home_pts').innerText = x3_raw[2].toFixed(2);
+        document.getElementById('val-away_gf').innerText = x3_raw[3].toFixed(2);
+
+        // --- M2 CALCULATION (OLS) ---
+        // Features: H_fthg_cum, A_ast_cum, A_ac_w7, A_as__w7, gdiff_w7
+        // We simulate some missing ones from available inputs or constants
+        const h_fthg_cum = x3_raw[3]; // approximation: goles visita rec ~ goles local hist
+        const a_ast_cum = parseFloat(inputs.away_ast.value);
+        const a_ac_w7 = 5.0; // constant for simulation
+        const a_as_w7 = a_ast_cum * 2.5; // logic: shots ~ 2.5 * shots on target
+        const gdiff_w7 = (x3_raw[2] - 1.3) * 2; // derived from points momentum
+        
+        const x2_raw = [h_fthg_cum, a_ast_cum, a_ac_w7, a_as_w7, gdiff_w7];
+        const x2_s = x2_raw.map((v, i) => (v - d.m2.means[i]) / d.m2.scales[i]);
+        
+        let m2_pred = d.m2.intercept;
+        for(let j=0; j<x2_s.length; j++) m2_pred += x2_s[j] * d.m2.coefs[j];
+        
+        const final_goals = Math.max(0, m2_pred);
+        document.getElementById('val-total-goals').innerText = final_goals.toFixed(2);
+        document.getElementById('val-away_ast').innerText = a_ast_cum.toFixed(1);
+        
+        // --- VERDICT ---
+        let verdict = "";
+        const mProbH = 1/x3_raw[0]; // Market prob
+        if (pH > mProbH + 0.05) verdict = "<strong>VALOR LOCAL:</strong> El modelo asigna un " + (pH*100).toFixed(0) + "% vs el " + (mProbH*100).toFixed(0) + "% del mercado. Ventaja estadística.";
+        else if (pA > (1/x3_raw[1]) + 0.05) verdict = "<strong>VALOR VISITANTE:</strong> Señal fuerte a favor del visitante. El momentum supera la cuota.";
+        else if (final_goals > 3.0) verdict = "<strong>ALTO VOLUMEN:</strong> Escenario de lluvia de goles. Probable Over 2.5.";
+        else verdict = "<strong>MERCADO EFICIENTE:</strong> Las cuotas reflejan bien el riesgo. No hay ventaja clara.";
+        
+        document.getElementById('oracle-verdict').innerHTML = '<div style="font-size:20px">🧠</div><div>' + verdict + '</div>';
+    };
+
+    Object.values(inputs).forEach(inp => {
+        inp.addEventListener('input', calculate);
+    });
+    
+    calculate();
+};
+
+</script>
 
 <script type="module">
+const ORACLE_DATA = {"m3": {"classes": ["A", "D", "H"], "features": ["b365h", "b365a", "home_pts_last3", "away_gf_last3"], "means": [2.6530584192439863, 3.948865979381443, 1.3235967926689576, 1.4065292096219932], "scales": [1.4136183229253276, 2.5682479123766053, 0.7884479314406226, 0.7383857894623777], "coefs": [[0.13405485397124306, -0.44339323444461004, -0.13242577867673055, 0.032953005322668656], [0.13528852086858634, 0.07467253770051421, 0.17496894205505625, -0.008477776516103442], [-0.269343374839829, 0.36872069674409585, -0.04254316337832577, -0.024475228806565105]], "intercepts": [-0.08045627470379181, 0.07782795370887755, 0.0026283209949149408]}, "m2": {"features": ["H_fthg_cum", "A_ast_cum", "A_ac_w7", "A_as__w7", "gdiff_w7"], "means": [1.3361436684387058, 4.031323202389658, 4.970364915725741, 12.274390443462607, -0.046154475535918824], "scales": [0.4982315080536524, 0.9142342260330144, 1.3450898046580315, 2.6436298781306466, 0.8774382813779654], "coefs": [-0.16901801024322674, 0.002020132242235226, -0.020248035802658146, 0.1930391763917276, 0.027789683301018664], "intercept": 2.7731958762886597}};
+
 import * as THREE from 'three';
 import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
@@ -818,36 +1008,118 @@ const DATA = [
 // ── WORKSPACE CONTENT ─────────────────────────────────────────
 const WS = {
     xg: {
-        overview: `<div class="xg-progress-dots"><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
-<div class="xg-split">
-  <div>
-    <div class="xg-eyebrow">FASE 0 · EL PROBLEMA</div>
-    <div class="xg-phase-title">La Gran Mentira del<br><span style="color:#ff5555;text-decoration:line-through;font-weight:700" class="ws-metric-value" data-target="88.8">88.8</span>% Accuracy</div>
-    <div class="xg-phase-sub">Un modelo perezoso que siempre predice "Fallo" obtiene 88.8% de accuracy automáticamente. Parece inteligente — está completamente ciego.</div>
-    <div style="padding:14px 18px;border-left:3px solid var(--cyan);background:rgba(0,255,255,.03);border-radius:0 8px 8px 0;margin-bottom:16px">
-      <div style="font-size:9px;color:var(--cyan);letter-spacing:.15em;font-weight:700;margin-bottom:4px">NUESTRA MISIÓN</div>
-      <div style="font-size:15px;color:#fff;font-weight:300">Encontrar la aguja en el pajar — el <span style="color:#44ff88;font-weight:700">11.2%</span> que sí convierte</div>
+        overview: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:#ffcc00;margin-bottom:6px">LIVE TEST NODE · SIMULADOR PROFÉTICO</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">The <span style="color:#ffcc00;font-weight:700">Oracle</span> Engine</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">Manipula las variables reales de los Modelos 2 y 3 para predecir cualquier escenario.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:20px;min-height:450px">
+  <!-- Control Panel -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:20px;text-transform:uppercase">Parámetros de Entrada</div>
+    
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Local (b365h)</span>
+        <span id="val-b365h" style="font-size:11px;color:#ffcc00;font-family:monospace">2.50</span>
+      </div>
+      <input type="range" id="in-b365h" min="1.01" max="15.0" step="0.1" value="2.5" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;letter-spacing:.1em">444,252 EVENTOS · 7,198 DISPAROS</div>
-    <div class="xg-imbalance-bar" id="xg-imbal-bar">
-      <div class="xg-bar-fail" style="width:0%" id="xg-bar-fail">FALLOS</div>
-      <div class="xg-bar-goal" style="width:0%" id="xg-bar-goal">GOLES</div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Visita (b365a)</span>
+        <span id="val-b365a" style="font-size:11px;color:#ffcc00;font-family:monospace">2.80</span>
+      </div>
+      <input type="range" id="in-b365a" min="1.01" max="15.0" step="0.1" value="2.8" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:rgba(255,255,255,.3)"><span>88.8% no-gol</span><span>11.2% gol</span></div>
-    <button class="xg-next-btn" onclick="document.querySelector('.ws-tab[data-tab=metrics]').click()">La Autopsia →</button>
+
+    <div style="border-top:1px solid rgba(255,255,255,.05);margin:20px 0;padding-top:20px"></div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Pts Recientes Local (h_pts)</span>
+        <span id="val-home_pts" style="font-size:11px;color:var(--cyan);font-family:monospace">1.30</span>
+      </div>
+      <input type="range" id="in-home_pts" min="0.0" max="3.0" step="0.1" value="1.3" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Goles Recientes Visita (a_gf)</span>
+        <span id="val-away_gf" style="font-size:11px;color:var(--cyan);font-family:monospace">1.40</span>
+      </div>
+      <input type="range" id="in-away_gf" min="0.0" max="4.0" step="0.1" value="1.4" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Tiros Arco Visita (a_ast)</span>
+        <span id="val-away_ast" style="font-size:11px;color:#ff44ff;font-family:monospace">4.0</span>
+      </div>
+      <input type="range" id="in-away_ast" min="0.0" max="10.0" step="0.5" value="4.0" style="width:100%;accent-color:#ff44ff">
+    </div>
   </div>
 
-  <div>
-    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:10px;text-transform:uppercase">Inventario de Datos</div>
-    <div class="xg-var-row"><span class="xg-var-name">dist_al_arco</span><span class="xg-var-desc">Distancia euclidiana al arco</span><span class="xg-badge xg-badge-green">BASE</span></div>
-    <div class="xg-var-row"><span class="xg-var-name">angulo_tiro</span><span class="xg-var-desc">Ángulo en radianes hacia portería</span><span class="xg-badge xg-badge-green">BASE</span></div>
-    <div class="xg-var-row"><span class="xg-var-name">is_BigChance</span><span class="xg-var-desc">Flag de ocasión clara (WhoScored)</span><span class="xg-badge xg-badge-green">BASE</span></div>
-    <div class="xg-var-row"><span class="xg-var-name">is_Penalty</span><span class="xg-var-desc">Flag de penalti · conv. ~76%</span><span class="xg-badge xg-badge-green">BASE</span></div>
-    <div class="xg-var-row"><span class="xg-var-name">is_OneOnOne</span><span class="xg-var-desc">Flag de uno contra uno</span><span class="xg-badge xg-badge-green">BASE</span></div>
-    <div class="xg-var-row" style="border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.04)"><span class="xg-var-name" style="color:#c084fc">goal_mouth_z</span><span class="xg-var-desc">Altura del disparo en portería</span><span class="xg-badge xg-badge-new">🆕 V2</span></div>
-    <div class="xg-var-row" style="border-color:rgba(168,85,247,.25);background:rgba(168,85,247,.04)"><span class="xg-var-name" style="color:#c084fc">aim_central</span><span class="xg-var-desc">Centralidad lateral |y−50|</span><span class="xg-badge xg-badge-new">🆕 V2</span></div>
-    <div class="xg-var-row" style="opacity:.5"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">threat</span><span class="xg-var-desc">FPL threat — p=0.337</span><span class="xg-badge xg-badge-red">ELIMINADA</span></div>
-    <div class="xg-var-row" style="opacity:.45"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">minute / period / end_x / end_y</span><span class="xg-var-desc">p&gt;0.05 o 100% nulos</span><span class="xg-badge xg-badge-red">ELIMINADAS</span></div>
+  <!-- Prediction Display -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <!-- Result M3 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;flex:1">
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:24px;text-transform:uppercase">M3: Probabilidades de Resultado</div>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">LOCAL (H)</span>
+            <span id="prob-h" style="font-size:14px;color:#44ff88;font-weight:700">45.2%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-h" style="height:100%;width:45%;background:linear-gradient(90deg, #1a4d2e, #44ff88);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">EMPATE (D)</span>
+            <span id="prob-d" style="font-size:14px;color:rgba(255,255,255,.5);font-weight:700">26.1%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-d" style="height:100%;width:26%;background:rgba(255,255,255,.2);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">VISITANTE (A)</span>
+            <span id="prob-a" style="font-size:14px;color:#ff4488;font-weight:700">28.7%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-a" style="height:100%;width:28%;background:linear-gradient(90deg, #4d1a2e, #ff4488);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goals M2 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:8px;text-transform:uppercase">M2: Goles Totales Esperados</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Predicción Lasso (Regresión)</div>
+      </div>
+      <div style="text-align:right">
+        <div id="val-total-goals" style="font-size:48px;font-weight:100;color:#fff;font-family:monospace;line-height:1">2.77</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;margin-top:4px">GOLES PROYECTADOS</div>
+      </div>
+    </div>
+
+    <!-- Verdict -->
+    <div id="oracle-verdict" style="background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.2);border-radius:10px;padding:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🧠</div>
+      <div>
+        <strong style="color:#ffcc00">Veredicto de la IA:</strong> El mercado subestima la probabilidad del local dada su racha reciente. Posible valor detectado.
+      </div>
+    </div>
   </div>
 </div>`,
         metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
@@ -1586,32 +1858,118 @@ const WS = {
     },
 
     match: {
-        overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ff44ff;box-shadow:0 0 8px #ff44ff"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
-<div class="xg-split">
-  <div>
-    <div class="xg-eyebrow">MODELO 2 · LASSO REGRESIÓN</div>
-    <div class="xg-phase-title">La Regla Oculta<br><span style="color:#ff44ff;font-weight:700">del Marcador</span></div>
-    <div class="xg-phase-sub">18 variables candidatas. El penalizador L1 ejecutó a 14 de ellas. Solo 4 sobrevivieron — y revelan la mecánica real del gol en la Premier League.</div>
-    <div style="padding:14px 18px;border-left:3px solid #ff44ff;background:rgba(255,68,255,.03);border-radius:0 8px 8px 0;margin-bottom:16px">
-      <div style="font-size:9px;color:#ff44ff;letter-spacing:.15em;font-weight:700;margin-bottom:4px">EL DESCUBRIMIENTO</div>
-      <div style="font-size:15px;color:#fff;font-weight:300">"La agresión del visitante<br><span style="color:#ff44ff;font-weight:700">dicta el ritmo de los goles"</span></div>
+        overview: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:#ffcc00;margin-bottom:6px">LIVE TEST NODE · SIMULADOR PROFÉTICO</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">The <span style="color:#ffcc00;font-weight:700">Oracle</span> Engine</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">Manipula las variables reales de los Modelos 2 y 3 para predecir cualquier escenario.</div>
+</div>
+
+<div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:20px;min-height:450px">
+  <!-- Control Panel -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:20px;text-transform:uppercase">Parámetros de Entrada</div>
+    
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Local (b365h)</span>
+        <span id="val-b365h" style="font-size:11px;color:#ffcc00;font-family:monospace">2.50</span>
+      </div>
+      <input type="range" id="in-b365h" min="1.01" max="15.0" step="0.1" value="2.5" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="font-size:10px;color:rgba(255,255,255,.3);margin-bottom:6px;letter-spacing:.1em">3,800+ PARTIDOS · 10 TEMPORADAS · 2015–2025</div>
-    <div class="m2-imbalance-bar" id="m2-imbal-bar">
-      <div class="m2-bar-activa" style="width:0%" id="m2-bar-activa">4 ACTIVAS</div>
-      <div class="m2-bar-elim" style="width:0%" id="m2-bar-elim">14 ELIMINADAS</div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Visita (b365a)</span>
+        <span id="val-b365a" style="font-size:11px;color:#ffcc00;font-family:monospace">2.80</span>
+      </div>
+      <input type="range" id="in-b365a" min="1.01" max="15.0" step="0.1" value="2.8" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="display:flex;justify-content:space-between;margin-top:5px;font-size:9px;color:rgba(255,255,255,.3)"><span style="color:#ff44ff">22% — señal real</span><span>78% — β = 0</span></div>
-    <button class="xg-next-btn" style="border-color:rgba(255,68,255,.28);background:rgba(255,68,255,.06);color:#ff44ff;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(255,68,255,.08)" onmouseover="this.style.background='rgba(255,68,255,.14)';this.style.borderColor='rgba(255,68,255,.6)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.15),0 0 22px rgba(255,68,255,.18)'" onmouseout="this.style.background='rgba(255,68,255,.06)';this.style.borderColor='rgba(255,68,255,.28)';this.style.boxShadow='inset 0 1px 0 rgba(255,255,255,.1),0 0 14px rgba(255,68,255,.08)'" onclick="document.querySelector('.ws-tab[data-tab=metrics]').click()">La Autopsia →</button>
+
+    <div style="border-top:1px solid rgba(255,255,255,.05);margin:20px 0;padding-top:20px"></div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Pts Recientes Local (h_pts)</span>
+        <span id="val-home_pts" style="font-size:11px;color:var(--cyan);font-family:monospace">1.30</span>
+      </div>
+      <input type="range" id="in-home_pts" min="0.0" max="3.0" step="0.1" value="1.3" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Goles Recientes Visita (a_gf)</span>
+        <span id="val-away_gf" style="font-size:11px;color:var(--cyan);font-family:monospace">1.40</span>
+      </div>
+      <input type="range" id="in-away_gf" min="0.0" max="4.0" step="0.1" value="1.4" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Tiros Arco Visita (a_ast)</span>
+        <span id="val-away_ast" style="font-size:11px;color:#ff44ff;font-family:monospace">4.0</span>
+      </div>
+      <input type="range" id="in-away_ast" min="0.0" max="10.0" step="0.5" value="4.0" style="width:100%;accent-color:#ff44ff">
+    </div>
   </div>
-  <div style="display:flex;flex-direction:column;gap:5px">
-    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.2em;margin-bottom:10px;text-transform:uppercase">Inventario de Datos</div>
-    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Away_Avg_AST</span><span class="xg-var-desc">Tiros prom. visitante · rolling avg</span><span class="xg-badge m2-badge-activa">β=+0.041</span></div>
-    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Sum_influence</span><span class="xg-var-desc">Suma influencia FPL estrellas local</span><span class="xg-badge m2-badge-activa">β=+0.070</span></div>
-    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Avg_FTHG</span><span class="xg-var-desc">Goles promedio histórico local</span><span class="xg-badge m2-badge-activa">β=−0.060</span></div>
-    <div class="xg-var-row"><span class="xg-var-name" style="color:#ff44ff">Home_Days_Rest</span><span class="xg-var-desc">Días de descanso equipo local</span><span class="xg-badge m2-badge-activa">β=−0.050</span></div>
-    <div class="xg-var-row" style="opacity:.5"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">Home_ELO · Away_ELO</span><span class="xg-var-desc">Redundante con cuotas (colineal)</span><span class="xg-badge m2-badge-elim">β = 0</span></div>
-    <div class="xg-var-row" style="opacity:.45"><span class="xg-var-name" style="color:rgba(255,80,80,.7);text-decoration:line-through">referee_bias · season_stage…</span><span class="xg-var-desc">12 vars más — sin señal estadística</span><span class="xg-badge m2-badge-elim">ELIMINADAS</span></div>
+
+  <!-- Prediction Display -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <!-- Result M3 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;flex:1">
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:24px;text-transform:uppercase">M3: Probabilidades de Resultado</div>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">LOCAL (H)</span>
+            <span id="prob-h" style="font-size:14px;color:#44ff88;font-weight:700">45.2%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-h" style="height:100%;width:45%;background:linear-gradient(90deg, #1a4d2e, #44ff88);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">EMPATE (D)</span>
+            <span id="prob-d" style="font-size:14px;color:rgba(255,255,255,.5);font-weight:700">26.1%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-d" style="height:100%;width:26%;background:rgba(255,255,255,.2);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">VISITANTE (A)</span>
+            <span id="prob-a" style="font-size:14px;color:#ff4488;font-weight:700">28.7%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-a" style="height:100%;width:28%;background:linear-gradient(90deg, #4d1a2e, #ff4488);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goals M2 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:8px;text-transform:uppercase">M2: Goles Totales Esperados</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Predicción Lasso (Regresión)</div>
+      </div>
+      <div style="text-align:right">
+        <div id="val-total-goals" style="font-size:48px;font-weight:100;color:#fff;font-family:monospace;line-height:1">2.77</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;margin-top:4px">GOLES PROYECTADOS</div>
+      </div>
+    </div>
+
+    <!-- Verdict -->
+    <div id="oracle-verdict" style="background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.2);border-radius:10px;padding:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🧠</div>
+      <div>
+        <strong style="color:#ffcc00">Veredicto de la IA:</strong> El mercado subestima la probabilidad del local dada su racha reciente. Posible valor detectado.
+      </div>
+    </div>
   </div>
 </div>`,
         metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
@@ -2391,55 +2749,117 @@ const WS = {
 `
     },
     result: {
-        overview: `<div class="xg-progress-dots"><div class="xg-dot active"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
-<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">MODELO 3 · REGRESIÓN MULTINOMIAL</div>
-<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">El Descubrimiento</div>
-<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">Clasificador que predice el resultado exacto: H (Local), D (Empate), o A (Visitante).</div>
+        overview: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:#ffcc00;margin-bottom:6px">LIVE TEST NODE · SIMULADOR PROFÉTICO</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">The <span style="color:#ffcc00;font-weight:700">Oracle</span> Engine</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">Manipula las variables reales de los Modelos 2 y 3 para predecir cualquier escenario.</div>
+</div>
 
-<div class="xg-split" style="margin-bottom:20px">
-  <div style="flex:1">
-    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Reto del Empate</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">
-      Las casas de apuestas como Bet365 procesan montañas de datos en tiempo real (lesiones, clima, historial, flujo de dinero) y logran un acierto del <strong style="color:var(--cyan)">54.24%</strong> al predecir el ganador en este test set. Nuestro objetivo es superarlos usando <strong>estrictamente información pública disponible antes del pitido inicial</strong> (cero Data Leakage temporal).
+<div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:20px;min-height:450px">
+  <!-- Control Panel -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:20px;text-transform:uppercase">Parámetros de Entrada</div>
+    
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Local (b365h)</span>
+        <span id="val-b365h" style="font-size:11px;color:#ffcc00;font-family:monospace">2.50</span>
+      </div>
+      <input type="range" id="in-b365h" min="1.01" max="15.0" step="0.1" value="2.5" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7">
-      Pero hay un problema estadístico masivo: <strong style="color:#ff44ff">adivinar el empate es caótico</strong> (26% de los resultados reales). Un modelo ingenuo maximiza su Accuracy nunca prediciendo empates (V1). Para construir un clasificador honesto, renunciar a la exactitud pura y forzar <code style="color:var(--cyan)">class_weight='balanced'</code> fue mandatorio.
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Visita (b365a)</span>
+        <span id="val-b365a" style="font-size:11px;color:#ffcc00;font-family:monospace">2.80</span>
+      </div>
+      <input type="range" id="in-b365a" min="1.01" max="15.0" step="0.1" value="2.8" style="width:100%;accent-color:#ffcc00">
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,.05);margin:20px 0;padding-top:20px"></div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Pts Recientes Local (h_pts)</span>
+        <span id="val-home_pts" style="font-size:11px;color:var(--cyan);font-family:monospace">1.30</span>
+      </div>
+      <input type="range" id="in-home_pts" min="0.0" max="3.0" step="0.1" value="1.3" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Goles Recientes Visita (a_gf)</span>
+        <span id="val-away_gf" style="font-size:11px;color:var(--cyan);font-family:monospace">1.40</span>
+      </div>
+      <input type="range" id="in-away_gf" min="0.0" max="4.0" step="0.1" value="1.4" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Tiros Arco Visita (a_ast)</span>
+        <span id="val-away_ast" style="font-size:11px;color:#ff44ff;font-family:monospace">4.0</span>
+      </div>
+      <input type="range" id="in-away_ast" min="0.0" max="10.0" step="0.5" value="4.0" style="width:100%;accent-color:#ff44ff">
     </div>
   </div>
-  
-  <div style="flex:1;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:12px;padding:20px;backdrop-filter:blur(10px)">
-    <div style="font-size:9px;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.3);margin-bottom:14px">ANATOMÍA DEL MODELO M3</div>
-    
-    <div class="xg-var-row">
-      <div>
-        <div class="xg-var-name" style="color:var(--cyan)">Target Y</div>
-        <div class="xg-var-desc">Clasificación 3 Clases (H, D, A)</div>
+
+  <!-- Prediction Display -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <!-- Result M3 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;flex:1">
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:24px;text-transform:uppercase">M3: Probabilidades de Resultado</div>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">LOCAL (H)</span>
+            <span id="prob-h" style="font-size:14px;color:#44ff88;font-weight:700">45.2%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-h" style="height:100%;width:45%;background:linear-gradient(90deg, #1a4d2e, #44ff88);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">EMPATE (D)</span>
+            <span id="prob-d" style="font-size:14px;color:rgba(255,255,255,.5);font-weight:700">26.1%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-d" style="height:100%;width:26%;background:rgba(255,255,255,.2);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">VISITANTE (A)</span>
+            <span id="prob-a" style="font-size:14px;color:#ff4488;font-weight:700">28.7%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-a" style="height:100%;width:28%;background:linear-gradient(90deg, #4d1a2e, #ff4488);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
       </div>
-      <span class="xg-badge xg-badge-new" style="background:rgba(0,255,255,.1);color:var(--cyan);border-color:rgba(0,255,255,.3)">Multinomial</span>
     </div>
 
-    <div class="xg-var-row">
+    <!-- Goals M2 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:space-between">
       <div>
-        <div class="xg-var-name" style="color:#ff44ff">Algoritmo</div>
-        <div class="xg-var-desc">LogisticRegression (lbfgs)</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:8px;text-transform:uppercase">M2: Goles Totales Esperados</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Predicción Lasso (Regresión)</div>
       </div>
-      <span class="xg-badge xg-badge-new" style="background:rgba(255,68,255,.1);color:#ff44ff;border-color:rgba(255,68,255,.3)">Softmax</span>
-    </div>
-    
-    <div class="xg-var-row">
-      <div>
-        <div class="xg-var-name" style="color:var(--cyan)">Anti-Leakage</div>
-        <div class="xg-var-desc">Información Pre-Partido</div>
+      <div style="text-align:right">
+        <div id="val-total-goals" style="font-size:48px;font-weight:100;color:#fff;font-family:monospace;line-height:1">2.77</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;margin-top:4px">GOLES PROYECTADOS</div>
       </div>
-      <span class="xg-badge xg-badge-green" style="color:#44ff88">100% Lícito</span>
     </div>
 
-    <div class="xg-var-row">
+    <!-- Verdict -->
+    <div id="oracle-verdict" style="background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.2);border-radius:10px;padding:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🧠</div>
       <div>
-        <div class="xg-var-name" style="color:#ff44ff">Enemigo a Vencer</div>
-        <div class="xg-var-desc">Baseline Bet365 (Test Set)</div>
+        <strong style="color:#ffcc00">Veredicto de la IA:</strong> El mercado subestima la probabilidad del local dada su racha reciente. Posible valor detectado.
       </div>
-      <span class="xg-badge xg-badge-red" style="color:#ff8080">54.24%</span>
     </div>
   </div>
 </div>`,
@@ -3000,80 +3420,118 @@ const WS = {
 </div>`
     },
     data: {
-        overview: `<div style="margin-bottom:18px">
-  <div style="font-size:9px;font-weight:700;letter-spacing:.22em;color:rgba(68,255,136,.5);margin-bottom:4px">EDA GENERAL · CENTRAL MATRIX</div>
-  <div style="font-size:22px;font-weight:300;color:#fff;margin-bottom:4px">Los 3 Datasets del Proyecto</div>
-  <div style="font-size:12px;color:rgba(255,255,255,.4);line-height:1.6">Pipeline ETL que extrae, limpia y distribuye datos hacia los modelos. Principio rector: <strong style="color:#fff">cero Data Leakage</strong> — información pre-partido únicamente.</div>
+        overview: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:#ffcc00;margin-bottom:6px">LIVE TEST NODE · SIMULADOR PROFÉTICO</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">The <span style="color:#ffcc00;font-weight:700">Oracle</span> Engine</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">Manipula las variables reales de los Modelos 2 y 3 para predecir cualquier escenario.</div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px">
-  <!-- Dataset cards -->
-  <div style="display:flex;flex-direction:column;gap:8px">
-    <div style="padding:14px;border-radius:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(68,255,136,.4)'" onmouseout="this.style.borderColor='rgba(68,255,136,.14)'">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#44ff88">Events.csv</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.5)">444,252 × 19</span>
+<div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:20px;min-height:450px">
+  <!-- Control Panel -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:20px;text-transform:uppercase">Parámetros de Entrada</div>
+    
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Local (b365h)</span>
+        <span id="val-b365h" style="font-size:11px;color:#ffcc00;font-family:monospace">2.50</span>
       </div>
-      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">Tiros, pases, conducciones por partido. Fuente principal de M1 (xG). <span style="color:#ffcc00">33%</span> de end_x/end_y nulos — estructural.</div>
+      <input type="range" id="in-b365h" min="1.01" max="15.0" step="0.1" value="2.5" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="padding:14px;border-radius:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(255,200,0,.4)'" onmouseout="this.style.borderColor='rgba(255,200,0,.14)'">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#ffcc00">Matches.csv</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.5)">291 × 41</span>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Visita (b365a)</span>
+        <span id="val-b365a" style="font-size:11px;color:#ffcc00;font-family:monospace">2.80</span>
       </div>
-      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">Partidos PL 24/25. <span style="color:#44ff88">0 nulos</span> — dataset perfecto. Cuotas Bet365, Betway, Max, Avg. Promedio 2.77 goles/partido.</div>
+      <input type="range" id="in-b365a" min="1.01" max="15.0" step="0.1" value="2.8" style="width:100%;accent-color:#ffcc00">
     </div>
-    <div style="padding:14px;border-radius:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.14);transition:all .3s" onmouseover="this.style.borderColor='rgba(255,68,255,.4)'" onmouseout="this.style.borderColor='rgba(255,68,255,.14)'">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-        <span style="font-size:10px;text-transform:uppercase;letter-spacing:.18em;color:#ff44ff">Players.csv</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.5)">822 × 37</span>
+
+    <div style="border-top:1px solid rgba(255,255,255,.05);margin:20px 0;padding-top:20px"></div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Pts Recientes Local (h_pts)</span>
+        <span id="val-home_pts" style="font-size:11px;color:var(--cyan);font-family:monospace">1.30</span>
       </div>
-      <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6">FPL: xG, xA, threat, influence, creativity. Join rate con events: <span style="color:#ffcc00">77%</span>. chance_next_round: 26% nulos.</div>
+      <input type="range" id="in-home_pts" min="0.0" max="3.0" step="0.1" value="1.3" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Goles Recientes Visita (a_gf)</span>
+        <span id="val-away_gf" style="font-size:11px;color:var(--cyan);font-family:monospace">1.40</span>
+      </div>
+      <input type="range" id="in-away_gf" min="0.0" max="4.0" step="0.1" value="1.4" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Tiros Arco Visita (a_ast)</span>
+        <span id="val-away_ast" style="font-size:11px;color:#ff44ff;font-family:monospace">4.0</span>
+      </div>
+      <input type="range" id="in-away_ast" min="0.0" max="10.0" step="0.5" value="4.0" style="width:100%;accent-color:#ff44ff">
     </div>
   </div>
 
-  <!-- Distribution H/D/A chart -->
-  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:12px;padding:16px">
-    <div style="font-size:8px;color:rgba(255,255,255,.3);letter-spacing:.18em;margin-bottom:14px">DISTRIBUCIÓN DE RESULTADOS — 291 PARTIDOS</div>
-    <svg viewBox="0 0 240 140" style="width:100%" xmlns="http://www.w3.org/2000/svg">
-      <!-- bars -->
-      <rect x="20" y="30" width="52" height="78" rx="4" fill="rgba(255,200,0,.25)" stroke="rgba(255,200,0,.5)" stroke-width="1"/>
-      <rect x="94" y="55" width="52" height="53" rx="4" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
-      <rect x="168" y="47" width="52" height="61" rx="4" fill="rgba(0,255,255,.18)" stroke="rgba(0,255,255,.4)" stroke-width="1"/>
-      <!-- values -->
-      <text x="46" y="24" font-size="12" fill="#ffcc00" text-anchor="middle" font-weight="700">134</text>
-      <text x="46" y="117" font-size="8" fill="#ffcc00" text-anchor="middle">H · 46.0%</text>
-      <text x="120" y="49" font-size="12" fill="rgba(255,255,255,.7)" text-anchor="middle" font-weight="700">76</text>
-      <text x="120" y="117" font-size="8" fill="rgba(255,255,255,.5)" text-anchor="middle">D · 26.1%</text>
-      <text x="194" y="41" font-size="12" fill="var(--cyan)" text-anchor="middle" font-weight="700">81</text>
-      <text x="194" y="117" font-size="8" fill="var(--cyan)" text-anchor="middle">A · 27.8%</text>
-      <!-- reference line 33% -->
-      <line x1="10" y1="83" x2="230" y2="83" stroke="rgba(255,80,80,.35)" stroke-width="0.8" stroke-dasharray="4,3"/>
-      <text x="232" y="86" font-size="6" fill="rgba(255,80,80,.6)">33%</text>
-      <!-- x axis -->
-      <line x1="10" y1="110" x2="230" y2="110" stroke="rgba(255,255,255,.08)" stroke-width="0.7"/>
-    </svg>
-    <div style="font-size:9px;color:rgba(255,80,80,.65);text-align:center;margin-top:4px">⚠ Empate (D) es clase minoritaria — justifica class_weight='balanced' en M3</div>
-  </div>
-</div>
+  <!-- Prediction Display -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <!-- Result M3 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;flex:1">
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:24px;text-transform:uppercase">M3: Probabilidades de Resultado</div>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">LOCAL (H)</span>
+            <span id="prob-h" style="font-size:14px;color:#44ff88;font-weight:700">45.2%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-h" style="height:100%;width:45%;background:linear-gradient(90deg, #1a4d2e, #44ff88);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
 
-<!-- Key stats row -->
-<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-  <div style="padding:10px;background:rgba(68,255,136,.04);border:1px solid rgba(68,255,136,.12);border-radius:8px;text-align:center">
-    <div style="font-size:18px;font-weight:700;color:#44ff88">444K</div>
-    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Eventos totales</div>
-  </div>
-  <div style="padding:10px;background:rgba(255,200,0,.04);border:1px solid rgba(255,200,0,.12);border-radius:8px;text-align:center">
-    <div style="font-size:18px;font-weight:700;color:#ffcc00">291</div>
-    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Partidos PL 24/25</div>
-  </div>
-  <div style="padding:10px;background:rgba(255,68,255,.04);border:1px solid rgba(255,68,255,.12);border-radius:8px;text-align:center">
-    <div style="font-size:18px;font-weight:700;color:#ff44ff">822</div>
-    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Jugadores FPL</div>
-  </div>
-  <div style="padding:10px;background:rgba(0,255,255,.04);border:1px solid rgba(0,255,255,.12);border-radius:8px;text-align:center">
-    <div style="font-size:18px;font-weight:700;color:var(--cyan)">3</div>
-    <div style="font-size:8px;color:rgba(255,255,255,.35);margin-top:2px">Modelos alimentados</div>
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">EMPATE (D)</span>
+            <span id="prob-d" style="font-size:14px;color:rgba(255,255,255,.5);font-weight:700">26.1%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-d" style="height:100%;width:26%;background:rgba(255,255,255,.2);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">VISITANTE (A)</span>
+            <span id="prob-a" style="font-size:14px;color:#ff4488;font-weight:700">28.7%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-a" style="height:100%;width:28%;background:linear-gradient(90deg, #4d1a2e, #ff4488);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Goals M2 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:8px;text-transform:uppercase">M2: Goles Totales Esperados</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Predicción Lasso (Regresión)</div>
+      </div>
+      <div style="text-align:right">
+        <div id="val-total-goals" style="font-size:48px;font-weight:100;color:#fff;font-family:monospace;line-height:1">2.77</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;margin-top:4px">GOLES PROYECTADOS</div>
+      </div>
+    </div>
+
+    <!-- Verdict -->
+    <div id="oracle-verdict" style="background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.2);border-radius:10px;padding:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🧠</div>
+      <div>
+        <strong style="color:#ffcc00">Veredicto de la IA:</strong> El mercado subestima la probabilidad del local dada su racha reciente. Posible valor detectado.
+      </div>
+    </div>
   </div>
 </div>`,
         metrics: `<div style="margin-bottom:18px">
@@ -3543,58 +4001,119 @@ const WS = {
 </div>`
     },
     live: {
-        overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
-
-<div class="xg-phase-header" style="margin-top:18px">
-  <div>
-    <div class="xg-eyebrow">LIVE TEST NODE · EN CONSTRUCCIÓN</div>
-    <div class="xg-phase-title" style="font-size:24px;margin-bottom:4px">Testeo en Vivo <span class="live-badge" style="background:rgba(255,68,255,.12);border:1px solid rgba(255,68,255,.3);color:#ff44ff;font-size:8px;vertical-align:middle">⚡ PRÓXIMAMENTE</span></div>
-    <div class="xg-phase-sub">Interfaz unificada M2 + M3 para predicción en tiempo real de partidos de la Premier League</div>
-  </div>
+        
+        overview: `<div style="margin-bottom:24px">
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:#ffcc00;margin-bottom:6px">LIVE TEST NODE · SIMULADOR PROFÉTICO</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">The <span style="color:#ffcc00;font-weight:700">Oracle</span> Engine</div>
+  <div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">Manipula las variables reales de los Modelos 2 y 3 para predecir cualquier escenario.</div>
 </div>
 
-<div class="live-conn-line"></div>
+<div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:20px;min-height:450px">
+  <!-- Control Panel -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:20px">
+    <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:20px;text-transform:uppercase">Parámetros de Entrada</div>
+    
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Local (b365h)</span>
+        <span id="val-b365h" style="font-size:11px;color:#ffcc00;font-family:monospace">2.50</span>
+      </div>
+      <input type="range" id="in-b365h" min="1.01" max="15.0" step="0.1" value="2.5" style="width:100%;accent-color:#ffcc00">
+    </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
-  <div class="live-node-card" style="border-color:rgba(255,68,255,.25);background:rgba(255,68,255,.05)">
-    <div style="font-size:24px">📈</div>
-    <div>
-      <div style="font-size:9px;color:rgba(255,68,255,.6);font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M2</div>
-      <div style="font-size:13px;font-weight:600;color:#fff">Goles por Partido</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">Lasso · MAE 1.26</div>
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Cuota Visita (b365a)</span>
+        <span id="val-b365a" style="font-size:11px;color:#ffcc00;font-family:monospace">2.80</span>
+      </div>
+      <input type="range" id="in-b365a" min="1.01" max="15.0" step="0.1" value="2.8" style="width:100%;accent-color:#ffcc00">
+    </div>
+
+    <div style="border-top:1px solid rgba(255,255,255,.05);margin:20px 0;padding-top:20px"></div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Pts Recientes Local (h_pts)</span>
+        <span id="val-home_pts" style="font-size:11px;color:var(--cyan);font-family:monospace">1.30</span>
+      </div>
+      <input type="range" id="in-home_pts" min="0.0" max="3.0" step="0.1" value="1.3" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Goles Recientes Visita (a_gf)</span>
+        <span id="val-away_gf" style="font-size:11px;color:var(--cyan);font-family:monospace">1.40</span>
+      </div>
+      <input type="range" id="in-away_gf" min="0.0" max="4.0" step="0.1" value="1.4" style="width:100%;accent-color:var(--cyan)">
+    </div>
+
+    <div style="margin-bottom:18px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:10px;color:rgba(255,255,255,.6)">Tiros Arco Visita (a_ast)</span>
+        <span id="val-away_ast" style="font-size:11px;color:#ff44ff;font-family:monospace">4.0</span>
+      </div>
+      <input type="range" id="in-away_ast" min="0.0" max="10.0" step="0.5" value="4.0" style="width:100%;accent-color:#ff44ff">
     </div>
   </div>
-  <div class="live-node-card" style="border-color:rgba(255,204,0,.25);background:rgba(255,204,0,.05)">
-    <div style="font-size:24px">🎯</div>
-    <div>
-      <div style="font-size:9px;color:rgba(255,204,0,.6);font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M3</div>
-      <div style="font-size:13px;font-weight:600;color:#fff">Resultado del Partido</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">Random Forest · Acc 56%</div>
+
+  <!-- Prediction Display -->
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <!-- Result M3 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;flex:1">
+      <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:24px;text-transform:uppercase">M3: Probabilidades de Resultado</div>
+      
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">LOCAL (H)</span>
+            <span id="prob-h" style="font-size:14px;color:#44ff88;font-weight:700">45.2%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-h" style="height:100%;width:45%;background:linear-gradient(90deg, #1a4d2e, #44ff88);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">EMPATE (D)</span>
+            <span id="prob-d" style="font-size:14px;color:rgba(255,255,255,.5);font-weight:700">26.1%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-d" style="height:100%;width:26%;background:rgba(255,255,255,.2);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+            <span style="font-size:12px;color:#fff;font-weight:700">VISITANTE (A)</span>
+            <span id="prob-a" style="font-size:14px;color:#ff4488;font-weight:700">28.7%</span>
+          </div>
+          <div style="height:8px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+            <div id="bar-a" style="height:100%;width:28%;background:linear-gradient(90deg, #4d1a2e, #ff4488);transition:width 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67)"></div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
 
-<div style="padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02);text-align:center;margin-bottom:18px">
-  <div class="live-pulse" style="font-size:40px;margin-bottom:10px">⚡</div>
-  <div style="font-size:14px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:6px">Interfaz en desarrollo</div>
-  <div style="font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;max-width:320px;margin:0 auto">Este nodo conectará los dos modelos en una sola pantalla: ingresa los datos del partido y obtén en tiempo real la predicción de goles <span style="color:#ff44ff">(M2)</span> y el resultado esperado <span style="color:#ffcc00">(M3)</span>.</div>
-</div>
+    <!-- Goals M2 -->
+    <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.15em;margin-bottom:8px;text-transform:uppercase">M2: Goles Totales Esperados</div>
+        <div style="font-size:11px;color:rgba(255,255,255,.5)">Predicción Lasso (Regresión)</div>
+      </div>
+      <div style="text-align:right">
+        <div id="val-total-goals" style="font-size:48px;font-weight:100;color:#fff;font-family:monospace;line-height:1">2.77</div>
+        <div style="font-size:9px;color:#ffcc00;letter-spacing:.1em;margin-top:4px">GOLES PROYECTADOS</div>
+      </div>
+    </div>
 
-<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-  <div style="padding:12px;border-radius:8px;background:rgba(255,255,255,.03);text-align:center">
-    <div style="font-size:18px;margin-bottom:4px">🎰</div>
-    <div style="font-size:9px;color:rgba(255,255,255,.35)">Entrada de cuotas</div>
-    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">b365h / b365a</div>
-  </div>
-  <div style="padding:12px;border-radius:8px;background:rgba(255,255,255,.03);text-align:center">
-    <div style="font-size:18px;margin-bottom:4px">📊</div>
-    <div style="font-size:9px;color:rgba(255,255,255,.35)">Stats del partido</div>
-    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">AST · INF · FTHG</div>
-  </div>
-  <div style="padding:12px;border-radius:8px;background:rgba(255,255,255,.03);text-align:center">
-    <div style="font-size:18px;margin-bottom:4px">🔮</div>
-    <div style="font-size:9px;color:rgba(255,255,255,.35)">Output combinado</div>
-    <div style="font-size:10px;color:rgba(255,255,255,.5);margin-top:2px">Goles + Resultado</div>
+    <!-- Verdict -->
+    <div id="oracle-verdict" style="background:rgba(255,204,0,.05);border:1px solid rgba(255,204,0,.2);border-radius:10px;padding:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6;display:flex;gap:12px;align-items:center">
+      <div style="font-size:20px">🧠</div>
+      <div>
+        <strong style="color:#ffcc00">Veredicto de la IA:</strong> El mercado subestima la probabilidad del local dada su racha reciente. Posible valor detectado.
+      </div>
+    </div>
   </div>
 </div>`,
         metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
@@ -3681,7 +4200,8 @@ const WS_LABELS = {
     match: { overview: 'Factores', metrics: 'EDA V1', training: 'El Lasso', predictions: 'Simulación', data: 'Interpretación' },
     result: { overview: 'Arquitectura', metrics: 'Métricas', training: 'El Pipeline', predictions: 'Resultados', data: 'Análisis' },
     data: { overview: 'Inventario', metrics: 'Cuotas', training: 'Pipeline', predictions: 'Eficiencia', data: 'FPL', summary: 'Resumen' },
-    live: { overview: 'Live Test' }
+    live: {
+         overview: 'Live Test' }
 };
 
 // ── ICONS ──────────────────────────────────────────────────────
@@ -3988,7 +4508,8 @@ class CinematicEngine {
             }
 
             // xG-specific tab animations
-            if(nodeId==='xg'){
+                        if(nodeId==='live' && tabName==='overview' && window._initOracle) window._initOracle();
+if(nodeId==='xg'){
                 // Tab 1: imbalance bar
                 if(tabName==='overview'){
                     setTimeout(()=>{
@@ -5648,6 +6169,100 @@ window.onload=()=>{
         }
     };
 };
+
+// --- ORACLE ENGINE (M2 & M3) ---
+window._initOracle = function() {
+    const inputs = {
+        'b365h': document.getElementById('in-b365h'),
+        'b365a': document.getElementById('in-b365a'),
+        'home_pts': document.getElementById('in-home_pts'),
+        'away_gf': document.getElementById('in-away_gf'),
+        'away_ast': document.getElementById('in-away_ast')
+    };
+    
+    const calculate = () => {
+        if (!window.ORACLE_DATA) return;
+        const d = window.ORACLE_DATA;
+
+        // --- M3 CALCULATION (Softmax) ---
+        // Features: b365h, b365a, home_pts_last3, away_gf_last3
+        const x3_raw = [
+            parseFloat(inputs.b365h.value),
+            parseFloat(inputs.b365a.value),
+            parseFloat(inputs.home_pts.value),
+            parseFloat(inputs.away_gf.value)
+        ];
+        
+        // StandardScaler
+        const x3_s = x3_raw.map((v, i) => (v - d.m3.means[i]) / d.m3.scales[i]);
+        
+        // Logits
+        let logits = d.m3.intercepts.map((inter, i) => {
+            let sum = inter;
+            for(let j=0; j<x3_s.length; j++) sum += x3_s[j] * d.m3.coefs[i][j];
+            return sum;
+        });
+        
+        // Softmax
+        const maxLogit = Math.max(...logits);
+        const exps = logits.map(l => Math.exp(l - maxLogit));
+        const sumExps = exps.reduce((a, b) => a + b, 0);
+        const probs = exps.map(e => e / sumExps);
+        
+        // Probs map: ['A', 'D', 'H']
+        const pA = probs[0], pD = probs[1], pH = probs[2];
+        
+        // Update M3 UI
+        document.getElementById('prob-h').innerText = (pH * 100).toFixed(1) + '%';
+        document.getElementById('prob-d').innerText = (pD * 100).toFixed(1) + '%';
+        document.getElementById('prob-a').innerText = (pA * 100).toFixed(1) + '%';
+        
+        document.getElementById('bar-h').style.width = (pH * 100) + '%';
+        document.getElementById('bar-d').style.width = (pD * 100) + '%';
+        document.getElementById('bar-a').style.width = (pA * 100) + '%';
+        
+        document.getElementById('val-b365h').innerText = x3_raw[0].toFixed(2);
+        document.getElementById('val-b365a').innerText = x3_raw[1].toFixed(2);
+        document.getElementById('val-home_pts').innerText = x3_raw[2].toFixed(2);
+        document.getElementById('val-away_gf').innerText = x3_raw[3].toFixed(2);
+
+        // --- M2 CALCULATION (OLS) ---
+        // Features: H_fthg_cum, A_ast_cum, A_ac_w7, A_as__w7, gdiff_w7
+        // We simulate some missing ones from available inputs or constants
+        const h_fthg_cum = x3_raw[3]; // approximation: goles visita rec ~ goles local hist
+        const a_ast_cum = parseFloat(inputs.away_ast.value);
+        const a_ac_w7 = 5.0; // constant for simulation
+        const a_as_w7 = a_ast_cum * 2.5; // logic: shots ~ 2.5 * shots on target
+        const gdiff_w7 = (x3_raw[2] - 1.3) * 2; // derived from points momentum
+        
+        const x2_raw = [h_fthg_cum, a_ast_cum, a_ac_w7, a_as_w7, gdiff_w7];
+        const x2_s = x2_raw.map((v, i) => (v - d.m2.means[i]) / d.m2.scales[i]);
+        
+        let m2_pred = d.m2.intercept;
+        for(let j=0; j<x2_s.length; j++) m2_pred += x2_s[j] * d.m2.coefs[j];
+        
+        const final_goals = Math.max(0, m2_pred);
+        document.getElementById('val-total-goals').innerText = final_goals.toFixed(2);
+        document.getElementById('val-away_ast').innerText = a_ast_cum.toFixed(1);
+        
+        // --- VERDICT ---
+        let verdict = "";
+        const mProbH = 1/x3_raw[0]; // Market prob
+        if (pH > mProbH + 0.05) verdict = "<strong>VALOR LOCAL:</strong> El modelo asigna un " + (pH*100).toFixed(0) + "% vs el " + (mProbH*100).toFixed(0) + "% del mercado. Ventaja estadística.";
+        else if (pA > (1/x3_raw[1]) + 0.05) verdict = "<strong>VALOR VISITANTE:</strong> Señal fuerte a favor del visitante. El momentum supera la cuota.";
+        else if (final_goals > 3.0) verdict = "<strong>ALTO VOLUMEN:</strong> Escenario de lluvia de goles. Probable Over 2.5.";
+        else verdict = "<strong>MERCADO EFICIENTE:</strong> Las cuotas reflejan bien el riesgo. No hay ventaja clara.";
+        
+        document.getElementById('oracle-verdict').innerHTML = '<div style="font-size:20px">🧠</div><div>' + verdict + '</div>';
+    };
+
+    Object.values(inputs).forEach(inp => {
+        inp.addEventListener('input', calculate);
+    });
+    
+    calculate();
+};
+
 </script>
 </body>
 </html>
