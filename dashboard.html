@@ -3509,34 +3509,34 @@ class CinematicEngine {
 
   // ── Player data constants ───────────────────────────────────────────
   const PLAYERS = [
-    { name: 'Erling Haaland', team: 'Man City', group: 'Finalizadores élite', code: '110661', tc: '43', beta: 0.115 },
-    { name: 'Cole Palmer', team: 'Chelsea', group: 'Finalizadores élite', code: '437015', tc: '8', beta: 0.180 },
-    { name: 'Viktor Gyökeres', team: 'Sporting CP', group: 'Finalizadores élite', code: '232152', tc: '1', beta: 0.332 },
-    { name: 'Antoine Semenyo', team: 'Bournemouth', group: 'Finalizadores élite', code: '437044', tc: '91', beta: 0.614 },
-    { name: 'João Pedro', team: 'Brighton', group: 'Finalizadores élite', code: '450257', tc: '36', beta: 0.150 },
-    { name: 'Mohamed Salah', team: 'Liverpool', group: 'Delanteros', code: '118748', tc: '14', beta: -0.287 },
-    { name: 'Ollie Watkins', team: 'Aston Villa', group: 'Delanteros', code: '178301', tc: '7', beta: 0.080 },
-    { name: 'Dominic Calvert-Lewin', team: 'Everton', group: 'Delanteros', code: '177815', tc: '11', beta: 0.120 },
-    { name: 'Richarlison', team: 'Spurs', group: 'Delanteros', code: '212391', tc: '6', beta: 0.050 },
-    { name: 'Raúl Jiménez', team: 'Fulham', group: 'Delanteros', code: '50175', tc: '54', beta: 0.040 },
-    { name: 'Hugo Ekitiké', team: 'Frankfurt', group: 'Delanteros', code: '488346', tc: '1', beta: 0.060 },
-    { name: 'Jean-Philippe Mateta', team: 'Crystal Palace', group: 'Delanteros', code: '220556', tc: '31', beta: 0.090 },
-    { name: 'Igor Thiago', team: 'Brentford', group: 'Delanteros', code: '544131', tc: '94', beta: 0.110 },
-    { name: 'Phil Foden', team: 'Man City', group: 'Mediocampistas', code: '209244', tc: '43', beta: 0.090 },
-    { name: 'Bruno Guimarães', team: 'Newcastle', group: 'Mediocampistas', code: '443568', tc: '4', beta: 0.140 },
-    { name: 'Enzo Fernández', team: 'Chelsea', group: 'Mediocampistas', code: '494056', tc: '8', beta: -0.060 },
-    { name: 'Bruno Fernandes', team: 'Man United', group: 'Mediocampistas', code: '141746', tc: '1', beta: -0.429 },
-    { name: 'Martin Ødegaard', team: 'Arsenal', group: 'Mediocampistas', code: '184029', tc: '3', beta: 0.070 },
-    { name: 'Alexis Mac Allister', team: 'Liverpool', group: 'Mediocampistas', code: '243016', tc: '14', beta: -0.150 },
-    { name: 'David Brooks', team: 'Bournemouth', group: 'Mediocampistas', code: '201642', tc: '91', beta: -0.762 },
-    { name: 'Bukayo Saka', team: 'Arsenal', group: 'Mediocampistas', code: '223340', tc: '3', beta: -0.120 },
-    { name: 'Morgan Rogers', team: 'Aston Villa', group: 'Mediocampistas', code: '480456', tc: '7', beta: -0.180 },
-    { name: 'Jarrod Bowen', team: 'West Ham', group: 'Mediocampistas', code: '178186', tc: '21', beta: -0.040 },
-    { name: 'Eberechi Eze', team: 'Crystal Palace', group: 'Mediocampistas', code: '214048', tc: '31', beta: -0.100 },
-    { name: 'Casemiro', team: 'Man United', group: 'Mediocampistas', code: '61366', tc: '1', beta: -0.050 },
-    { name: 'Declan Rice', team: 'Arsenal', group: 'Mediocampistas', code: '201968', tc: '3', beta: -0.080 },
-    { name: 'Anthony Gordon', team: 'Newcastle', group: 'Mediocampistas', code: '232535', tc: '4', beta: -0.020 },
-    { name: 'Neco Williams', team: 'Nott\'m Forest', group: 'Defensas', code: '213500', tc: '17', beta: -0.300 }
+    {name:'Erling Haaland',     beta:0.115,  code:223094, team:'Man City',    tc:43, group:'Finalizadores élite'},
+    {name:'Cole Palmer',        beta:0.139,  code:244851, team:'Chelsea',     tc:8,  group:'Finalizadores élite'},
+    {name:'Viktor Gyökeres',    beta:0.332,  code:224117, team:'Sporting CP→Arsenal',tc:3,group:'Finalizadores élite'},
+    {name:'Phil Foden',         beta:0.278,  code:209244, team:'Man City',    tc:43, group:'Finalizadores élite'},
+    {name:'João Pedro',         beta:0.273,  code:475168, team:'Chelsea',     tc:8,  group:'Finalizadores élite'},
+    {name:'Antoine Semenyo',    beta:0.614,  code:437730, team:'Bournemouth', tc:91, group:'Finalizadores élite'},
+    {name:'Eberechi Eze',       beta:0.463,  code:232413, team:'Crystal Palace',tc:31,group:'Finalizadores élite'},
+    {name:'Richarlison',        beta:0.406,  code:212319, team:'Spurs',       tc:6,  group:'Finalizadores élite'},
+    {name:'Bruno Guimarães',    beta:0.706,  code:208706, team:'Newcastle',   tc:4,  group:'Mediocampistas'},
+    {name:'Jarrod Bowen',       beta:0.234,  code:178186, team:'West Ham',    tc:21, group:'Mediocampistas'},
+    {name:'Morgan Rogers',      beta:0.434,  code:244850, team:'Aston Villa', tc:7,  group:'Mediocampistas'},
+    {name:'Casemiro',           beta:0.188,  code:61366,  team:'Man Utd',     tc:1,  group:'Mediocampistas'},
+    {name:'Declan Rice',        beta:0.078,  code:204480, team:'Arsenal',     tc:3,  group:'Mediocampistas'},
+    {name:'Enzo Fernández',     beta:0.025,  code:448047, team:'Chelsea',     tc:8,  group:'Mediocampistas'},
+    {name:'Bruno Fernandes',    beta:-0.429, code:141746, team:'Man Utd',     tc:1,  group:'Mediocampistas'},
+    {name:'Bukayo Saka',        beta:-0.191, code:223340, team:'Arsenal',     tc:3,  group:'Mediocampistas'},
+    {name:'Mohamed Salah',      beta:-0.287, code:118748, team:'Liverpool',   tc:14, group:'Mediocampistas'},
+    {name:'Martin Ødegaard',    beta:0.070,  code:184029, team:'Arsenal',     tc:3,  group:'Mediocampistas'},
+    {name:'Dominic Calvert-Lewin',beta:-0.172,code:177815,team:'Everton',     tc:11, group:'Delanteros'},
+    {name:'Ollie Watkins',      beta:-0.207, code:178301, team:'Aston Villa', tc:7,  group:'Delanteros'},
+    {name:'Raúl Jiménez',       beta:-0.201, code:102057, team:'Fulham',      tc:54, group:'Delanteros'},
+    {name:'Hugo Ekitiké',       beta:0.177,  code:454523, team:'Newcastle',   tc:4,  group:'Delanteros'},
+    {name:'Jean-Philippe Mateta',beta:-0.446,code:231747, team:'Crystal Palace',tc:31,group:'Delanteros'},
+    {name:'Igor Thiago',        beta:0.111,  code:502500, team:'Brentford',   tc:94, group:'Delanteros'},
+    {name:'Anthony Gordon',     beta:-0.566, code:232826, team:'Newcastle',   tc:4,  group:'Defensas/Bajo conv.'},
+    {name:'Neco Williams',      beta:-0.282, code:219937, team:'Nott\'m Forest',tc:17,group:'Defensas/Bajo conv.'},
+    {name:'David Brooks',       beta:-0.762, code:111317, team:'Bournemouth', tc:91, group:'Defensas/Bajo conv.'},
+    {name:'Alexis Mac Allister',beta:-0.336, code:243016, team:'Liverpool',   tc:14, group:'Defensas/Bajo conv.'}
   ];
 
   const PLAYER_MAP = Object.fromEntries(PLAYERS.map(p => [p.name, p]));
@@ -3873,7 +3873,7 @@ class CinematicEngine {
         </div>
         <img id="xg-detail-hero-img" src="${playerPhotoUrl(p.code)}" alt="${p.name}"
           onload="this.classList.add('loaded')"
-          onerror="this.style.display='none'">
+          onerror="this.onerror=null;this.src='https://resources.premierleague.com/premierleague/photos/players/110x140/Photo-Missing.png';this.classList.add('loaded');">
       </div>
       <!-- Analytics content -->
       <div id="xg-detail-content">
