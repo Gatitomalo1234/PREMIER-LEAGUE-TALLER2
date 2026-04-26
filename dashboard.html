@@ -579,11 +579,11 @@
                 <span id="ws-node-name">Expected Goals</span>
             </div>
             <nav id="ws-tabs">
-                <button class="ws-tab active" data-tab="overview">Overview</button>
-                <button class="ws-tab" data-tab="metrics">Métricas</button>
-                <button class="ws-tab" data-tab="training">Entrenamiento</button>
-                <button class="ws-tab" data-tab="predictions">Predicciones</button>
-                <button class="ws-tab" data-tab="data">Datos</button>
+                <button class="ws-tab active" data-tab="overview">🔍 El Problema</button>
+                <button class="ws-tab" data-tab="metrics">📊 Resultados</button>
+                <button class="ws-tab" data-tab="training">⚙️ Pipeline</button>
+                <button class="ws-tab" data-tab="predictions">🎯 Simulador</button>
+                <button class="ws-tab" data-tab="data">🗄️ Dataset</button>
             </nav>
             <button class="ws-nav-btn" id="ws-next">&#8594;</button>
             <button id="ws-close">✕</button>
@@ -2102,7 +2102,7 @@ const WS = {
 </div>`
     },
     result: {
-        overview: `<div class="ws-grid">
+        overview: `<div class="xg-progress-dots" style="margin-bottom:14px"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div><div class="ws-grid">
             <div class="ws-card ws-col-4" style="border-color:rgba(255,200,0,0.14);background:rgba(255,200,0,0.03)">
                 <div class="ws-card-label">El Reto del Empate</div>
                 <p class="ws-card-text">Clasificador multinomial que predice el resultado de cada partido (<strong style="color:#fff">H · D · A</strong>) usando estrictamente información disponible <strong style="color:#ffcc00">antes del pitido inicial</strong>. El enemigo a vencer: las propias casas de apuestas internacionales, con un acierto del <strong style="color:#ffcc00">54.24%</strong> en este test set. El desafío oculto: los empates (26% de los resultados) son estadísticamente caóticos — predecirlos en serio requiere <strong style="color:#fff">class_weight='balanced'</strong> y renunciar a accuracy pura por honestidad multiclase.</p>
@@ -2137,7 +2137,7 @@ const WS = {
                 </div>
             </div>
         </div>`,
-        metrics: `<div class="ws-grid-3">
+        metrics: `<div class="xg-progress-dots" style="margin-bottom:14px"><div class="xg-dot"></div><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div><div class="ws-grid-3">
             <div class="ws-metric-card" style="border-color:rgba(255,200,0,0.18);background:rgba(255,200,0,0.04)">
                 <div class="ws-metric-value" style="color:#ffcc00">55.93%</div>
                 <div class="ws-metric-label">Accuracy — V1 (sin balanced)</div>
