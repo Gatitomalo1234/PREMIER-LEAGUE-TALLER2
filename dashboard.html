@@ -251,7 +251,6 @@
         #xg-info-card-title{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px}
         #xg-info-card-body{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.75}
         /* ── Player overlay ── */
-        #xg-player-overlay{}
         #xg-player-card{width:min(520px,94vw);padding:0;overflow:hidden}
         #xg-player-card-header{padding:22px 24px 18px;display:flex;align-items:flex-end;gap:18px;background:linear-gradient(135deg,rgba(0,255,255,0.06) 0%,rgba(0,0,0,0) 60%);border-bottom:1px solid rgba(255,255,255,0.06)}
         #xg-player-card-photo{width:72px;height:90px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,0.1);flex-shrink:0;background:rgba(255,255,255,0.04)}
@@ -315,7 +314,6 @@
         #xg-info-card-title{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px}
         #xg-info-card-body{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.75}
         /* ── Player overlay — split panel ── */
-        #xg-player-overlay{}
         #xg-player-card{
           width:min(900px,96vw);
           height:min(500px,88vh);
@@ -694,6 +692,26 @@
 #oracle-actions { display:flex; gap:12px; margin-top:15px; }
 .oracle-action-btn { flex:1; padding:13px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.8); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.3s; text-transform:uppercase; letter-spacing:0.1em; }
 .oracle-action-btn:hover { background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.4); transform:translateY(-1px); }
+
+/* ── KNOWLEDGE VAULT & ANIMATION STATES ──────────────── */
+.oracle-neural-tag { font-size:7px; padding:2px 5px; border-radius:4px; font-weight:900; margin-left:6px; letter-spacing:0.05em; vertical-align:middle; text-transform:uppercase; }
+.tag-m2 { background:rgba(0,255,255,0.15); color:var(--cyan); border:1px solid rgba(0,255,255,0.3); }
+.tag-m3 { background:rgba(255,68,255,0.15); color:#ff44ff; border:1px solid rgba(255,68,255,0.3); }
+
+#oracle-knowledge-vault { margin-top:30px; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; }
+.vault-header { display:flex; align-items:center; gap:10px; margin-bottom:15px; }
+.vault-title { font-size:10px; letter-spacing:0.4em; color:rgba(255,255,255,0.3); font-weight:800; text-transform:uppercase; }
+
+.vault-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:15px; margin-bottom:10px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.vault-card:hover { background:rgba(255,255,255,0.04); border-color:rgba(0,255,255,0.2); }
+.vault-card-head { display:flex; justify-content:space-between; align-items:center; }
+.vault-card-title { font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); }
+.vault-card-body { max-height:0; overflow:hidden; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity:0; }
+.vault-card.open .vault-card-body { max-height:200px; opacity:1; padding-top:12px; }
+.vault-card-desc { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.6; }
+.vault-formula { margin-top:8px; padding:8px; background:rgba(0,0,0,0.2); border-radius:6px; font-family:monospace; font-size:10px; color:var(--cyan); border-left:2px solid var(--cyan); }
+
+.boot-hidden { opacity:0; transform:translateY(20px); }
 </style>
 </head>
 <body>
@@ -3642,7 +3660,7 @@ const WS = {
   <div style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace">CALIBRATING NEURAL WEIGHTS...</div>
 </div>
 
-<div id="oracle-scoreboard">
+<div id="oracle-scoreboard" class="boot-hidden">
   <div style="font-size:7px;letter-spacing:0.35em;color:rgba(0,255,255,0.4);font-weight:800;margin-bottom:8px">PREMIER LEAGUE LIVE ORACLE · M2 + M3</div>
   <div id="oracle-fixture-row">
     <select id="oracle-fixture-sel">
@@ -3657,25 +3675,25 @@ const WS = {
 </div>
 
 <div id="oracle-inputs">
-  <div class="oracle-slider-group">
-    <div class="oracle-slider-label"><span>CUOTA LOCAL<span class="oracle-feat-tag">b365h</span></span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
+  <div class="oracle-slider-group boot-hidden">
+    <div class="oracle-slider-label"><span>CUOTA LOCAL<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">b365h</span></span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
     <input type="range" class="oracle-slider" id="sl-b365h" min="1.30" max="9.00" step="0.05" value="2.40">
   </div>
-  <div class="oracle-slider-group">
-    <div class="oracle-slider-label"><span>CUOTA VISITA<span class="oracle-feat-tag">b365a</span></span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
+  <div class="oracle-slider-group boot-hidden">
+    <div class="oracle-slider-label"><span>CUOTA VISITA<span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">b365a</span></span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
     <input type="range" class="oracle-slider" id="sl-b365a" min="1.30" max="9.00" step="0.05" value="3.10">
   </div>
-  <div class="oracle-slider-group">
-    <div class="oracle-slider-label"><span>PTS RECIENTES (3J)<span class="oracle-feat-tag">home_pts</span></span><span id="sv-pts" class="oracle-slider-val">6 pts</span></div>
+  <div class="oracle-slider-group boot-hidden">
+    <div class="oracle-slider-label"><span>PTS RECIENTES (3J)<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">home_pts</span></span><span id="sv-pts" class="oracle-slider-val">6 pts</span></div>
     <input type="range" class="oracle-slider" id="sl-pts" min="0" max="9" step="1" value="6">
   </div>
-  <div class="oracle-slider-group">
-    <div class="oracle-slider-label"><span>GOLES VISITA/P<span class="oracle-feat-tag">away_gf</span></span><span id="sv-ga" class="oracle-slider-val">1.20 /p</span></div>
+  <div class="oracle-slider-group boot-hidden">
+    <div class="oracle-slider-label"><span>GOLES VISITA/P<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">away_gf</span></span><span id="sv-ga" class="oracle-slider-val">1.20 /p</span></div>
     <input type="range" class="oracle-slider" id="sl-ga" min="0.5" max="3.5" step="0.1" value="1.20">
   </div>
 </div>
 
-<div id="oracle-m3-panel">
+<div id="oracle-m3-panel" class="boot-hidden">
   <div class="oracle-panel-label">M3 — Probabilidades de Resultado</div>
   <div class="oracle-bar-row">
     <div class="oracle-bar-lbl">LOCAL</div>
@@ -3695,7 +3713,7 @@ const WS = {
   <div id="oracle-m3-msg"></div>
 </div>
 
-<div id="oracle-m2-panel">
+<div id="oracle-m2-panel" class="boot-hidden">
   <div class="oracle-panel-label">M2 — Goles Totales Esperados</div>
   <div id="oracle-m2-wrap">
     <svg id="oracle-m2-svg" viewBox="0 0 120 70">
@@ -3709,7 +3727,7 @@ const WS = {
   </div>
 </div>
 
-<button id="oracle-sim-btn" onclick="oracleSimulate()">⚡ SIMULAR PARTIDO</button>
+<button id="oracle-sim-btn" onclick="oracleSimulate()" class="boot-hidden">⚡ SIMULAR PARTIDO</button>
 
 <div id="oracle-result-panel" style="display:none">
   <div id="oracle-result-score"></div>
@@ -3718,6 +3736,38 @@ const WS = {
   <div id="oracle-actions">
     <button class="oracle-action-btn" onclick="oracleSimulate()">🔄 Otra simulación</button>
     <button class="oracle-action-btn" onclick="oracleReset()">✏️ Cambiar escenario</button>
+  </div>
+</div>
+
+<div id="oracle-knowledge-vault" class="boot-hidden">
+  <div class="vault-header">
+    <div style="font-size:18px">📖</div>
+    <div class="vault-title">Quantum Knowledge Vault</div>
+  </div>
+  
+  <div class="vault-card" onclick="this.classList.toggle('open')">
+    <div class="vault-card-head">
+      <div class="vault-card-title">Mapeo de Variables M2 (Lasso)</div>
+      <div style="font-size:10px;opacity:.3">CLIC PARA VER</div>
+    </div>
+    <div class="vault-card-body">
+      <div class="vault-card-desc">El Modelo 2 utiliza variables de flujo de juego. El Oracle traduce tus entradas en estas métricas internas:</div>
+      <div class="vault-formula">Cuota Local → <b>Home_Avg_FTHG</b> (Potencial Histórico)</div>
+      <div class="vault-formula">Pts Recientes → <b>Home_Sum_influence</b> (Momentum)</div>
+      <div class="vault-formula">Goles Visita → <b>Away_Avg_AST</b> (Asistencias esperadas)</div>
+    </div>
+  </div>
+
+  <div class="vault-card" onclick="this.classList.toggle('open')">
+    <div class="vault-card-head">
+      <div class="vault-card-title">Lógica Multiclase M3 (LogReg)</div>
+      <div style="font-size:10px;opacity:.3">CLIC PARA VER</div>
+    </div>
+    <div class="vault-card-body">
+      <div class="vault-card-desc">M3 clasifica el resultado (H/D/A) usando la probabilidad implícita de las cuotas y el estado de forma actual.</div>
+      <div class="vault-formula">Input: b365h, b365a, home_pts, away_gf</div>
+      <div class="vault-formula">Output: Softmax Probabilities [H, D, A]</div>
+    </div>
   </div>
 </div>`,
         metrics: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
@@ -5997,6 +6047,29 @@ class CinematicEngine {
     // Call this after tab switch
     window.onOracleTabOpen = () => {
         initOracleListeners();
+        
+        // ── NEURAL BOOT SEQUENCE (GSAP) ──
+        const tl = gsap.timeline();
+        
+        // Scoreboard Glitch Reveal
+        tl.to('#oracle-scoreboard', { opacity: 1, y: 0, duration: 0.8, ease: 'power4.out' });
+        
+        // Stagger Sliders
+        tl.to('.oracle-slider-group', { 
+            opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'back.out(1.7)' 
+        }, "-=0.4");
+        
+        // Panels Reveal
+        tl.to(['#oracle-m3-panel', '#oracle-m2-panel'], { 
+            opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out' 
+        }, "-=0.3");
+        
+        // Action Button & Vault
+        tl.to(['#oracle-sim-btn', '#oracle-knowledge-vault'], { 
+            opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' 
+        }, "-=0.2");
+
+        // Initial Preview Update
         updateOraclePreview();
     };
 
