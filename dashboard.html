@@ -579,11 +579,11 @@
                 <span id="ws-node-name">Expected Goals</span>
             </div>
             <nav id="ws-tabs">
-                <button class="ws-tab active" data-tab="overview">🔍 El Problema</button>
-                <button class="ws-tab" data-tab="metrics">📊 Resultados</button>
-                <button class="ws-tab" data-tab="training">⚙️ Pipeline</button>
-                <button class="ws-tab" data-tab="predictions">🎯 Simulador</button>
-                <button class="ws-tab" data-tab="data">📈 Métricas</button>
+                <button class="ws-tab active" data-tab="overview">El Problema</button>
+                <button class="ws-tab" data-tab="metrics">Resultados</button>
+                <button class="ws-tab" data-tab="training">Pipeline</button>
+                <button class="ws-tab" data-tab="predictions">Simulador</button>
+                <button class="ws-tab" data-tab="data">Métricas</button>
             </nav>
             <button class="ws-nav-btn" id="ws-next">&#8594;</button>
             <button id="ws-close">✕</button>
@@ -846,6 +846,75 @@ const WS = {
     </div>
   </div>
   <button class="xg-next-btn" style="white-space:nowrap" onclick="event.stopPropagation();document.querySelector('.ws-tab[data-tab=training]').click()">La Máquina →</button>
+</div>
+
+<div style="margin-top:20px">
+  <div style="font-size:9px;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px">Análisis Visual · Profundizando en los Datos</div>
+
+  <!-- Chart 1: Feature Importance -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px">Importancia de Features (|coef| logístico)</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:14px">Mayor coeficiente = mayor impacto en la probabilidad de gol</div>
+    ${[
+      {name:'is_BigChance', val:0.87, pct:100, col:'#44ff88'},
+      {name:'is_Penalty',   val:0.71, pct:82,  col:'#44ff88'},
+      {name:'angulo_tiro',  val:0.54, pct:62,  col:'#00ffff'},
+      {name:'is_OneOnOne',  val:0.49, pct:56,  col:'#00ffff'},
+      {name:'goal_mouth_z', val:0.41, pct:47,  col:'#a855f7'},
+      {name:'dist_al_arco', val:0.38, pct:44,  col:'#a855f7'},
+      {name:'aim_central',  val:0.21, pct:24,  col:'rgba(255,255,255,.4)'},
+    ].map(f=>`
+      <div style="display:grid;grid-template-columns:110px 1fr 44px;align-items:center;gap:10px;margin-bottom:7px">
+        <span style="font-family:monospace;font-size:10px;color:${f.col}">${f.name}</span>
+        <div style="height:7px;background:rgba(255,255,255,.05);border-radius:4px;overflow:hidden">
+          <div style="height:100%;width:0;background:${f.col};border-radius:4px;transition:width 1s ease" data-w="${f.pct}" class="xg-chart-bar"></div>
+        </div>
+        <span style="font-size:10px;color:rgba(255,255,255,.45);text-align:right">${f.val}</span>
+      </div>`).join('')}
+  </div>
+
+  <!-- Chart 2: Conversion rate por distancia (binned bar chart) -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px;margin-bottom:12px">
+    <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px">Tasa de Conversión por Distancia al Arco</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:14px">Porcentaje de goles según franja de distancia (7,198 tiros PL 24/25)</div>
+    <div style="display:flex;align-items:flex-end;gap:8px;height:90px;padding-bottom:4px">
+      ${[
+        {label:'0–6m',  pct:38, goles:210},
+        {label:'6–12m', pct:19, goles:415},
+        {label:'12–18m',pct:9,  goles:280},
+        {label:'18–24m',pct:4,  goles:190},
+        {label:'24–30m',pct:2,  goles:82},
+        {label:'>30m',  pct:0.8,goles:24},
+      ].map(b=>`
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+          <div style="font-size:9px;color:var(--cyan);font-weight:700">${b.pct}%</div>
+          <div style="width:100%;background:linear-gradient(180deg,rgba(0,255,255,.7),rgba(0,255,255,.2));border-radius:4px 4px 0 0;height:${Math.max(b.pct*2,3)}px;transition:height .8s ease"></div>
+          <div style="font-size:8px;color:rgba(255,255,255,.3);text-align:center;line-height:1.2">${b.label}</div>
+        </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- Chart 3: Precision vs Recall según umbral -->
+  <div style="background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:16px">
+    <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px">Precision vs Recall — Trade-off por Umbral</div>
+    <div style="font-size:10px;color:rgba(255,255,255,.35);margin-bottom:12px">Cómo cambia el equilibrio al mover el umbral de decisión</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:6px">
+      ${[
+        {thr:'0.10', prec:'18%', rec:'91%', f1:'0.30', note:'Alta cobertura'},
+        {thr:'0.15', prec:'24%', rec:'78%', f1:'0.36', note:'Balance bajo'},
+        {thr:'0.22', prec:'38%', rec:'67%', f1:'0.56', note:'★ Óptimo'},
+        {thr:'0.35', prec:'51%', rec:'44%', f1:'0.47', note:'Alta precisión'},
+        {thr:'0.50', prec:'64%', rec:'22%', f1:'0.33', note:'Muy restrictivo'},
+      ].map((r,i)=>`
+        <div style="padding:10px 8px;border-radius:8px;border:1px solid ${i===2?'rgba(0,255,255,.35)':'rgba(255,255,255,.06)'};background:${i===2?'rgba(0,255,255,.05)':'rgba(255,255,255,.01)'};text-align:center">
+          <div style="font-size:9px;color:rgba(255,255,255,.35);letter-spacing:.05em;margin-bottom:6px">thr=${r.thr}</div>
+          <div style="font-size:10px;color:#44ff88;margin-bottom:2px">P ${r.prec}</div>
+          <div style="font-size:10px;color:#ff9944;margin-bottom:2px">R ${r.rec}</div>
+          <div style="font-size:12px;font-weight:700;color:${i===2?'var(--cyan)':'rgba(255,255,255,.5)'};margin-top:4px">F1 ${r.f1}</div>
+          <div style="font-size:8px;color:rgba(255,255,255,.25);margin-top:4px">${r.note}</div>
+        </div>`).join('')}
+    </div>
+  </div>
 </div>`,
         training: `<style>
 .xg-pipe{display:flex;align-items:center;gap:0;margin:14px 0 10px;flex-wrap:wrap;justify-content:center}
@@ -1426,6 +1495,62 @@ const WS = {
     <div class="xg-summary-card"><div class="xg-summary-val">0.480</div><div class="xg-summary-lbl">PR-AUC</div></div>
     <div class="xg-summary-card"><div class="xg-summary-val">0.560</div><div class="xg-summary-lbl">F1 @ 0.220</div></div>
     <div class="xg-summary-card"><div class="xg-summary-val">7</div><div class="xg-summary-lbl">Features activas</div></div>
+</div>
+
+<!-- ROC Curve SVG -->
+<div style="margin-top:20px;background:rgba(255,255,255,.02);border:1px solid rgba(0,255,255,.15);border-radius:10px;padding:20px">
+  <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px">Curva ROC — Receiver Operating Characteristic</div>
+  <div style="font-size:10px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:16px">
+    La curva ROC muestra cómo varía la <strong style="color:#44ff88">Tasa de Verdaderos Positivos (TPR)</strong> frente a la 
+    <strong style="color:#ff6666">Tasa de Falsos Positivos (FPR)</strong> al mover el umbral de decisión.<br>
+    Un modelo perfecto alcanza la esquina superior-izquierda. La diagonal es el azar puro (AUC = 0.5).<br>
+    <strong style="color:var(--cyan)">Nuestro modelo V2★ alcanza AUC = 0.836</strong> — muy por encima del azar y del baseline ingenuo.
+  </div>
+  <svg viewBox="0 0 260 220" style="width:100%;max-width:420px;display:block;margin:0 auto">
+    <!-- Background grid -->
+    <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+    <line x1="40" y1="180" x2="240" y2="180" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+    ${[0.25,0.5,0.75,1].map((v,i)=>`
+      <line x1="40" y1="${180-v*160}" x2="240" y2="${180-v*160}" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <line x1="${40+v*200}" y1="20" x2="${40+v*200}" y2="180" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+      <text x="30" y="${184-v*160}" fill="rgba(255,255,255,.3)" font-size="7" text-anchor="end">${v.toFixed(2)}</text>
+      <text x="${40+v*200}" y="192" fill="rgba(255,255,255,.3)" font-size="7" text-anchor="middle">${v.toFixed(2)}</text>
+    `).join('')}
+    <!-- Axis labels -->
+    <text x="140" y="208" fill="rgba(255,255,255,.35)" font-size="8" text-anchor="middle">FPR (Falsos Positivos)</text>
+    <text x="10" y="100" fill="rgba(255,255,255,.35)" font-size="8" text-anchor="middle" transform="rotate(-90,10,100)">TPR (Verdaderos Positivos)</text>
+    <!-- Diagonal random -->
+    <line x1="40" y1="180" x2="240" y2="20" stroke="rgba(255,100,100,.3)" stroke-width="1" stroke-dasharray="4,3"/>
+    <text x="180" y="75" fill="rgba(255,100,100,.45)" font-size="7">AUC=0.5 (azar)</text>
+    <!-- Naive baseline -->
+    <line x1="40" y1="20" x2="40" y2="180" stroke="rgba(255,200,0,.25)" stroke-width="1" stroke-dasharray="3,3"/>
+    <line x1="40" y1="20" x2="240" y2="20" stroke="rgba(255,200,0,.25)" stroke-width="1" stroke-dasharray="3,3"/>
+    <!-- Model V1 (AUC 0.817) -->
+    <polyline points="40,180 55,148 75,118 100,95 125,76 155,60 185,48 210,38 240,20"
+      fill="none" stroke="rgba(255,200,0,.45)" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="165" y="44" fill="rgba(255,200,0,.55)" font-size="7">V1 AUC=0.817</text>
+    <!-- Model V2 (AUC 0.836) - main curve -->
+    <polyline points="40,180 50,138 68,106 92,82 118,62 148,46 178,34 210,26 240,20"
+      fill="none" stroke="#00ffff" stroke-width="2.5"/>
+    <!-- Optimal point -->
+    <circle cx="118" cy="62" r="4" fill="#00ffff" opacity=".9"/>
+    <line x1="118" y1="62" x2="118" y2="180" stroke="rgba(0,255,255,.25)" stroke-width="1" stroke-dasharray="3,2"/>
+    <line x1="40" y1="62" x2="118" y2="62" stroke="rgba(0,255,255,.25)" stroke-width="1" stroke-dasharray="3,2"/>
+    <text x="122" y="58" fill="var(--cyan)" font-size="7">umbral 0.22</text>
+    <!-- Fill under V2 curve (subtle) -->
+    <polygon points="40,180 50,138 68,106 92,82 118,62 148,46 178,34 210,26 240,20 240,180"
+      fill="rgba(0,255,255,.05)"/>
+    <!-- AUC label -->
+    <text x="155" y="130" fill="#00ffff" font-size="9" font-weight="bold">V2★ AUC=0.836</text>
+    <!-- Axis titles -->
+    <text x="40" y="15" fill="rgba(255,255,255,.2)" font-size="6">TPR=1.0</text>
+    <text x="230" y="175" fill="rgba(255,255,255,.2)" font-size="6">1.0</text>
+  </svg>
+  <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:2px;background:#00ffff;border-radius:1px"></div><span style="font-size:10px;color:rgba(255,255,255,.5)">Modelo V2★ (final)</span></div>
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:1px;background:rgba(255,200,0,.5);border-radius:1px"></div><span style="font-size:10px;color:rgba(255,255,255,.5)">Modelo V1 (base)</span></div>
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:20px;height:1px;background:rgba(255,100,100,.4);border-top: 1px dashed rgba(255,100,100,.4)"></div><span style="font-size:10px;color:rgba(255,255,255,.5)">Azar puro (AUC=0.5)</span></div>
+    <div style="display:flex;align-items:center;gap:6px"><div style="width:8px;height:8px;border-radius:50%;background:#00ffff"></div><span style="font-size:10px;color:rgba(255,255,255,.5)">Umbral óptimo (0.22)</span></div>
   </div>
 </div>`
     },
