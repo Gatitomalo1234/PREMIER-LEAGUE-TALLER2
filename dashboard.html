@@ -2827,31 +2827,35 @@ const WS = {
         predictions: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div><div class="xg-dot"></div></div>
 <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:40px 20px">
   <div style="font-size:9px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(0,255,255,.5)">MODELO 3 &middot; SIMULADOR EN VIVO</div>
-  <div style="font-s        data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div></div>
-<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">M3 · VALIDACIÓN FINAL</div>
-<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">Métricas y Coeficientes</div>
-<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">El veredicto estadístico contra el mercado y la interpretación de Odds Ratios.</div>
+  <div style="font-size:14px;color:rgba(255,255,255,.45);text-align:center;line-height:1.7;max-width:380px">El simulador multinomial completo (H/D/A) que utiliza las cuotas de Bet365 est&aacute; disponible en el nodo de <strong style="color:var(--cyan)">Testeo en Vivo</strong>, donde M2 + M3 trabajan juntos en tiempo real.</div>
+  <button onclick="window._selectNode&&window._selectNode('live')" style="width:100%;max-width:420px;padding:22px 28px;border-radius:16px;border:2px solid rgba(0,255,255,.6);background:linear-gradient(135deg,rgba(0,255,255,.12) 0%,rgba(0,100,255,.18) 100%);backdrop-filter:blur(12px);color:var(--cyan);font-size:17px;font-weight:700;letter-spacing:.06em;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:14px;transition:all .3s" onmouseover="this.style.background='linear-gradient(135deg,rgba(0,255,255,.26) 0%,rgba(0,100,255,.32) 100%)'" onmouseout="this.style.background='linear-gradient(135deg,rgba(0,255,255,.12) 0%,rgba(0,100,255,.18) 100%)'">
+    <span style="font-size:28px">&#9889;</span>
+    <span>Ir al Testeo en Vivo</span>
+    <span style="font-size:12px;opacity:.55;margin-left:2px">&#8594; Live Test Node</span>
+  </button>
+  <div style="font-size:10px;color:rgba(255,255,255,.22);text-align:center;line-height:1.6">Conecta M2 + M3 &middot; Predicci&oacute;n en tiempo real con datos de partido</div>
+</div>`,
+        data: `<div class="xg-progress-dots"><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot active" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan)"></div></div>
+<div class="xg-eyebrow" style="margin-bottom:6px;color:rgba(0,255,255,.4)">M3 &middot; VALIDACI&Oacute;N FINAL</div>
+<div class="xg-phase-title" style="font-size:26px;margin-bottom:6px">M&eacute;tricas y Coeficientes</div>
+<div class="xg-phase-sub" style="margin-bottom:24px;font-size:14px;color:rgba(255,255,255,.5)">El veredicto estad&iacute;stico contra el mercado y la interpretaci&oacute;n de Odds Ratios.</div>
 
 <div class="xg-split" style="margin-bottom:20px">
   <div style="flex:1">
     <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">El Enemigo Superado</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">
-      Nuestro modelo V2b (Multinomial balanceado) logra predecir los tres resultados con exactitud asombrosa usando solo 4 variables. La métrica <strong>Accuracy de Test</strong> nos indica cuántas predicciones acertamos frente a las probabilidades puras del mercado.
-    </div>
-    
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:16px">Nuestro modelo V2b (Multinomial balanceado) logra predecir los tres resultados usando solo 4 variables. La m&eacute;trica <strong>Accuracy de Test</strong> nos indica cu&aacute;ntas predicciones acertamos frente a las probabilidades puras del mercado.</div>
     <div style="display:flex;flex-direction:column;gap:8px">
-      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(0,255,255,.05);border:1px solid rgba(0,255,255,.2);backdrop-filter:blur(8px); transition: transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(0,255,255,.05);border:1px solid rgba(0,255,255,.2);backdrop-filter:blur(8px);transition:transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
         <div>
           <div style="font-family:monospace;font-size:10px;color:var(--cyan);margin-bottom:4px;font-weight:700">Modelo M3 (V2b + Balanced)</div>
-          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:2px; transition: width 1s ease" class="xg-fill-bar"></div></div>
+          <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:55%;background:linear-gradient(90deg,rgba(0,255,255,.4),var(--cyan));border-radius:2px"></div></div>
         </div>
         <div style="text-align:right;min-width:60px">
           <div style="font-size:18px;font-weight:700;color:var(--cyan);line-height:1">~55.0%</div>
           <div style="font-size:8px;color:rgba(0,255,255,.5);letter-spacing:.08em;margin-top:2px">Honesto 3 Clases</div>
         </div>
       </div>
-      
-      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.05);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px); transition: transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
+      <div style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:14px;padding:12px 16px;border-radius:10px;background:rgba(255,80,80,.05);border:1px solid rgba(255,80,80,.15);backdrop-filter:blur(8px);transition:transform 0.3s" onmouseover="this.style.transform='translateX(5px)'" onmouseout="this.style.transform='translateX(0)'">
         <div>
           <div style="font-family:monospace;font-size:10px;color:#ff8080;margin-bottom:4px;font-weight:700">Bet365 (Favorito Cuota)</div>
           <div style="margin-top:4px;height:3px;background:rgba(255,255,255,.06);border-radius:2px;overflow:hidden"><div style="height:100%;width:54.2%;background:linear-gradient(90deg,rgba(255,80,80,.4),#ff8080);border-radius:2px"></div></div>
@@ -2863,82 +2867,36 @@ const WS = {
       </div>
     </div>
   </div>
-  
   <div style="flex:1">
-    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">Análisis Odds Ratios = exp(β)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:12px">
-      ¿Cómo se traduce el impacto de la cuota en probabilidades? Para cada variable, el Odds Ratio indica por qué factor se multiplican los "chances" de un resultado.
-    </div>
-    
+    <div style="font-size:18px;font-weight:300;color:#fff;margin-bottom:12px">An&aacute;lisis Odds Ratios = exp(&beta;)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:12px">Para cada variable, el Odds Ratio indica por qu&eacute; factor se multiplican los chances de un resultado. A menor cuota (favorito), mayor probabilidad predicha.</div>
     <div style="margin-bottom:12px;background:rgba(255,255,255,.02);border-radius:10px;border:1px solid rgba(255,255,255,.05);padding:14px">
       <div style="font-size:8px;color:rgba(255,255,255,.28);letter-spacing:.16em;margin-bottom:10px;text-align:center">EFECTO EXPONENCIAL DEL OR</div>
-      <svg viewBox="0 0 300 100" style="width:100%; overflow: visible;" xmlns="http://www.w3.org/2000/svg">
+      <svg viewBox="0 0 300 100" style="width:100%;overflow:visible" xmlns="http://www.w3.org/2000/svg">
         <line x1="30" y1="80" x2="270" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
         <line x1="30" y1="20" x2="30" y2="80" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
         <text x="25" y="25" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 1.0</text>
         <text x="25" y="80" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="end">Prob 0.0</text>
-        <text x="150" y="95" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">Cuota Bet365 (Favorito → Underdog)</text>
-        
-        <path d="M 30,25 C 80,25 100,75 270,75" fill="none" stroke="var(--cyan)" stroke-width="2" />
-        
-        <circle cx="70" cy="35" r="4" fill="#ff44ff" style="transition: r 0.3s; cursor:pointer" onmouseover="this.setAttribute('r','6'); document.getElementById('tooltip-1').style.opacity=1" onmouseout="this.setAttribute('r','4'); document.getElementById('tooltip-1').style.opacity=0"/>
-        <text id="tooltip-1" x="70" y="22" font-size="8" fill="#ff44ff" text-anchor="middle" font-weight="700" style="opacity:0; transition: opacity 0.3s">Cuota Baja = P(Alta)</text>
-        
-        <circle cx="150" cy="71" r="4" fill="#ff8080" style="transition: r 0.3s; cursor:pointer" onmouseover="this.setAttribute('r','6'); document.getElementById('tooltip-2').style.opacity=1" onmouseout="this.setAttribute('r','4'); document.getElementById('tooltip-2').style.opacity=0"/>
-        <text id="tooltip-2" x="150" y="58" font-size="8" fill="#ff8080" text-anchor="middle" font-weight="700" style="opacity:0; transition: opacity 0.3s">Cuota Alta = P(Baja)</text>
+        <text x="150" y="95" font-size="8" fill="rgba(255,255,255,.4)" text-anchor="middle">Cuota Bet365 (Favorito &#8594; Underdog)</text>
+        <path d="M 30,25 C 80,25 100,75 270,75" fill="none" stroke="var(--cyan)" stroke-width="2"/>
+        <circle cx="70" cy="35" r="4" fill="#ff44ff" style="cursor:pointer" onmouseover="document.getElementById('m3-tt1').style.opacity=1;this.setAttribute('r','6')" onmouseout="document.getElementById('m3-tt1').style.opacity=0;this.setAttribute('r','4')"/>
+        <text id="m3-tt1" x="70" y="22" font-size="8" fill="#ff44ff" text-anchor="middle" font-weight="700" style="opacity:0;transition:opacity 0.3s">Cuota Baja = P(Alta)</text>
+        <circle cx="200" cy="72" r="4" fill="#ff8080" style="cursor:pointer" onmouseover="document.getElementById('m3-tt2').style.opacity=1;this.setAttribute('r','6')" onmouseout="document.getElementById('m3-tt2').style.opacity=0;this.setAttribute('r','4')"/>
+        <text id="m3-tt2" x="200" y="59" font-size="8" fill="#ff8080" text-anchor="middle" font-weight="700" style="opacity:0;transition:opacity 0.3s">Cuota Alta = P(Baja)</text>
       </svg>
     </div>
-    
-    <div style="display:grid;grid-template-columns:1fr;gap:10px">
-      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06); transition: all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.05)'; this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(255,255,255,.02)'; this.style.borderColor='rgba(255,255,255,.06)'">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <span style="font-family:monospace;font-size:10px;color:var(--cyan);font-weight:600">b365h (Cuota Local)</span>
-          <span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">
-          El Odds Ratio de la clase <strong style="color:#44ff88">Home</strong> frente a la cuota <code style="color:var(--cyan)">b365h</code> es negativo en β. Es decir, a <strong>menor</strong> cuota (favorito), <strong>mayores</strong> son los odds de que gane.
-        </div>
+    <div style="display:grid;gap:8px">
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all 0.3s" onmouseover="this.style.background='rgba(0,255,255,.05)';this.style.borderColor='var(--cyan)'" onmouseout="this.style.background='rgba(255,255,255,.02)';this.style.borderColor='rgba(255,255,255,.06)'">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-family:monospace;font-size:10px;color:var(--cyan);font-weight:600">b365h (Cuota Local)</span><span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">A <strong>menor</strong> cuota (favorito local), <strong>mayores</strong> odds de que gane. &beta; negativo &rarr; OR &lt; 1 &rarr; probabilidad alta.</div>
       </div>
-      
-      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06); transition: all 0.3s" onmouseover="this.style.background='rgba(255,68,255,.05)'; this.style.borderColor='#ff44ff'" onmouseout="this.style.background='rgba(255,255,255,.02)'; this.style.borderColor='rgba(255,255,255,.06)'">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <span style="font-family:monospace;font-size:10px;color:#ff44ff;font-weight:600">b365a (Cuota Visita)</span>
-          <span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span>
-        </div>
-        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">
-          Efecto espejo. Cuando la cuota del visitante baja (es claro favorito), la probabilidad log-odds de que el visitante gane se dispara exponencialmente frente al resto.
-        </div>
+      <div style="padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);transition:all 0.3s" onmouseover="this.style.background='rgba(255,68,255,.05)';this.style.borderColor='#ff44ff'" onmouseout="this.style.background='rgba(255,255,255,.02)';this.style.borderColor='rgba(255,255,255,.06)'">
+        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span style="font-family:monospace;font-size:10px;color:#ff44ff;font-weight:600">b365a (Cuota Visita)</span><span style="font-size:11px;font-weight:700;color:#ff8080">OR &lt; 1.0</span></div>
+        <div style="font-size:10px;color:rgba(255,255,255,.35);line-height:1.5">Efecto espejo. Cuando la cuota visitante baja, la probabilidad log-odds de victoria visitante se dispara exponencialmente.</div>
       </div>
     </div>
-    
-    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.4);line-height:1.6">
-      <strong>Veredicto:</strong> El mercado ya digirió todos los datos estadísticos previos. Sus cuotas actúan como el super-resumen perfecto de fuerza. La regresión lo descubre y las eleva como los únicos Odds Ratios dominantes.
-    </div>
+    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:9px;color:rgba(255,255,255,.4);line-height:1.6"><strong>Veredicto:</strong> El mercado ya digiri&oacute; todos los datos previos. Sus cuotas act&uacute;an como el super-resumen perfecto de fuerza. La regresi&oacute;n lo descubre y las eleva como los &uacute;nicos Odds Ratios dominantes.</div>
   </div>
-</div>`,</span></td>
-          <td><span class="xg-battle-f1" style="color:#ff6666">52.54%</span></td>
-          <td><span class="xg-battle-acc">Maldición de dimensionalidad con n=291. Overfitting.</span></td>
-        </tr>
-        <tr class="xg-battle-row" style="opacity:0.8">
-          <td><span class="xg-battle-name" style="color:#ffcc00">Config 2 — Cuotas + Árbitro</span></td>
-          <td><span class="xg-battle-auc" style="color:#ffcc00">49.57%</span></td>
-          <td><span class="xg-battle-f1" style="color:#ffcc00">54.24%</span></td>
-          <td><span class="xg-battle-acc">Mejoría leve en CV, pero no supera el baseline en Test.</span></td>
-        </tr>
-        <tr class="xg-battle-row winner">
-          <td><span class="xg-battle-name" style="color:var(--cyan)">Modelo V2 — Navaja de Occam</span><br><span class="xg-battle-badge best" style="background:rgba(0,255,255,.1);border-color:rgba(0,255,255,.3);color:var(--cyan)">GANADOR</span></td>
-          <td><span class="xg-battle-auc" style="color:var(--cyan)">49.14%</span></td>
-          <td><span class="xg-battle-f1" style="color:var(--cyan);font-weight:700;font-size:14px">55.93%</span></td>
-          <td><span class="xg-battle-acc" style="color:rgba(255,255,255,.7)">Solo cuotas B365. Principio de Parsimonia empírico.</span></td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="margin-top:14px;padding:10px 12px;background:rgba(0,255,255,.04);border-left:2px solid var(--cyan);font-size:10px;color:rgba(255,255,255,.45);line-height:1.6">
-      <strong>Conclusión de Mercados Eficientes:</strong> Al añadir ELO a un modelo que ya tiene b365h, generamos ruido. El mercado es eficiente: <em>las cuotas globales ya contienen toda la información táctica, arbitral y de lesiones pre-partido.</em>
-    </div>
-
-  </div></div>
 </div>`
     },
     data: {
