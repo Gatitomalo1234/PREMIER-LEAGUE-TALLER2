@@ -35,17 +35,16 @@ Este proyecto implementa un ecosistema predictivo para fútbol profesional divid
 ---
 
 ## 📂 Estructura del Repositorio
+
 ```text
 .
-├── audio/              # Narraciones interactivas (Mariano Closs & Bambino Pons)
-├── data/               # Datasets crudos y procesados
-├── img/                # Gráficas de validación (ROC, Confusión, Curvas de Calibración)
-├── scripts/
-│   ├── modelo_1_xg/    # Notebooks de EDA + Entrenamiento del Modelo xG
-│   └── modelo_2_partidos/ # Notebooks de Predicción de Resultados (Match Predictor)
-├── dashboard.html      # Aplicación web interactiva (Front-end 3D)
+├── dashboard.html      # Panel interactivo central (xG Simulator + Oracle)
+├── scripts/            # Notebooks .ipynb (EDA + Entrenamiento de Modelos)
+├── data/               # Datasets procesados utilizados por el modelo
+├── audio/              # Relatos de narradores (Mariano Closs / Bambino Pons)
 ├── requirements.txt    # Dependencias del proyecto
-└── README.md           # Documentación principal
+├── README.md           # Documentación principal
+└── archivos_adicionales/ # Guías PDF, Taller 1, backups e imágenes de validación
 ```
 
 ---
