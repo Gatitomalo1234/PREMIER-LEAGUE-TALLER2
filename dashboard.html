@@ -632,13 +632,20 @@
 @keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.92)}}
 .live-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:20px;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase}
 .live-conn-line{height:2px;background:linear-gradient(90deg,rgba(255,68,255,0),rgba(255,68,255,.6),rgba(255,204,0,.6),rgba(255,68,255,0));border-radius:2px;margin:10px 0}
-.live-node-card{padding:14px 16px;border-radius:10px;border:1px solid;display:flex;align-items:center;gap:12px}
+.live-node.no-scroll { overflow: hidden !important; }
 
 /* ── LIVE MATCH ORACLE: PREMIER TACTICAL ANALYST ────────────────────── */
 :root { --pl-purple: #3d195b; --pl-green: #00ff85; --pl-pink: #ff005a; }
 
 #oracle-flash { position:fixed; inset:0; background:rgba(0,255,133,0.1); pointer-events:none; opacity:0; z-index:9999; }
-#oracle-processing { position:absolute; inset:0; background:rgba(15,3,25,0.96); z-index:100; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(15px); border-radius:18px; border:1px solid rgba(0,255,133,0.15); }
+#oracle-processing { position:absolute; inset:0; background:rgba(15,3,25,0.98); z-index:200; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(20px); border-radius:18px; }
+.shield-container { display:flex; align-items:center; gap:60px; margin-bottom:40px; position:relative; }
+.tactical-shield { width:100px; height:120px; background:var(--pl-purple); border:3px solid var(--pl-green); clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:900; color:#fff; position:relative; box-shadow:0 0 30px rgba(0,255,133,0.2); }
+.tactical-shield::after { content:''; position:absolute; inset:0; background:linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); }
+.shield-h { border-color:var(--pl-green); color:var(--pl-green); }
+.shield-a { border-color:var(--pl-pink); color:var(--pl-pink); }
+.vs-spark { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); font-size:24px; font-weight:900; color:#fff; opacity:0; z-index:10; }
+
 .pitch-lines { position:absolute; inset:0; background-image: 
     linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
@@ -3620,9 +3627,13 @@ const WS = {
         predictions: `<div id="oracle-flash"></div>
 <div id="oracle-processing">
   <div class="pitch-lines"></div>
-  <div class="live-pulse" style="font-size:42px;margin-bottom:20px">⚽</div>
-  <div style="font-size:10px;letter-spacing:0.5em;color:var(--pl-green);font-weight:900;margin-bottom:8px">ANALIZANDO PROYECCIÓN TÁCTICA</div>
-  <div id="proc-status" style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace">CALIBRANDO LASSO WEIGHTS...</div>
+  <div class="shield-container">
+    <div id="shield-h" class="tactical-shield shield-h"></div>
+    <div class="vs-spark">VS</div>
+    <div id="shield-a" class="tactical-shield shield-a"></div>
+  </div>
+  <div style="font-size:10px;letter-spacing:0.5em;color:var(--pl-green);font-weight:900;margin-bottom:8px;z-index:10">SIMULANDO ENCUENTRO</div>
+  <div id="proc-status" style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;z-index:10">CALIBRANDO LASSO WEIGHTS...</div>
 </div>
 
 <!-- Info Button & Glossary Modal -->
@@ -5930,7 +5941,10 @@ class CinematicEngine {
 
     window.toggleOracleInfo = () => {
         const g = document.getElementById('oracle-glossary');
-        g.style.display = g.style.display === 'none' ? 'block' : 'none';
+        const liveNode = document.querySelector('.live-node');
+        const isOpen = g.style.display === 'none';
+        g.style.display = isOpen ? 'block' : 'none';
+        if(liveNode) liveNode.classList.toggle('no-scroll', isOpen);
     };
 
     const PRESET_REAL_DATA = [
@@ -5974,13 +5988,34 @@ class CinematicEngine {
         const btn = document.getElementById('oracle-sim-btn');
         const proc = document.getElementById('oracle-processing');
         const res = document.getElementById('oracle-result-panel');
+        const liveNode = document.querySelector('.live-node');
         const teamH = document.getElementById('team-h-input').value || 'Local';
         const teamA = document.getElementById('team-a-input').value || 'Visita';
         
         btn.disabled = true;
         proc.style.display = 'flex';
-        gsap.to(proc, {opacity:1, duration:0.3});
+        if(liveNode) liveNode.classList.add('no-scroll');
+
+        // Setup Shields
+        const sh = document.getElementById('shield-h');
+        const sa = document.getElementById('shield-a');
+        sh.textContent = teamH.substring(0,3).toUpperCase();
+        sa.textContent = teamA.substring(0,3).toUpperCase();
+
+        // High-End GSAP Animation
+        const tl = gsap.timeline();
+        tl.fromTo(proc, {opacity:0}, {opacity:1, duration:0.4});
+        tl.fromTo(sh, {x:-300, opacity:0}, {x:0, opacity:1, duration:0.8, ease:"back.out(1.2)"}, "-=0.2");
+        tl.fromTo(sa, {x:300, opacity:0}, {x:0, opacity:1, duration:0.8, ease:"back.out(1.2)"}, "-=0.8");
         
+        // Clash
+        tl.to(sh, {x:30, duration:0.1, yoyo:true, repeat:1}, "+=0.2");
+        tl.to(sa, {x:-30, duration:0.1, yoyo:true, repeat:1}, "-=0.2");
+        tl.to('.vs-spark', {opacity:1, scale:1.5, duration:0.1, yoyo:true, repeat:1}, "-=0.1");
+        
+        // Pulse
+        tl.to('.tactical-shield', {scale:1.05, duration:0.4, repeat:-1, yoyo:true, ease:"sine.inOut"});
+
         const h_odds = parseFloat(document.getElementById('sl-b365h').value);
         const a_odds = parseFloat(document.getElementById('sl-b365a').value);
         const h_fthg = parseFloat(document.getElementById('sl-fthg').value);
@@ -5995,7 +6030,9 @@ class CinematicEngine {
         setTimeout(() => {
             gsap.to(proc, {opacity:0, duration:0.4, onComplete:() => {
                 proc.style.display = 'none';
+                if(liveNode) liveNode.classList.remove('no-scroll');
                 btn.disabled = false;
+                tl.kill(); // Stop pulse
                 
                 const total = Math.round(m2 + (Math.random() * 0.4 - 0.2));
                 const r = Math.random();
@@ -6006,7 +6043,6 @@ class CinematicEngine {
                 else if(outcome==='A'){ a=Math.ceil(total*0.7); h=total-a; if(a<=h) a=h+1; }
                 else { h=Math.floor(total/2); a=h; }
                 
-                // Compare with model expectation
                 const modelExpected = (m3.H > m3.D && m3.H > m3.A) ? 'H' : (m3.A > m3.D ? 'A' : 'D');
                 const modelMatch = outcome === modelExpected;
                 const modelResultName = modelExpected === 'H' ? 'Victoria Local' : (modelExpected === 'A' ? 'Victoria Visita' : 'Empate');
@@ -6029,14 +6065,11 @@ class CinematicEngine {
                 
                 document.getElementById('oracle-verdict').innerHTML = verdict;
                 res.style.display = 'block';
-                
-                // Scroll & Animation
                 res.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 gsap.from(res, {y:40, opacity:0, duration:0.8, ease:"expo.out"});
-                
                 if(window.app && window.app.triggerOraclePulse) window.app.triggerOraclePulse();
             }});
-        }, 1500);
+        }, 2200);
     };
 
     window.oracleReset = () => { document.getElementById('oracle-result-panel').style.display = 'none'; };
