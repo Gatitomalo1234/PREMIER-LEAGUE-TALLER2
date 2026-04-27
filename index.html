@@ -4391,9 +4391,16 @@ class CinematicEngine {
         document.querySelectorAll('.ws-tab').forEach(tab=>{
             tab.onclick=()=>{
                 if(this.activeNodeIdx<0) return;
+                const tabName = tab.dataset.tab;
                 document.querySelectorAll('.ws-tab').forEach(t=>t.classList.remove('active'));
                 tab.classList.add('active');
-                this.renderTab(DATA[this.activeNodeIdx].id, tab.dataset.tab);
+                
+                // Show intro animation ONLY when entering Laboratorio (predictions)
+                if(tabName === 'predictions' && typeof runPLIntro === 'function') {
+                    runPLIntro(() => this.renderTab(DATA[this.activeNodeIdx].id, tabName));
+                } else {
+                    this.renderTab(DATA[this.activeNodeIdx].id, tabName);
+                }
             };
         });
     }
@@ -6106,11 +6113,7 @@ class CinematicEngine {
         unlockAudio();
     }, {once:true});
     
-    // Iniciar sistema de partículas Premier League (Solo si no estamos en un nodo específico)
-    if (typeof runPLIntro === 'function' && !window._introRun) {
-        window._introRun = true;
-        setTimeout(() => runPLIntro(() => console.log("Intro complete")), 500);
-    }
+    // Sistema de partículas Premier League movido al Laboratorio (predictions tab)
 
 })();
 
