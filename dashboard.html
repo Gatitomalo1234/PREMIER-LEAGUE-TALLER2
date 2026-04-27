@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Awwwards Ecosystem · Top Tier · v2</title>
+    <title>VORTEX | Premier League Neural Intelligence</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -246,7 +246,6 @@
         .xg-glass-close{position:absolute;top:14px;right:16px;cursor:pointer;color:rgba(255,255,255,0.25);font-size:17px;line-height:1;transition:color .15s;background:none;border:none;padding:0}
         .xg-glass-close:hover{color:#fff}
         /* ── Info overlay ── */
-        #xg-info-overlay{}
         #xg-info-card{padding:26px 28px;max-width:340px;width:90%}
         #xg-info-card-title{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px}
         #xg-info-card-body{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.75}
@@ -309,7 +308,6 @@
         .xg-glass-close{position:absolute;top:14px;right:16px;cursor:pointer;color:rgba(255,255,255,0.25);font-size:17px;line-height:1;transition:color .15s;background:none;border:none;padding:0}
         .xg-glass-close:hover{color:#fff}
         /* ── Info overlay ── */
-        #xg-info-overlay{}
         #xg-info-card{padding:26px 28px;max-width:340px;width:90%}
         #xg-info-card-title{font-size:10px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:var(--cyan);margin-bottom:13px}
         #xg-info-card-body{font-size:11px;color:rgba(255,255,255,0.6);line-height:1.75}
@@ -518,6 +516,8 @@
 .xg-imbalance-bar{height:28px;border-radius:6px;overflow:hidden;display:flex;margin-top:16px;position:relative}
 .xg-bar-fail{background:linear-gradient(90deg,#ff3333,#cc0000);display:flex;align-items:center;padding-left:12px;font-size:10px;font-weight:700;color:rgba(255,255,255,.8);transition:width 1.2s ease}
 .xg-bar-goal{background:linear-gradient(90deg,#00cc66,#44ff88);display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:10px;font-weight:700;color:rgba(0,0,0,.7);transition:width 1.2s ease}
+.xg-pv{display:none}
+.xg-pv.active{display:grid}
 .xg-phase-block{border:1px solid rgba(255,255,255,.07);border-radius:10px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
 .xg-phase-block.open{border-color:rgba(0,255,255,.18)}
 .xg-phase-head{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;gap:12px}
@@ -638,50 +638,52 @@
 :root { --pl-purple: #3d195b; --pl-green: #00ff85; --pl-pink: #ff005a; }
 
 #oracle-flash { position:fixed; inset:0; background:rgba(0,255,133,0.1); pointer-events:none; opacity:0; z-index:9999; }
-#oracle-processing { position:absolute; inset:0; background:rgba(15,3,25,0.98); z-index:200; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(20px); border-radius:18px; }
-.shield-container { display:flex; align-items:center; gap:60px; margin-bottom:40px; position:relative; }
-.tactical-shield { width:100px; height:120px; background:var(--pl-purple); border:3px solid var(--pl-green); clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%); display:flex; align-items:center; justify-content:center; font-size:32px; font-weight:900; color:#fff; position:relative; box-shadow:0 0 30px rgba(0,255,133,0.2); }
-.tactical-shield::after { content:''; position:absolute; inset:0; background:linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent); }
-.shield-h { border-color:var(--pl-green); color:var(--pl-green); }
-.shield-a { border-color:var(--pl-pink); color:var(--pl-pink); }
-.vs-spark { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); font-size:24px; font-weight:900; color:#fff; opacity:0; z-index:10; }
+.oracle-glass-portal { 
+    position:fixed; inset:40px; background:rgba(10,1,20,0.7); backdrop-filter:blur(40px) saturate(180%); -webkit-backdrop-filter:blur(40px) saturate(180%); 
+    border-radius:28px; padding:60px; border:1px solid rgba(255,255,255,0.1); 
+    box-shadow:0 50px 150px rgba(0,0,0,0.9); z-index:20000; overflow-y:auto; 
+    display:none; flex-direction:column; align-items:center; transform:scale(0.95); opacity:0; transition:all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.oracle-glass-portal.active { display:flex; opacity:1; transform:scale(1); }
 
-.pitch-lines { position:absolute; inset:0; background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events:none; }
+#oracle-processing { position:fixed; inset:0; background:rgba(15,3,25,0.98); z-index:30000; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(40px); }
+.shield-container { display:flex; align-items:center; gap:80px; margin-bottom:40px; position:relative; }
+.tactical-shield { 
+    width:120px; height:150px; background:rgba(255,255,255,0.05); border:2px solid var(--pl-green); 
+    clip-path: polygon(0% 0%, 100% 0%, 100% 80%, 50% 100%, 0% 80%); 
+    display:flex; align-items:center; justify-content:center; position:relative;
+}
+.tactical-shield img { width:80%; height:80%; object-fit:contain; filter:drop-shadow(0 0 15px rgba(255,255,255,0.3)); }
+.shield-h { border-color:var(--pl-green); box-shadow:0 0 40px rgba(0,255,133,0.2); }
+.shield-a { border-color:var(--pl-pink); box-shadow:0 0 40px rgba(255,0,90,0.2); }
+.vs-spark { position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); font-size:32px; font-weight:900; color:#fff; text-shadow:0 0 20px #fff; opacity:0; z-index:10; }
 
-#oracle-scoreboard { padding:20px; border-radius:14px; background:var(--pl-purple); border:1px solid rgba(255,255,255,0.1); margin-bottom:15px; text-align:center; position:relative; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
-#oracle-fixture-sel { background:rgba(255,255,255,0.05); border:1px solid var(--pl-green); color:var(--pl-green); font-size:13px; font-weight:800; padding:10px 18px; border-radius:8px; cursor:pointer; font-family:var(--font-display); outline:none; transition:all 0.3s; width:100%; text-transform:uppercase; letter-spacing:0.05em; }
+.oracle-content-wrap { width:100%; max-width:850px; margin:0 auto; position:relative; }
+.vault-side { display:flex; flex-direction:column; gap:10px; }
+.vault-card { transition:transform 0.2s; border:1px solid rgba(255,255,255,0.05); }
+.vault-card:hover { transform:translateX(5px); border-color:rgba(255,255,255,0.1); background:rgba(255,255,255,0.05) !important; }
+.tag-m2 { color:var(--pl-green); border:1px solid rgba(0,255,133,0.3); }
+.tag-m3 { color:var(--pl-pink); border:1px solid rgba(255,0,90,0.3); }
 
-.tactical-section { margin-bottom:20px; }
-.tactical-title { font-size:9px; font-weight:900; letter-spacing:0.25em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
-.tactical-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
+/* Missing Oracle UI Components */
+.oracle-inputs-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+.tactical-section { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:15px; }
+.tactical-title { font-size:10px; font-weight:900; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:15px; display:flex; align-items:center; gap:8px; }
+.oracle-slider-group { margin-bottom:15px; }
+.oracle-slider-label { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.7); }
+.oracle-slider-val { color:var(--pl-green); font-family:monospace; font-weight:900; }
+.oracle-slider { -webkit-appearance:none; appearance:none; width:100%; height:4px; background:rgba(255,255,255,0.1); border-radius:2px; outline:none; }
+.oracle-slider::-webkit-slider-thumb { -webkit-appearance:none; width:14px; height:14px; background:var(--pl-green); border-radius:50%; cursor:pointer; box-shadow:0 0 10px var(--pl-green); }
+.oracle-neural-tag { font-size:8px; padding:2px 5px; border-radius:4px; margin-left:8px; font-weight:900; vertical-align:middle; display:inline-block; }
 
-.oracle-inputs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-.oracle-slider-group { padding:14px; border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); transition:all 0.3s; }
-.oracle-slider-group:hover { background:rgba(255,255,255,0.05); border-color:var(--pl-green); transform:translateY(-2px); }
-.oracle-slider-label { display:flex; justify-content:space-between; font-size:9px; color:rgba(255,255,255,0.5); margin-bottom:8px; font-weight:800; text-transform:uppercase; }
-.oracle-slider-val { font-size:14px; color:#fff; font-weight:900; font-family:var(--font-display); }
-.oracle-slider { width:100%; accent-color:var(--pl-green); cursor:pointer; height:4px; }
+#oracle-results-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.oracle-bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.oracle-bar-lbl { font-size:9px; font-weight:900; color:rgba(255,255,255,0.4); width:60px; }
+.oracle-bar-track { flex:1; height:6px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
+.oracle-bar-fill { height:100%; width:0%; transition:width 1s cubic-bezier(0.16, 1, 0.3, 1); }
 
-#oracle-results-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:15px; margin-bottom:15px; }
-#oracle-m3-panel, #oracle-m2-panel { padding:20px; border-radius:16px; background:rgba(61,25,91,0.3); border:1px solid rgba(255,255,255,0.08); position:relative; }
-
-.oracle-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
-.oracle-bar-lbl { font-size:9px; font-weight:900; width:50px; color:rgba(255,255,255,0.5); }
-.oracle-bar-track { flex:1; height:8px; background:rgba(255,255,255,0.05); border-radius:4px; overflow:hidden; }
-.oracle-bar-fill { height:100%; width:0%; transition:width 1s cubic-bezier(0.23, 1, 0.32, 1); }
-
-#oracle-sim-btn { width:100%; padding:20px; border-radius:12px; border:none; background:var(--pl-green); color:var(--pl-purple); font-size:15px; font-weight:900; letter-spacing:0.15em; cursor:pointer; margin-bottom:20px; transition:all 0.4s; font-family:var(--font-display); text-transform:uppercase; box-shadow:0 0 40px rgba(0,255,133,0.2); }
-#oracle-sim-btn:hover { transform:scale(1.02); box-shadow:0 15px 50px rgba(0,255,133,0.4); }
-
-#oracle-result-panel { padding:30px; border-radius:20px; background:var(--pl-purple); border:2px solid var(--pl-green); margin-top:10px; position:relative; }
-#oracle-result-score { font-size:52px; font-weight:900; text-align:center; color:#fff; font-family:var(--font-display); margin-bottom:10px; text-shadow:0 0 20px rgba(0,255,133,0.3); }
-
-.oracle-neural-tag { font-size:7px; padding:2px 5px; border-radius:4px; font-weight:900; margin-left:6px; letter-spacing:0.05em; vertical-align:middle; text-transform:uppercase; border:1px solid rgba(255,255,255,0.2); }
-.tag-m2 { color:var(--pl-green); }
-.tag-m3 { color:var(--pl-pink); }
+#oracle-result-panel { background:rgba(0,255,133,0.05); border:1px solid rgba(0,255,133,0.2); border-radius:15px; padding:20px; text-align:center; }
+#oracle-result-score { font-size:24px; font-weight:900; margin-bottom:10px; font-family:var(--font-display); }
 
 .boot-hidden { opacity:0; transform:translateY(15px); }
 </style>
@@ -730,9 +732,9 @@
 <!-- Intro -->
 <div id="hud">
     <div id="intro-panel">
-        <div class="eyebrow">Neural Ecosystem</div>
-        <h1>Predictive<br>Organism</h1>
-        <p class="intro-sub">Arquitectura viva entrelazada por redes de fibra óptica físicas. Simulando conectividad entre 444,252 registros de la Premier League.</p>
+        <div class="eyebrow">Neural Intelligence Hub</div>
+        <h1>VORTEX</h1>
+        <p class="intro-sub">Ecosistema predictivo de última generación. Decodificando la complejidad táctica de la Premier League mediante inferencia neural y el análisis de 444,252 eventos en tiempo real.</p>
         <button class="btn-aurora" id="btn-explore">
             <div class="lg-shadow-pill"></div>
             <div class="lg-glass-pill"></div>
@@ -1210,7 +1212,7 @@ const WS = {
   <svg viewBox="0 0 180 130" style="width:100%;border-radius:8px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06)" xmlns="http://www.w3.org/2000/svg">
     <text x="90" y="13" font-size="8" fill="rgba(255,255,255,.3)" text-anchor="middle">AUC-ROC POR FOLD (StratKFold k=5)</text>
     <!-- Fold bars -->
-    <rect x="16" y="110" width="22" height="-76" rx="3" fill="rgba(0,255,255,.25)" stroke="rgba(0,255,255,.4)" stroke-width=".8" transform="scale(1,-1) translate(0,-122)"/>
+    <rect x="16" y="110" width="22" height="76" rx="3" fill="rgba(0,255,255,.25)" stroke="rgba(0,255,255,.4)" stroke-width=".8" transform="scale(1,-1) translate(0,-122)"/>
     <text x="27" y="108" font-size="8" fill="rgba(0,255,255,.8)" text-anchor="middle">0.838</text>
     <text x="27" y="120" font-size="7" fill="rgba(255,255,255,.3)" text-anchor="middle">F1</text>
     <rect x="50" y="34" width="22" height="76" rx="3" fill="rgba(0,255,255,.2)" stroke="rgba(0,255,255,.3)" stroke-width=".8"/>
@@ -3443,9 +3445,9 @@ const WS = {
   </div>
 </div>`,
         summary: `<div style="margin-bottom:24px">
-  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:rgba(0,255,255,.6);margin-bottom:6px">MANIFESTO DEL PROYECTO · PREMIER LEAGUE PREDICTION</div>
-  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">De los Datos Crudos a la<br><span style="color:var(--cyan);font-weight:700">Inteligencia Predictiva</span></div>
-  <div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;max-width:600px">Este ecosistema integra <strong style="color:#fff">444,252 eventos</strong> y <strong style="color:#fff">291 partidos</strong> para resolver un problema fundamental: ¿es posible batir al mercado de apuestas usando Machine Learning? A través de 3 modelos especializados, transformamos la geometría del juego y las cuotas en probabilidades accionables.</div>
+  <div style="font-size:9px;font-weight:700;letter-spacing:.3em;color:rgba(0,255,255,.6);margin-bottom:6px">PROJECT MANIFESTO · PREMIER LEAGUE DATA SCIENCE</div>
+  <div style="font-size:28px;font-weight:300;color:#fff;margin-bottom:8px;line-height:1.2">VORTEX: La Ciencia Detrás de la<br><span style="color:var(--cyan);font-weight:700">Inteligencia Predictiva</span></div>
+  <div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;max-width:600px">Este ecosistema integra <strong style="color:#fff">444,252 eventos</strong> para resolver un problema fundamental: decodificar la complejidad del fútbol inglés. A través de un pipeline híbrido de Machine Learning, transformamos la geometría del juego en insights tácticos accionables.</div>
 </div>
 
 <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-bottom:24px">
@@ -3595,34 +3597,26 @@ const WS = {
         overview: `<div class="xg-progress-dots"><div class="xg-dot active" style="background:#ffcc00;box-shadow:0 0 8px #ffcc00"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div><div class="xg-dot"></div></div>
 <div class="xg-phase-header" style="margin-top:18px">
   <div>
-    <div class="xg-eyebrow">LIVE TEST NODE · SISTEMA ACTIVO</div>
-    <div class="xg-phase-title" style="font-size:24px;margin-bottom:4px">Testeo en Vivo <span class="live-badge" style="background:rgba(0,255,255,.12);border:1px solid rgba(0,255,255,.3);color:var(--cyan);font-size:8px;vertical-align:middle">⚡ LIVE ORACLE</span></div>
-    <div class="xg-phase-sub">Interfaz unificada M2 + M3 para predicción y simulación táctica en tiempo real</div>
+    <div class="xg-eyebrow">LIVE INFERENCE HUB · ORACLE SYSTEM</div>
+    <div class="xg-phase-title" style="font-size:24px;margin-bottom:4px">Oráculo Táctico <span class="live-badge" style="background:rgba(0,255,133,0.12);border:1px solid rgba(0,255,133,0.3);color:var(--pl-green);font-size:8px;vertical-align:middle">⚡ NEURAL SIMULATOR</span></div>
+    <div class="xg-phase-sub">Motor de experimentación inmersiva para la proyección de escenarios tácticos en tiempo real</div>
   </div>
 </div>
 <div class="live-conn-line"></div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px">
-  <div class="live-node-card" style="border-color:rgba(0,255,255,.25);background:rgba(0,255,255,.05)">
+  <div class="live-node-card" style="border-color:rgba(0,255,133,.25);background:rgba(0,255,133,.05)">
     <div style="font-size:24px">📈</div>
-    <div>
-      <div style="font-size:9px;color:var(--cyan);font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M2</div>
-      <div style="font-size:13px;font-weight:600;color:#fff">Goles Totales</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">Lasso Regression · MAE 1.26</div>
-    </div>
+    <div><div style="font-size:9px;color:var(--pl-green);font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M2</div><div style="font-size:13px;font-weight:600;color:#fff">Goles Lasso</div></div>
   </div>
-  <div class="live-node-card" style="border-color:rgba(255,68,255,.25);background:rgba(255,68,255,.05)">
+  <div class="live-node-card" style="border-color:rgba(255,0,90,.25);background:rgba(255,0,90,.05)">
     <div style="font-size:24px">🎯</div>
-    <div>
-      <div style="font-size:9px;color:#ff44ff;font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M3</div>
-      <div style="font-size:13px;font-weight:600;color:#fff">Resultado Final</div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:2px">LogReg Multinomial · Acc 55%</div>
-    </div>
+    <div><div style="font-size:9px;color:var(--pl-pink);font-weight:700;letter-spacing:.15em;margin-bottom:3px">MODELO M3</div><div style="font-size:13px;font-weight:600;color:#fff">Resultado LogReg</div></div>
   </div>
 </div>
-<div style="padding:20px;border-radius:12px;border:1px solid rgba(0,255,255,.15);background:rgba(0,255,255,.02);text-align:center;margin-bottom:18px">
+<div style="padding:20px;border-radius:12px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.02);text-align:center">
   <div class="live-pulse" style="font-size:40px;margin-bottom:10px">🔮</div>
-  <div style="font-size:14px;font-weight:600;color:var(--cyan);margin-bottom:6px">Motor de Simulación Listo</div>
-  <div style="font-size:11px;color:rgba(255,255,255,.3);line-height:1.6;max-width:320px;margin:0 auto">Cambia a la pestaña <strong style="color:#fff">"Simulación"</strong> para configurar el escenario y simular un partido completo usando la inteligencia del Oracle.</div>
+  <div style="font-size:14px;font-weight:600;color:var(--pl-green);margin-bottom:6px">Oracle Tactical Engine Ready</div>
+  <div style="font-size:11px;color:rgba(255,255,255,0.4);line-height:1.6;max-width:320px;margin:0 auto">Cambia a la pestaña <strong style="color:#fff">"Simulación"</strong> para el portal de análisis inmersivo.</div>
 </div>`,
         predictions: `<div id="oracle-flash"></div>
 <div id="oracle-processing">
@@ -3636,200 +3630,158 @@ const WS = {
   <div id="proc-status" style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace;z-index:10">CALIBRANDO LASSO WEIGHTS...</div>
 </div>
 
-<!-- Info Button & Glossary Modal -->
-<button id="oracle-info-btn" onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:1px solid var(--pl-green);color:var(--pl-green);width:30px;height:30px;border-radius:50%;font-weight:900;cursor:pointer;z-index:10;font-family:var(--font-display)">?</button>
+<div class="oracle-glass-portal">
+  <div class="oracle-content-wrap">
+    <button id="oracle-info-btn" onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:1px solid var(--pl-green);color:var(--pl-green);width:30px;height:30px;border-radius:50%;font-weight:900;cursor:pointer;z-index:10;font-family:var(--font-display)">?</button>
 
-<div id="oracle-glossary" style="display:none;position:absolute;inset:0;background:rgba(15,3,25,0.98);z-index:110;padding:40px;overflow-y:auto;border-radius:18px;border:1px solid var(--pl-green)">
-  <button onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer">×</button>
-  <div class="tactical-title" style="font-size:14px;margin-bottom:25px">Glosario de Variables Tácticas</div>
-  
-  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">b365h / b365a (M3)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Probabilidades implícitas del mercado. Indican la percepción externa del favoritismo. M3 las usa para anclar la predicción multinomial.</div>
-  </div>
-  
-  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Avg_FTHG (M2)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Potencial Goleador Local. El promedio histórico de goles anotados en casa. Es la base del modelo Lasso para proyectar el flujo de goles.</div>
-  </div>
+    <div id="oracle-glossary" style="display:none;position:absolute;inset:0;background:rgba(15,3,25,0.98);z-index:110;padding:40px;overflow-y:auto;border-radius:18px;border:1px solid var(--pl-green)">
+      <button onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer">×</button>
+      <div class="tactical-title" style="font-size:14px;margin-bottom:25px">Glosario de Inteligencia Táctica</div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div class="vault-side">
+          <div style="font-size:10px;color:var(--pl-green);letter-spacing:0.2em;margin-bottom:15px;font-weight:900">MODELO M2 (LASSO / xG)</div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:#fff;font-weight:900;font-size:12px;margin-bottom:5px">Potencial Goleador (FTHG)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">Promedio histórico de goles anotados por el equipo local. Define el "suelo" de producción ofensiva esperado.</div>
+          </div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:#fff;font-weight:900;font-size:12px;margin-bottom:5px">Amenaza Asistencias (AST)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">Capacidad creativa y pases clave esperados. M2 lo usa para predecir el flujo de balones al área.</div>
+          </div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:#fff;font-weight:900;font-size:12px;margin-bottom:5px">Días de Descanso (REST)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">Métrica de fatiga acumulada. Influye negativamente en el potencial de goles si el descanso es menor a 4 días.</div>
+          </div>
+        </div>
+        
+        <div class="vault-side">
+          <div style="font-size:10px;color:var(--pl-pink);letter-spacing:0.2em;margin-bottom:15px;font-weight:900">MODELO M3 (LOGREG / RESULTADO)</div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:#fff;font-weight:900;font-size:12px;margin-bottom:5px">Cuotas Market (b365h/a)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">Probabilidad implícita del mercado. Ancla la predicción de resultado final (H/D/A) basada en el consenso externo.</div>
+          </div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:#fff;font-weight:900;font-size:12px;margin-bottom:5px">Amenaza Goles (GF)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">Eficacia rematadora actual del visitante. Un valor alto aumenta drásticamente la probabilidad de victoria visitante.</div>
+          </div>
+          <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+            <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Factor Momentum (Inf)</div>
+            <div style="font-size:10px;color:rgba(255,255,255,0.5);line-height:1.5">FACTOR COMPARTIDO (M2+M3). Influencia del estado de forma y racha reciente en el rendimiento dinámico.</div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Sum_influence (M2, M3)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Métrica de Momentum. Mide el impacto reciente y la inercia ganadora del equipo local en las últimas jornadas.</div>
-  </div>
+    <datalist id="pl-teams">
+      <option value="Arsenal"><option value="Aston Villa"><option value="Bournemouth"><option value="Brentford"><option value="Brighton">
+      <option value="Chelsea"><option value="Crystal Palace"><option value="Everton"><option value="Fulham"><option value="Ipswich Town">
+      <option value="Leicester City"><option value="Liverpool"><option value="Man City"><option value="Man Utd"><option value="Newcastle">
+      <option value="Nottingham Forest"><option value="Southampton"><option value="Tottenham"><option value="West Ham"><option value="Wolves">
+    </datalist>
 
-  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Days_Rest (M2)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Estado Físico. Días transcurridos desde el último partido. Menos descanso suele penalizar la capacidad ofensiva en el modelo Lasso.</div>
-  </div>
+    <div id="oracle-scoreboard" class="boot-hidden" style="background:none;border:none;box-shadow:none;margin-bottom:30px;padding:0">
+      <div style="font-size:10px;letter-spacing:0.4em;color:rgba(255,255,255,0.4);font-weight:900;margin-bottom:20px;text-align:center">PREMIER LEAGUE · TACTICAL MATCH ORACLE</div>
+      <div style="display:flex;gap:30px;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div class="tactical-shield shield-h" id="logo-h-preview" style="width:90px;height:110px;margin:0 auto 15px"><img src="https://resources.premierleague.com/premierleague/badges/t1.png" id="img-h-src" onerror="this.style.opacity=0" onload="this.style.opacity=1"></div>
+          <input type="text" id="team-h-input" list="pl-teams" value="Arsenal" style="width:140px;background:rgba(255,255,255,0.05);border:1px solid var(--pl-green);color:#fff;padding:8px;border-radius:6px;font-family:var(--font-display);font-weight:800;text-align:center">
+        </div>
+        <div style="color:var(--pl-green);font-weight:900;font-size:24px;text-shadow:0 0 20px var(--pl-green)">VS</div>
+        <div style="text-align:center">
+          <div class="tactical-shield shield-a" id="logo-a-preview" style="width:90px;height:110px;margin:0 auto 15px"><img src="https://resources.premierleague.com/premierleague/badges/t43.png" id="img-a-src" onerror="this.style.opacity=0" onload="this.style.opacity=1"></div>
+          <input type="text" id="team-a-input" list="pl-teams" value="Man City" style="width:140px;background:rgba(255,255,255,0.05);border:1px solid var(--pl-pink);color:#fff;padding:8px;border-radius:6px;font-family:var(--font-display);font-weight:800;text-align:center">
+        </div>
+      </div>
+      <div style="margin-top:20px;text-align:center;display:flex;justify-content:center">
+        <div class="btn-aurora" style="width:300px;position:relative;height:42px">
+          <div class="lg-shadow-pill"></div>
+          <div class="lg-glass-pill"></div>
+          <span class="lg-label" id="preset-active-label" style="font-size:10px">O CARGAR PRESET...</span>
+          <select id="oracle-fixture-sel" style="position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;z-index:2">
+            <option value="" disabled selected>O CARGAR PRESET...</option>
+            <option value="0">Arsenal vs Man City</option>
+            <option value="1">Liverpool vs Chelsea</option>
+            <option value="2">Man Utd vs Tottenham</option>
+            <option value="3">Aston Villa vs Newcastle</option>
+            <option value="4">Brighton vs Brentford</option>
+            <option value="5">Fulham vs Bournemouth</option>
+          </select>
+        </div>
+      </div>
+    </div>
 
-  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Away_Avg_AST (M2)</div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Capacidad de Creación Visitante. Promedio de asistencias del equipo fuera de casa, crucial para proyectar si el partido será abierto o cerrado.</div>
-  </div>
-</div>
+    <div class="oracle-inputs-grid">
+      <div class="tactical-section boot-hidden">
+        <div class="tactical-title" style="color:var(--pl-green)">M2 Lasso Variables (Goles/xG)</div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>POTENCIAL GOLEADOR</span><span id="sv-fthg" class="oracle-slider-val">1.60</span></div>
+          <input type="range" class="oracle-slider" id="sl-fthg" min="0.5" max="4.0" step="0.1" value="1.60">
+        </div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>AMENAZA ASISTENCIAS</span><span id="sv-ast" class="oracle-slider-val">1.20</span></div>
+          <input type="range" class="oracle-slider" id="sl-ast" min="0.2" max="3.0" step="0.1" value="1.20">
+        </div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>DÍAS DESCANSO</span><span id="sv-rest" class="oracle-slider-val">7 d</span></div>
+          <input type="range" class="oracle-slider" id="sl-rest" min="3" max="14" step="1" value="7">
+        </div>
+        <div class="oracle-slider-group" style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.05);padding-top:10px">
+          <div class="oracle-slider-label"><span style="color:var(--pl-green)">FACTOR MOMENTUM (Shared)</span><span id="sv-inf" class="oracle-slider-val">80.0</span></div>
+          <input type="range" class="oracle-slider" id="sl-inf" min="10" max="150" step="1" value="80" style="background:linear-gradient(90deg, var(--pl-green), var(--pl-pink))">
+        </div>
+      </div>
+      <div class="tactical-section boot-hidden">
+        <div class="tactical-title" style="color:var(--pl-pink)">M3 LogReg Variables (Resultado)</div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>CUOTA LOCAL MARKET</span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
+          <input type="range" class="oracle-slider" id="sl-b365h" min="1.10" max="10.0" step="0.05" value="2.40">
+        </div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>CUOTA VISITA MARKET</span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
+          <input type="range" class="oracle-slider" id="sl-b365a" min="1.10" max="10.0" step="0.05" value="3.10">
+        </div>
+        <div class="oracle-slider-group">
+          <div class="oracle-slider-label"><span>AMENAZA GOLES (GF)</span><span id="sv-gf" class="oracle-slider-val">1.40</span></div>
+          <input type="range" class="oracle-slider" id="sl-gf" min="0.2" max="3.0" step="0.1" value="1.40">
+        </div>
+      </div>
+    </div>
 
-<datalist id="pl-teams">
-  <option value="Arsenal">
-  <option value="Aston Villa">
-  <option value="Bournemouth">
-  <option value="Brentford">
-  <option value="Brighton">
-  <option value="Chelsea">
-  <option value="Crystal Palace">
-  <option value="Everton">
-  <option value="Fulham">
-  <option value="Ipswich Town">
-  <option value="Leicester City">
-  <option value="Liverpool">
-  <option value="Man City">
-  <option value="Man Utd">
-  <option value="Newcastle">
-  <option value="Nottingham Forest">
-  <option value="Southampton">
-  <option value="Tottenham">
-  <option value="West Ham">
-  <option value="Wolves">
-</datalist>
+    <div id="oracle-results-grid" class="boot-hidden" style="margin-top:20px">
+      <div id="oracle-m3-panel">
+        <div class="tactical-title">Proyección de Resultado (LogReg)</div>
+        <div class="oracle-bar-row"><div class="oracle-bar-lbl">LOCAL</div><div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-h" style="background:var(--pl-green)"></div></div><div id="m3-pct-h" style="font-weight:900;color:var(--pl-green);font-size:12px;width:40px">—</div></div>
+        <div class="oracle-bar-row"><div class="oracle-bar-lbl">EMPATE</div><div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-d" style="background:rgba(255,255,255,0.4)"></div></div><div id="m3-pct-d" style="font-weight:900;color:#fff;font-size:12px;width:40px">—</div></div>
+        <div class="oracle-bar-row"><div class="oracle-bar-lbl">VISITA</div><div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-a" style="background:var(--pl-pink)"></div></div><div id="m3-pct-a" style="font-weight:900;color:var(--pl-pink);font-size:12px;width:40px">—</div></div>
+      </div>
+      <div id="oracle-m2-panel" style="display:flex;flex-direction:column;justify-content:center">
+        <div class="tactical-title">Expected Goals (Lasso)</div>
+        <div style="text-align:center"><div id="oracle-m2-val" style="font-size:48px;font-weight:900;color:var(--pl-green)">0.00</div><div style="font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:0.2em">GOLES PROYECTADOS</div></div>
+      </div>
+    </div>
 
-<div id="oracle-scoreboard" class="boot-hidden">
-  <div style="font-size:8px;letter-spacing:0.4em;color:rgba(255,255,255,0.4);font-weight:900;margin-bottom:12px">PREMIER LEAGUE · TACTICAL MATCH ORACLE</div>
-  <div style="display:flex;gap:10px;align-items:center">
-    <input type="text" id="team-h-input" list="pl-teams" value="Arsenal" placeholder="Local" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-green);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
-    <div style="color:var(--pl-green);font-weight:900;font-size:12px">VS</div>
-    <input type="text" id="team-a-input" list="pl-teams" value="Man City" placeholder="Visita" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-pink);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
-  </div>
-  <div style="margin-top:10px">
-    <select id="oracle-fixture-sel" style="opacity:0.6;font-size:10px">
-      <option value="" disabled selected>O CARGAR PRESET...</option>
-      <option value="0">Arsenal vs Man City</option>
-      <option value="1">Liverpool vs Chelsea</option>
-      <option value="2">Man Utd vs Tottenham</option>
-      <option value="3">Aston Villa vs Newcastle</option>
-      <option value="4">Brighton vs Brentford</option>
-      <option value="5">Fulham vs Bournemouth</option>
-    </select>
-  </div>
-</div>
+    <button id="oracle-sim-btn" onclick="oracleSimulate()" class="btn-aurora boot-hidden" style="margin-top:30px;width:100%">
+      <div class="lg-shadow-pill"></div>
+      <div class="lg-glass-pill"></div>
+      <span class="lg-label">INICIAR SIMULACIÓN TÁCTICA</span>
+    </button>
 
-<!-- BLOCK 1: EL MERCADO -->
-<div class="tactical-section boot-hidden">
-  <div class="tactical-title">Contexto de Mercado (Odds)</div>
-  <div class="oracle-inputs-grid">
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>CUOTA LOCAL<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
-      <input type="range" class="oracle-slider" id="sl-b365h" min="1.10" max="10.0" step="0.05" value="2.40">
-    </div>
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>CUOTA VISITA<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
-      <input type="range" class="oracle-slider" id="sl-b365a" min="1.10" max="10.0" step="0.05" value="3.10">
-    </div>
-  </div>
-</div>
-
-<!-- BLOCK 2: FORTALEZA LOCAL -->
-<div class="tactical-section boot-hidden">
-  <div class="tactical-title">Análisis de Fortaleza Local</div>
-  <div class="oracle-inputs-grid">
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>POTENCIAL GOLEADOR (FTHG)<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-fthg" class="oracle-slider-val">1.60</span></div>
-      <input type="range" class="oracle-slider" id="sl-fthg" min="0.5" max="4.0" step="0.1" value="1.60">
-    </div>
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>INFLUENCIA/MOMENTUM<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-inf" class="oracle-slider-val">75.0</span></div>
-      <input type="range" class="oracle-slider" id="sl-inf" min="0" max="150" step="1" value="75">
-    </div>
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>DÍAS DE DESCANSO<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-rest" class="oracle-slider-val">7 d</span></div>
-      <input type="range" class="oracle-slider" id="sl-rest" min="2" max="15" step="1" value="7">
-    </div>
-  </div>
-</div>
-
-<!-- BLOCK 3: AMENAZA VISITANTE -->
-<div class="tactical-section boot-hidden">
-  <div class="tactical-title">Análisis de Amenaza Visitante</div>
-  <div class="oracle-inputs-grid">
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>CAPACIDAD ASISTENCIA (AST)<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-ast" class="oracle-slider-val">1.20</span></div>
-      <input type="range" class="oracle-slider" id="sl-ast" min="0.2" max="3.0" step="0.1" value="1.20">
-    </div>
-    <div class="oracle-slider-group">
-      <div class="oracle-slider-label"><span>GOLES RECIENTES (GF)<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-gf" class="oracle-slider-val">1.40</span></div>
-      <input type="range" class="oracle-slider" id="sl-gf" min="0.0" max="4.5" step="0.1" value="1.40">
-    </div>
-  </div>
-</div>
-
-<div id="oracle-results-grid" class="boot-hidden">
-  <div id="oracle-m3-panel">
-    <div class="tactical-title">Probabilidad LogReg</div>
-    <div class="oracle-bar-row">
-      <div class="oracle-bar-lbl">LOCAL</div>
-      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-h" style="background:var(--pl-green)"></div></div>
-      <div id="m3-pct-h" style="font-weight:900;color:var(--pl-green);font-size:12px;width:40px">—</div>
-    </div>
-    <div class="oracle-bar-row">
-      <div class="oracle-bar-lbl">EMPATE</div>
-      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-d" style="background:rgba(255,255,255,0.4)"></div></div>
-      <div id="m3-pct-d" style="font-weight:900;color:#fff;font-size:12px;width:40px">—</div>
-    </div>
-    <div class="oracle-bar-row">
-      <div class="oracle-bar-lbl">VISITA</div>
-      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-a" style="background:var(--pl-pink)"></div></div>
-      <div id="m3-pct-a" style="font-weight:900;color:var(--pl-pink);font-size:12px;width:40px">—</div>
-    </div>
-  </div>
-  
-  <div id="oracle-m2-panel">
-    <div class="tactical-title">Lasso Goals</div>
-    <div style="text-align:center;padding:10px 0">
-      <div id="oracle-m2-val" style="font-size:36px;font-weight:900;color:var(--pl-green);line-height:1">0.00</div>
-      <div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:5px;letter-spacing:0.2em">EXPECTED GOALS</div>
-    </div>
-  </div>
-</div>
-
-<button id="oracle-sim-btn" onclick="oracleSimulate()" class="boot-hidden">INICIAR SIMULACIÓN TÁCTICA</button>
-
-<div id="oracle-result-panel" style="display:none">
-  <div id="oracle-result-score"></div>
-  <div id="oracle-timeline"></div>
-  <div id="oracle-verdict" style="margin:20px 0;padding:15px;background:rgba(255,255,255,0.03);border-left:4px solid var(--pl-green);font-size:12px;line-height:1.6"></div>
-  <div style="display:flex;gap:10px">
-    <button class="oracle-action-btn" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;cursor:pointer" onclick="oracleSimulate()">🔄 RE-SIMULAR</button>
-    <button class="oracle-action-btn" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;cursor:pointer" onclick="oracleReset()">✏️ AJUSTAR TÁCTICA</button>
-  </div>
-</div>
-
-<div id="oracle-knowledge-vault" class="boot-hidden">
-  <div class="vault-header">
-    <div style="font-size:18px">📖</div>
-    <div class="vault-title">Quantum Knowledge Vault</div>
-  </div>
-  
-  <div class="vault-card" onclick="this.classList.toggle('open')">
-    <div class="vault-card-head">
-      <div class="vault-card-title">Mapeo de Variables M2 (Lasso)</div>
-      <div style="font-size:10px;opacity:.3">CLIC PARA VER</div>
-    </div>
-    <div class="vault-card-body">
-      <div class="vault-card-desc">El Modelo 2 utiliza variables de flujo de juego. El Oracle traduce tus entradas en estas métricas internas:</div>
-      <div class="vault-formula">Cuota Local → <b>Home_Avg_FTHG</b> (Potencial Histórico)</div>
-      <div class="vault-formula">Pts Recientes → <b>Home_Sum_influence</b> (Momentum)</div>
-      <div class="vault-formula">Goles Visita → <b>Away_Avg_AST</b> (Asistencias esperadas)</div>
-    </div>
-  </div>
-
-  <div class="vault-card" onclick="this.classList.toggle('open')">
-    <div class="vault-card-head">
-      <div class="vault-card-title">Lógica Multiclase M3 (LogReg)</div>
-      <div style="font-size:10px;opacity:.3">CLIC PARA VER</div>
-    </div>
-    <div class="vault-card-body">
-      <div class="vault-card-desc">M3 clasifica el resultado (H/D/A) usando la probabilidad implícita de las cuotas y el estado de forma actual.</div>
-      <div class="vault-formula">Input: b365h, b365a, home_pts, away_gf</div>
-      <div class="vault-formula">Output: Softmax Probabilities [H, D, A]</div>
+    <div id="oracle-result-panel" style="display:none">
+      <div id="oracle-result-score"></div>
+      <div id="oracle-verdict" style="margin:20px 0;padding:15px;background:rgba(255,255,255,0.03);border-left:4px solid var(--pl-green);font-size:12px;line-height:1.6"></div>
+      <div style="display:flex;gap:14px">
+        <button class="btn-aurora oracle-action-btn" style="flex:1" onclick="oracleSimulate()">
+          <div class="lg-shadow-pill"></div>
+          <div class="lg-glass-pill"></div>
+          <span class="lg-label">🔄 RE-SIMULAR</span>
+        </button>
+        <button class="btn-aurora oracle-action-btn" style="flex:1" onclick="oracleReset()">
+          <div class="lg-shadow-pill"></div>
+          <div class="lg-glass-pill"></div>
+          <span class="lg-label">✏️ AJUSTAR TÁCTICA</span>
+        </button>
+      </div>
     </div>
   </div>
 </div>`,
@@ -4539,7 +4491,7 @@ class CinematicEngine {
         // Neural cables + particle flow
         // cableMap: [originCardIdx, targetCardIdx] per cable
         const cableMap=[[0,2],[1,2],[1,3],[2,3]];
-        if(this.cards.length>2&&this.sim.linkAlpha>0){
+        if(this.cards.length>2 && this.sim.linkAlpha>0){
             let lineIdx=0;
             this.linesGroup.children.forEach(child=>{
                 if(!(child instanceof THREE.Line)) return;
@@ -4570,7 +4522,7 @@ class CinematicEngine {
                         cp.offsets[i]=(t+cp.speeds[i]*delta)%1.0;
                         const pt=cp.offsets[i];
                         pArr[i*3]=origin.position.x+(target.position.x-origin.position.x)*pt;
-                        pArr[i*3+1]=origin.position.y+(target.position.y-origin.position.y)*pt-Math.sin(pt*Math.PI)*40;
+                        pArr[i*3+1]=origin.position.y+(target.position.y-origin.position.y)*pt-Math.sin(pt*Math.PI)*40+1;
                         pArr[i*3+2]=origin.position.z+(target.position.z-origin.position.z)*pt;
                     });
                     cp.pts.geometry.attributes.position.needsUpdate=true;
@@ -4633,15 +4585,28 @@ class CinematicEngine {
     return audioCtx;
   }
 
-  // ── Audio: Mariano Closs — archivos locales extraídos de YouTube ──
-  let clossGolAudio=null, clossUhhhAudio=null;
+  // Audio: Mariano Closs y Bambino Pons
+  let clossGolAudio=null, clossUhhhAudio=null, bambinoUhhAudio=null;
+  let audioUnlocked = false;
 
-  // closs_gol_short.mp3: empieza 4s antes del grito → trigger en 4.0s
-  const CLOSS_GOL_TRIGGER = 4.0;
-  // closs_uhh_short.mp3: 5s, el "uhh" aparece ~2.5s
-  const CLOSS_UHH_TRIGGER = 2.5;
+  function unlockAudio() {
+    if (audioUnlocked) return;
+    const ctx = getAudioCtx();
+    if (ctx.state === 'suspended') ctx.resume();
+    // Pre-reproducir un silencio corto para desbloquear
+    const silence = new Audio();
+    silence.play().catch(()=>{});
+    audioUnlocked = true;
+    console.log("Audio Unlocked");
+  }
+
+  // Sincronización exacta solicitada por el usuario (9.43s)
+  const CLOSS_GOL_TRIGGER = 9.43;
+  // Trigger para Bambino (UHHHH) solicitado por el usuario (8.54s)
+  const BAMBINO_UHH_TRIGGER = 8.54;
 
   function loadClossAudio(){
+    unlockAudio();
     if(!clossGolAudio){
       clossGolAudio=new Audio('audio/closs_gol_short.mp3');
       clossGolAudio.volume=0.92; clossGolAudio.load();
@@ -4649,6 +4614,10 @@ class CinematicEngine {
     if(!clossUhhhAudio){
       clossUhhhAudio=new Audio('audio/closs_uhh_short.mp3');
       clossUhhhAudio.volume=0.85; clossUhhhAudio.load();
+    }
+    if(!bambinoUhhAudio){
+      bambinoUhhAudio=new Audio('audio/bambino_uhh.mp3');
+      bambinoUhhAudio.volume=0.95; bambinoUhhAudio.load();
     }
   }
 
@@ -4682,12 +4651,13 @@ class CinematicEngine {
 
     if(near){
       try{
-        clossUhhhAudio.currentTime=0;
-        function onTime(){ if(clossUhhhAudio.currentTime>=CLOSS_UHH_TRIGGER){ trigger(); clossUhhhAudio.removeEventListener('timeupdate',onTime); } }
-        clossUhhhAudio.addEventListener('timeupdate',onTime);
-        const p=clossUhhhAudio.play();
-        if(p) p.catch(()=>{ clossUhhhAudio.removeEventListener('timeupdate',onTime); playMissSynth(near); trigger(); });
-        setTimeout(()=>trigger(),(CLOSS_UHH_TRIGGER+0.5)*1000);
+        // Usar Bambino para el UHHHH
+        bambinoUhhAudio.currentTime=0;
+        function onTime(){ if(bambinoUhhAudio.currentTime>=BAMBINO_UHH_TRIGGER){ trigger(); bambinoUhhAudio.removeEventListener('timeupdate',onTime); } }
+        bambinoUhhAudio.addEventListener('timeupdate',onTime);
+        const p=bambinoUhhAudio.play();
+        if(p) p.catch(()=>{ bambinoUhhAudio.removeEventListener('timeupdate',onTime); playMissSynth(near); trigger(); });
+        setTimeout(()=>trigger(),(BAMBINO_UHH_TRIGGER+0.5)*1000);
         return;
       }catch(e){}
     }
@@ -4931,6 +4901,14 @@ class CinematicEngine {
 <b style="color:#fff">Valor BAJO (0–8) ✓ "centro":</b> Disparo al corazón de la portería — el portero tiene que cubrir mayor distancia lateral. Máxima probabilidad.<br>
 <b style="color:#fff">Valor MEDIO (8–25) "lateral":</b> Disparo hacia el palo — el portero puede cubrirlo con un movimiento. Zona de riesgo medio.<br>
 <b style="color:#fff">Valor ALTO (25–50) "esquina/palo":</b> Muy difícil de dirigir con precisión. Alta probabilidad de irse fuera o al palo.`
+    },
+    player: {
+      title: 'Desempeño del Tirador (Beta)',
+      body: `<b style="color:#fff">¿Qué es?</b> No todos los jugadores finalizan igual. Este factor mide cuánto <strong style="color:var(--cyan)">sobre-performa</strong> o <strong style="color:#ff5555">sub-performa</strong> un jugador respecto a su xG esperado acumulado.<br><br>
+<b style="color:#fff">Efecto:</b> El modelo ajusta la probabilidad base según la eficacia histórica del tirador. 
+<br>• <strong style="color:#44ff88">Haaland/Gyökeres</strong>: Bono de finalización clínica.
+<br>• <strong style="color:#ffcc00">Promedio</strong>: Inferencia pura basada en geometría.
+<br>• <strong style="color:#ff5555">Sub-par</strong>: Penalización por racha negativa o falta de puntería.`
     }
   };
 
@@ -5400,11 +5378,12 @@ class CinematicEngine {
     card.style.animation='none';
     emoji.textContent='🎙️';
     emoji.style.animation='none';
-    title.textContent='Mariano Closs narra...';
+    const isNear=!isGoal && xg>=0.25;
+    title.textContent=isNear ? 'Bambino Pons narra...' : 'Mariano Closs narra...';
     title.style.color='rgba(255,255,255,0.6)';
     title.style.textShadow='none';
     title.style.fontSize='22px';
-    sub.textContent='Escucha el relato — la decisión llega...';
+    sub.textContent=isNear ? '¡Atención! El Bambino lo canta...' : 'Escucha el relato — la decisión llega...';
     xgEl.textContent='xG = '+xg.toFixed(3);
     xgEl.style.color='rgba(255,255,255,0.3)';
     if(closs){ closs.textContent=''; closs.style.opacity=0.5; }
@@ -5413,7 +5392,8 @@ class CinematicEngine {
     let dots=0;
     const pulseInterval=setInterval(()=>{
       dots=(dots+1)%4;
-      title.textContent='Mariano Closs narra'+'...'.slice(0,dots+1);
+      const baseName=isNear ? 'Bambino Pons narra' : 'Mariano Closs narra';
+      title.textContent=baseName+'...'.slice(0,dots+1);
     },500);
 
     overlay.classList.add('show');
@@ -5426,6 +5406,13 @@ class CinematicEngine {
   function animateBall(isGoal,xg){
     document.getElementById('xg-shoot').disabled=true;
     const dot=document.getElementById('xg-dot');
+
+    // 0. Arrancar audio inmediatamente
+    if(isGoal){
+        playGoalSound(() => { if(window._clossTrigger) window._clossTrigger(); });
+    } else if(xg >= 0.25) {
+        playMissAudio(true, () => { if(window._clossTrigger) window._clossTrigger(); });
+    }
 
     // 1. Balón vuela (600ms)
     dot.style.transition='none';
@@ -5449,30 +5436,29 @@ class CinematicEngine {
       document.getElementById('xg-readout-dist').textContent='—';
       document.getElementById('xg-readout-angle').textContent='—';
 
-      // 3. Mostrar suspense
+      // 3. Mostrar suspense visual (opcional si el audio ya está cargando)
       const stopPulse = showSuspense(isGoal, xg);
 
-      // 4. Arrancar audio — la animación explota cuando Closs dice "GOL"
       if(isGoal){
-        playGoalSound(()=>{
+        // El audio ya empezó en el paso 0, solo esperamos al callback
+        window._clossTrigger = () => {
           stopPulse();
           showResult(true, xg);
-        });
+        };
       } else {
         const near=xg>=0.25;
         if(near){
-          playMissAudio(true, ()=>{
+          window._clossTrigger = () => {
             stopPulse();
             showResult(false, xg);
-          });
+          };
         } else {
-          // Fallo claro: suspense corto (3s), luego resultado triste
           stopPulse();
-          setTimeout(()=>showResult(false,xg), 3000);
+          setTimeout(()=>showResult(false,xg), 1500);
           playMissSynth(false);
         }
       }
-    },620);
+    }, 620);
   }
 
   function stopAllAudio(){
@@ -5536,11 +5522,11 @@ class CinematicEngine {
       document.getElementById('xg-result-title').textContent='¡¡UHHHHHH!!';
       document.getElementById('xg-result-title').style.color='#ffaa00';
       document.getElementById('xg-result-title').style.textShadow='0 0 30px rgba(255,170,0,0.6)';
-      document.getElementById('xg-result-sub').textContent='El portero la sacó — xG era real';
-      document.getElementById('xg-result-xg').textContent='xG = '+xg.toFixed(3)+' · Desperdicio de lujo';
+      document.getElementById('xg-result-sub').textContent='Bambino Pons: "¡PARA QUÉ TE TRAJE!"';
+      document.getElementById('xg-result-xg').textContent='xG = '+xg.toFixed(3)+' · Se escapó por milímetros';
       document.getElementById('xg-result-xg').style.color='#ffaa00';
       const closs=document.getElementById('xg-result-closs');
-      if(closs){ closs.textContent='"...la sacó el arquero, increíble parada..."'; closs.style.opacity=0.6; }
+      if(closs){ closs.textContent='"...¡UHHHHHH! ¡ERA EL GOL DEL SIGLO, BAMBINO!..."'; closs.style.opacity=0.8; }
       screenFlash('rgba(255,130,0,0.1)');
     } else {
       bg.style.background='radial-gradient(ellipse at 50% 50%,rgba(80,80,100,0.15) 0%,rgba(0,0,0,0.9) 60%)';
@@ -5557,7 +5543,7 @@ class CinematicEngine {
       document.getElementById('xg-result-xg').textContent='xG = '+xg.toFixed(3)+' · Intenta desde mejor posición';
       document.getElementById('xg-result-xg').style.color='rgba(255,255,255,0.35)';
       const closs=document.getElementById('xg-result-closs');
-      if(closs){ closs.textContent='"...afuera, muy lejos del arco..."'; closs.style.opacity=0.3; }
+      if(closs){ closs.textContent='"...afuera, muy lejos... ¡se fue a la tribuna!..."'; closs.style.opacity=0.4; }
     }
 
     overlay.classList.add('show');
@@ -5890,6 +5876,19 @@ class CinematicEngine {
   };
 
     /* ── LIVE MATCH ORACLE: PREMIER TACTICAL ANALYST ──────────────── */
+    const TEAM_LOGOS = {
+        'Arsenal': 1, 'Aston Villa': 2, 'Bournemouth': 91, 'Brentford': 94, 'Brighton': 36,
+        'Chelsea': 8, 'Crystal Palace': 31, 'Everton': 11, 'Fulham': 54, 'Ipswich Town': 40,
+        'Leicester City': 13, 'Liverpool': 14, 'Man City': 43, 'Man Utd': 12, 'Newcastle': 4,
+        'Nottingham Forest': 15, 'Southampton': 20, 'Tottenham': 6, 'West Ham': 21, 'Wolves': 39
+    };
+
+    const getLogoUrl = (teamName) => {
+        const id = TEAM_LOGOS[teamName] || 0;
+        // If 0, return transparent 1x1 base64 to avoid "broken image" icon
+        return id ? `https://resources.premierleague.com/premierleague/badges/t${id}.png` : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    };
+
     const m3Predict = (h_odds, a_odds, h_inf, a_gf) => {
         const h_scaled = (1/h_odds);
         const a_scaled = (1/a_odds);
@@ -5911,6 +5910,8 @@ class CinematicEngine {
     };
 
     const updateOraclePreview = () => {
+        const teamH = document.getElementById('team-h-input').value;
+        const teamA = document.getElementById('team-a-input').value;
         const h_odds = parseFloat(document.getElementById('sl-b365h').value);
         const a_odds = parseFloat(document.getElementById('sl-b365a').value);
         const h_fthg = parseFloat(document.getElementById('sl-fthg').value);
@@ -5918,6 +5919,9 @@ class CinematicEngine {
         const h_rest = parseFloat(document.getElementById('sl-rest').value);
         const a_ast = parseFloat(document.getElementById('sl-ast').value);
         const a_gf = parseFloat(document.getElementById('sl-gf').value);
+
+        document.getElementById('img-h-src').src = getLogoUrl(teamH);
+        document.getElementById('img-a-src').src = getLogoUrl(teamA);
 
         document.getElementById('sv-b365h').textContent = h_odds.toFixed(2);
         document.getElementById('sv-b365a').textContent = a_odds.toFixed(2);
@@ -5961,9 +5965,13 @@ class CinematicEngine {
             const el = document.getElementById(id);
             if(el) el.oninput = updateOraclePreview;
         });
+        ['team-h-input', 'team-a-input'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.oninput = updateOraclePreview;
+        });
         document.getElementById('oracle-fixture-sel').onchange = (e) => {
             const idx = e.target.value;
-            window._lastPresetIdx = idx; // Store to show real result later
+            window._lastPresetIdx = idx;
             const names = [
                 ['Arsenal', 'Man City'], ['Liverpool', 'Chelsea'], ['Man Utd', 'Tottenham'],
                 ['Aston Villa', 'Newcastle'], ['Brighton', 'Brentford'], ['Fulham', 'Bournemouth']
@@ -5979,7 +5987,11 @@ class CinematicEngine {
             
             document.getElementById('team-h-input').value = names[idx][0];
             document.getElementById('team-a-input').value = names[idx][1];
-            ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach((id, i) => document.getElementById(id).value = presets[i]);
+            ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach((id, i) => {
+                const el = document.getElementById(id);
+                if(el) el.value = presets[i];
+            });
+            document.getElementById('preset-active-label').textContent = e.target.options[e.target.selectedIndex].text.toUpperCase();
             updateOraclePreview();
         };
     };
@@ -5999,8 +6011,8 @@ class CinematicEngine {
         // Setup Shields
         const sh = document.getElementById('shield-h');
         const sa = document.getElementById('shield-a');
-        sh.textContent = teamH.substring(0,3).toUpperCase();
-        sa.textContent = teamA.substring(0,3).toUpperCase();
+        sh.innerHTML = `<img src="${getLogoUrl(teamH)}" style="width:100%;height:100%;object-fit:contain">`;
+        sa.innerHTML = `<img src="${getLogoUrl(teamA)}" style="width:100%;height:100%;object-fit:contain">`;
 
         // High-End GSAP Animation
         const tl = gsap.timeline();
@@ -6076,12 +6088,24 @@ class CinematicEngine {
 
     window.onOracleTabOpen = () => {
         initOracleListeners();
+        const portal = document.querySelector('.oracle-glass-portal');
+        if(portal) portal.classList.add('active');
+        
         const tl = gsap.timeline();
-        tl.to('#oracle-scoreboard', { opacity: 1, y: 0, duration: 0.6 });
-        tl.to('.tactical-section', { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
-        tl.to(['#oracle-results-grid', '#oracle-sim-btn'], { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.2");
+        tl.to('.boot-hidden', { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: "expo.out" });
         updateOraclePreview();
     };
+
+    // ── Global Unlock Event ──
+    document.addEventListener('click', () => {
+        if(window.app && typeof window.app.onFirstClick === 'function') window.app.onFirstClick();
+        unlockAudio();
+    }, {once:true});
+    
+    // Iniciar sistema de partículas Premier League
+    if (typeof runPLIntro === 'function') {
+        setTimeout(runPLIntro, 500);
+    }
 
 })();
 

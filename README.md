@@ -1,50 +1,77 @@
-# Taller 2: Data Mastery (Premier League Analytics)
-**Machine Learning I - Universidad Externado de Colombia**
+# VORTEX | Premier League Neural Intelligence
 
-Este repositorio ha sido simplificado y unificado para ofrecer una experiencia interactiva y fluida. Todo el análisis, desde la exploración inicial hasta el entrenamiento de modelos avanzados, se encuentra consolidado en dos Notebooks maestros.
+Proyecto final de Machine Learning - Análisis Predictivo de la Premier League mediante Expected Goals (xG) y Modelos Multinomiales.
 
 ---
 
-## 🚀 Inicio Rápido
+## 👥 Integrantes
 
-Para ejecutar el proyecto, solo necesitas descargar los datos y abrir los notebooks correspondientes.
+*   **Nicolas Cardenas Diaz**
+*   **Maria Paula Muñoz Malaver**
 
-### 1. Preparación
+---
 
-Clona el entorno y descarga los datos directamente de la API:
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python scripts/generales/download_data.py
-```
+## 🌐 Dashboard en Vivo
 
-### 2. Los Notebooks Maestros
+Puedes acceder al panel interactivo 3D y simulador de xG aquí:
 
-*   **[📗 Modelo_1_Expected_Goals_V2.ipynb](./scripts/modelo_1_xg/Modelo_1_Expected_Goals_V2.ipynb)**: Tiros de la liga, análisis espacial y clasificador logístico de goles (xG). Incluye **Sección 9: Efectos de Jugador** — `β_jugador` estimado con regresión logística L2 sobre 70 jugadores con ≥30 tiros (7.198 disparos reales de Premier League 24/25).
-*   **[📘 Modelo_2_Match_Predictor.ipynb](./scripts/modelo_2_partidos/Modelo_2_Match_Predictor.ipynb)**: El estudio de los partidos, la fatiga biológica y la regresión penalizada para predecir marcadores.
+👉 **[Link del Dashboard en Netlify](URL_AQUÍ)**
+
+---
+
+## 🚀 Descripción del Proyecto
+Este proyecto implementa un ecosistema predictivo para fútbol profesional dividido en dos núcleos principales:
+
+### 1. Modelo de Expected Goals (xG) - Logístico Binario
+*   **Enfoque**: Clasificación logística calibrada mediante Platt Scaling.
+*   **Features**: Distancia al arco, ángulo de tiro, indicador de Big Chance, situación de penalti y mano a mano.
+*   **Resultados**: AUC-ROC de 0.836 y calibración estadística mediante Reliability Diagrams.
+
+### 2. Predictor de Resultados de Partido - Logístico Multinomial (H/D/A)
+*   **Enfoque**: Regresión multinomial para predecir Local, Empate o Visitante.
+*   **Features**: Diferencial de xG acumulado, fatiga biológica de los jugadores y cuotas de mercado como baseline.
+*   **Resultados**: Capacidad predictiva que supera el baseline de mercado (Bet365) en un 1.69%.
 
 ---
 
 ## 📂 Estructura del Repositorio
-
 ```text
 .
-├── audio/              # Clips de Mariano Closs para el dashboard interactivo
-├── data/               # Datasets crudos (.csv) y matrices de oro
-├── img/                # Gráficas generadas (ROC, Residuos, Confusión, Efectos Jugador)
-├── guias_PDF/          # Documentación de apoyo y guías de clase
+├── audio/              # Narraciones interactivas (Mariano Closs & Bambino Pons)
+├── data/               # Datasets crudos y procesados
+├── img/                # Gráficas de validación (ROC, Confusión, Curvas de Calibración)
 ├── scripts/
-│   ├── generales/      # Herramienta de descarga de datos
-│   ├── modelo_1_xg/    # Notebook V2 + documentación técnica del Modelo 1
-│   └── modelo_2_partidos/ # Notebook + documentación técnica del Modelo 2
-├── dashboard.html      # Dashboard 3D interactivo con predictor xG en vivo
-└── README.md           # Esta guía de inicio
+│   ├── modelo_1_xg/    # Notebooks de EDA + Entrenamiento del Modelo xG
+│   └── modelo_2_partidos/ # Notebooks de Predicción de Resultados (Match Predictor)
+├── dashboard.html      # Aplicación web interactiva (Front-end 3D)
+├── requirements.txt    # Dependencias del proyecto
+└── README.md           # Documentación principal
 ```
 
 ---
 
-## 📕 Documentación Detallada
+## ⚙️ Instrucciones de Ejecución
 
-*   [Detalles Modelo 1 (xG)](./scripts/modelo_1_xg/README_Modelo1_RegresionLogistica.md)
-*   [Detalles Modelo 2 (Match Predictor)](./scripts/modelo_2_partidos/README_Modelo2_RegresionLineal.md)
+### Requisitos Previos
+Asegúrate de tener Python 3.9+ instalado. Se recomienda usar un entorno virtual:
+```bash
+python -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+### Ejecución de Notebooks
+1. Navega a `scripts/modelo_1_xg/` para el análisis de xG.
+2. Navega a `scripts/modelo_2_partidos/` para el predictor de partidos.
+3. Abre los archivos `.ipynb` mediante Jupyter Lab o VS Code.
+
+### Visualización del Dashboard
+Simplemente abre el archivo `dashboard.html` en cualquier navegador moderno. Para una experiencia completa, asegúrate de tener conexión a internet para cargar las fuentes y texturas 3D.
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+*   **Análisis de Datos**: Pandas, NumPy, Statsmodels.
+*   **Visualización Científica**: Matplotlib, Seaborn, Mplsoccer.
+*   **Machine Learning**: Scikit-Learn (LogisticRegression, CalibratedClassifierCV).
+*   **Front-end**: HTML5, CSS3 (Glassmorphism), Three.js (WebGL), Vanilla JS.
