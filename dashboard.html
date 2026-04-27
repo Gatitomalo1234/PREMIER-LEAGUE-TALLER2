@@ -3627,14 +3627,22 @@ const WS = {
 
 <div id="oracle-scoreboard" class="boot-hidden">
   <div style="font-size:8px;letter-spacing:0.4em;color:rgba(255,255,255,0.4);font-weight:900;margin-bottom:12px">PREMIER LEAGUE · TACTICAL MATCH ORACLE</div>
-  <select id="oracle-fixture-sel">
-    <option value="0">Arsenal vs Man City (Emirates)</option>
-    <option value="1">Liverpool vs Chelsea (Anfield)</option>
-    <option value="2">Man Utd vs Tottenham (Old Trafford)</option>
-    <option value="3">Aston Villa vs Newcastle (Villa Park)</option>
-    <option value="4">Brighton vs Brentford (Amex)</option>
-    <option value="5">Fulham vs Bournemouth (Cottage)</option>
-  </select>
+  <div style="display:flex;gap:10px;align-items:center">
+    <input type="text" id="team-h-input" value="Arsenal" placeholder="Local" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-green);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px">VS</div>
+    <input type="text" id="team-a-input" value="Man City" placeholder="Visita" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-pink);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
+  </div>
+  <div style="margin-top:10px">
+    <select id="oracle-fixture-sel" style="opacity:0.6;font-size:10px">
+      <option value="" disabled selected>O CARGAR PRESET...</option>
+      <option value="0">Arsenal vs Man City</option>
+      <option value="1">Liverpool vs Chelsea</option>
+      <option value="2">Man Utd vs Tottenham</option>
+      <option value="3">Aston Villa vs Newcastle</option>
+      <option value="4">Brighton vs Brentford</option>
+      <option value="5">Fulham vs Bournemouth</option>
+    </select>
+  </div>
 </div>
 
 <!-- BLOCK 1: EL MERCADO -->
@@ -5870,6 +5878,11 @@ class CinematicEngine {
             if(el) el.oninput = updateOraclePreview;
         });
         document.getElementById('oracle-fixture-sel').onchange = (e) => {
+            const idx = e.target.value;
+            const names = [
+                ['Arsenal', 'Man City'], ['Liverpool', 'Chelsea'], ['Man Utd', 'Tottenham'],
+                ['Aston Villa', 'Newcastle'], ['Brighton', 'Brentford'], ['Fulham', 'Bournemouth']
+            ];
             const presets = [
                 [1.65, 5.20, 1.8, 110, 7, 1.4, 2.1], 
                 [2.10, 3.40, 1.5, 85, 4, 1.1, 1.8],  
@@ -5877,7 +5890,10 @@ class CinematicEngine {
                 [2.60, 2.70, 1.4, 75, 5, 0.9, 1.6],  
                 [2.10, 3.50, 1.2, 65, 7, 0.8, 1.1],  
                 [2.30, 3.10, 1.1, 55, 6, 0.7, 0.9]   
-            ][e.target.value];
+            ][idx];
+            
+            document.getElementById('team-h-input').value = names[idx][0];
+            document.getElementById('team-a-input').value = names[idx][1];
             ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach((id, i) => document.getElementById(id).value = presets[i]);
             updateOraclePreview();
         };
@@ -5887,6 +5903,9 @@ class CinematicEngine {
         const btn = document.getElementById('oracle-sim-btn');
         const proc = document.getElementById('oracle-processing');
         const res = document.getElementById('oracle-result-panel');
+        const teamH = document.getElementById('team-h-input').value || 'Local';
+        const teamA = document.getElementById('team-a-input').value || 'Visita';
+        
         btn.disabled = true;
         proc.style.display = 'flex';
         gsap.to(proc, {opacity:1, duration:0.3});
@@ -5906,18 +5925,37 @@ class CinematicEngine {
             gsap.to(proc, {opacity:0, duration:0.4, onComplete:() => {
                 proc.style.display = 'none';
                 btn.disabled = false;
+                
                 const total = Math.round(m2 + (Math.random() * 0.4 - 0.2));
                 const r = Math.random();
                 let outcome = (r < m3.H) ? 'H' : (r < m3.H + m3.D ? 'D' : 'A');
+                
                 let h=0, a=0;
                 if(outcome==='H'){ h=Math.ceil(total*0.7); a=total-h; if(h<=a) h=a+1; }
                 else if(outcome==='A'){ a=Math.ceil(total*0.7); h=total-a; if(a<=h) a=h+1; }
                 else { h=Math.floor(total/2); a=h; }
                 
-                document.getElementById('oracle-result-score').textContent = `${h} - ${a}`;
-                document.getElementById('oracle-verdict').innerHTML = `<b>Proyección Táctica:</b> El modelo Lasso estima un flujo de <b>${m2.toFixed(2)} goles</b>. El resultado más probable según LogReg era <b>${outcome==='H'?'Victoria Local':(outcome==='A'?'Victoria Visita':'Empate')}</b>.`;
+                // Compare with model expectation
+                const modelExpected = (m3.H > m3.D && m3.H > m3.A) ? 'H' : (m3.A > m3.D ? 'A' : 'D');
+                const modelMatch = outcome === modelExpected;
+                const modelResultName = modelExpected === 'H' ? 'Victoria Local' : (modelExpected === 'A' ? 'Victoria Visita' : 'Empate');
+                
+                document.getElementById('oracle-result-score').innerHTML = `<span style="color:var(--pl-green)">${teamH}</span> ${h} - ${a} <span style="color:var(--pl-pink)">${teamA}</span>`;
+                
+                let verdict = `<b>Proyección Táctica Final:</b> El modelo Lasso estimaba <b>${m2.toFixed(2)} goles</b> (Simulación: ${h+a}).<br>`;
+                if(modelMatch) {
+                    verdict += `<span style="color:var(--pl-green)">✅ EL MODELO ACERTÓ:</span> Se cumplió la predicción de <b>${modelResultName}</b> del modelo LogReg.`;
+                } else {
+                    verdict += `<span style="color:var(--pl-pink)">⚠️ DESVÍO TÁCTICO:</span> El modelo esperaba <b>${modelResultName}</b>, pero la simulación resultó en un desenlace distinto.`;
+                }
+                
+                document.getElementById('oracle-verdict').innerHTML = verdict;
                 res.style.display = 'block';
-                gsap.from(res, {y:20, opacity:0});
+                
+                // Scroll & Animation
+                res.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                gsap.from(res, {y:40, opacity:0, duration:0.8, ease:"expo.out"});
+                
                 if(window.app && window.app.triggerOraclePulse) window.app.triggerOraclePulse();
             }});
         }, 1500);
