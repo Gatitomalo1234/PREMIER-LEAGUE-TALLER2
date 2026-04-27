@@ -463,10 +463,10 @@
         #xg-scan-line{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,255,255,0.5),transparent);pointer-events:none;animation:scanLine .9s linear .05s both}
         /* ── PL particle intro ── */
         #pl-intro-canvas{
-          position:fixed;inset:0;z-index:20000;
+          position:fixed;inset:0;z-index:9500;
           pointer-events:none;
           opacity:0;transition:opacity .3s;
-          background:#02000a;
+          background:transparent;
         }
         #pl-intro-canvas.active{opacity:1;pointer-events:all;}
         /* Live interface hidden during intro */
@@ -5649,7 +5649,8 @@ class CinematicEngine {
 
   function runPLIntro(onComplete){
     const canvas=document.getElementById('pl-intro-canvas');
-    if(!canvas){ onComplete(); return; }
+    const safeComplete = () => { if(typeof onComplete === 'function') onComplete(); };
+    if(!canvas){ safeComplete(); return; }
     canvas.width=window.innerWidth; canvas.height=window.innerHeight;
     canvas.classList.add('active');
     // Hide pitch while intro plays
@@ -5679,19 +5680,12 @@ class CinematicEngine {
         }
       });
       candidatePositions = enriched;
-    } else {
-      // Fallback: Generar un círculo si no hay puntos del logo
-      for(let i=0; i<3000; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const r = Math.min(W, H) * 0.25 * Math.sqrt(Math.random());
-        candidatePositions.push([W/2 + Math.cos(a)*r, H/2 + Math.sin(a)*r]);
-      }
     }
     
     if(candidatePositions.length<50){ 
       canvas.classList.remove('active'); 
       if(liveEl) liveEl.classList.remove('intro-hide');
-      onComplete(); 
+      safeComplete(); 
       return; 
     }
     for(let i=candidatePositions.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [candidatePositions[i],candidatePositions[j]]=[candidatePositions[j],candidatePositions[i]]; }
@@ -5755,7 +5749,7 @@ class CinematicEngine {
       } else {
         const eased=Math.pow(Math.min(1,phaseT/FLASH_DUR),1.8);
         C.fillStyle=`rgba(255,255,255,${(1-eased)*0.96})`; C.fillRect(0,0,W,H);
-        if(phaseT>=FLASH_DUR){ C.globalAlpha=1; C.clearRect(0,0,W,H); cancelAnimationFrame(rafId); canvas.classList.remove('active'); if(liveEl) liveEl.classList.remove('intro-hide'); onComplete(); return; }
+        if(phaseT>=FLASH_DUR){ C.globalAlpha=1; C.clearRect(0,0,W,H); cancelAnimationFrame(rafId); canvas.classList.remove('active'); if(liveEl) liveEl.classList.remove('intro-hide'); safeComplete(); return; }
       }
       rafId=requestAnimationFrame(drawFrame);
     }
@@ -6105,9 +6099,10 @@ class CinematicEngine {
         unlockAudio();
     }, {once:true});
     
-    // Iniciar sistema de partículas Premier League
-    if (typeof runPLIntro === 'function') {
-        setTimeout(runPLIntro, 500);
+    // Iniciar sistema de partículas Premier League (Solo si no estamos en un nodo específico)
+    if (typeof runPLIntro === 'function' && !window._introRun) {
+        window._introRun = true;
+        setTimeout(() => runPLIntro(() => console.log("Intro complete")), 500);
     }
 
 })();
