@@ -5650,9 +5650,13 @@ class CinematicEngine {
     return off;
   }
 
-  function runPLIntro(onComplete){
+  function runPLIntro(onComplete = null){
     const canvas=document.getElementById('pl-intro-canvas');
-    const safeComplete = () => { if(typeof onComplete === 'function') onComplete(); };
+    const safeComplete = () => { 
+      try {
+        if(typeof onComplete === 'function') onComplete(); 
+      } catch(e) { console.error("Intro callback error:", e); }
+    };
     if(!canvas){ safeComplete(); return; }
     canvas.width=window.innerWidth; canvas.height=window.innerHeight;
     canvas.classList.add('active');
