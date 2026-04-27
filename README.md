@@ -38,7 +38,7 @@ Este proyecto implementa un ecosistema predictivo para fútbol profesional divid
 
 ```text
 .
-├── dashboard.html      # Panel interactivo central (xG Simulator + Oracle)
+├── index.html      # Panel interactivo central (xG Simulator + Oracle)
 ├── scripts/            # Notebooks .ipynb (EDA + Entrenamiento de Modelos)
 ├── data/               # Datasets procesados utilizados por el modelo
 ├── audio/              # Relatos de narradores (Mariano Closs / Bambino Pons)
@@ -65,7 +65,7 @@ pip install -r requirements.txt
 3. Abre los archivos `.ipynb` mediante Jupyter Lab o VS Code.
 
 ### Visualización del Dashboard
-Simplemente abre el archivo `dashboard.html` en cualquier navegador moderno. Para una experiencia completa, asegúrate de tener conexión a internet para cargar las fuentes y texturas 3D.
+Simplemente abre el archivo `index.html` en cualquier navegador moderno. Para una experiencia completa, asegúrate de tener conexión a internet para cargar las fuentes y texturas 3D.
 
 ---
 
