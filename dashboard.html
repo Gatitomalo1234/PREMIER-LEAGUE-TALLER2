@@ -3625,12 +3625,68 @@ const WS = {
   <div id="proc-status" style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace">CALIBRANDO LASSO WEIGHTS...</div>
 </div>
 
+<!-- Info Button & Glossary Modal -->
+<button id="oracle-info-btn" onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:1px solid var(--pl-green);color:var(--pl-green);width:30px;height:30px;border-radius:50%;font-weight:900;cursor:pointer;z-index:10;font-family:var(--font-display)">?</button>
+
+<div id="oracle-glossary" style="display:none;position:absolute;inset:0;background:rgba(15,3,25,0.98);z-index:110;padding:40px;overflow-y:auto;border-radius:18px;border:1px solid var(--pl-green)">
+  <button onclick="toggleOracleInfo()" style="position:absolute;top:20px;right:20px;background:none;border:none;color:#fff;font-size:24px;cursor:pointer">×</button>
+  <div class="tactical-title" style="font-size:14px;margin-bottom:25px">Glosario de Variables Tácticas</div>
+  
+  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">b365h / b365a (M3)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Probabilidades implícitas del mercado. Indican la percepción externa del favoritismo. M3 las usa para anclar la predicción multinomial.</div>
+  </div>
+  
+  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Avg_FTHG (M2)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Potencial Goleador Local. El promedio histórico de goles anotados en casa. Es la base del modelo Lasso para proyectar el flujo de goles.</div>
+  </div>
+
+  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Sum_influence (M2, M3)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Métrica de Momentum. Mide el impacto reciente y la inercia ganadora del equipo local en las últimas jornadas.</div>
+  </div>
+
+  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Home_Days_Rest (M2)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Estado Físico. Días transcurridos desde el último partido. Menos descanso suele penalizar la capacidad ofensiva en el modelo Lasso.</div>
+  </div>
+
+  <div class="vault-card" style="margin-bottom:15px;background:rgba(255,255,255,0.03);padding:15px;border-radius:10px">
+    <div style="color:var(--pl-green);font-weight:900;font-size:12px;margin-bottom:5px">Away_Avg_AST (M2)</div>
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);line-height:1.5">Capacidad de Creación Visitante. Promedio de asistencias del equipo fuera de casa, crucial para proyectar si el partido será abierto o cerrado.</div>
+  </div>
+</div>
+
+<datalist id="pl-teams">
+  <option value="Arsenal">
+  <option value="Aston Villa">
+  <option value="Bournemouth">
+  <option value="Brentford">
+  <option value="Brighton">
+  <option value="Chelsea">
+  <option value="Crystal Palace">
+  <option value="Everton">
+  <option value="Fulham">
+  <option value="Ipswich Town">
+  <option value="Leicester City">
+  <option value="Liverpool">
+  <option value="Man City">
+  <option value="Man Utd">
+  <option value="Newcastle">
+  <option value="Nottingham Forest">
+  <option value="Southampton">
+  <option value="Tottenham">
+  <option value="West Ham">
+  <option value="Wolves">
+</datalist>
+
 <div id="oracle-scoreboard" class="boot-hidden">
   <div style="font-size:8px;letter-spacing:0.4em;color:rgba(255,255,255,0.4);font-weight:900;margin-bottom:12px">PREMIER LEAGUE · TACTICAL MATCH ORACLE</div>
   <div style="display:flex;gap:10px;align-items:center">
-    <input type="text" id="team-h-input" value="Arsenal" placeholder="Local" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-green);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
+    <input type="text" id="team-h-input" list="pl-teams" value="Arsenal" placeholder="Local" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-green);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
     <div style="color:var(--pl-green);font-weight:900;font-size:12px">VS</div>
-    <input type="text" id="team-a-input" value="Man City" placeholder="Visita" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-pink);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
+    <input type="text" id="team-a-input" list="pl-teams" value="Man City" placeholder="Visita" style="flex:1;background:rgba(255,255,255,0.05);border:1px solid var(--pl-pink);color:#fff;padding:10px;border-radius:8px;font-family:var(--font-display);font-weight:800;text-align:center">
   </div>
   <div style="margin-top:10px">
     <select id="oracle-fixture-sel" style="opacity:0.6;font-size:10px">
@@ -5872,6 +5928,20 @@ class CinematicEngine {
         document.getElementById('m3-pct-a').textContent = (m3.A*100).toFixed(0)+'%';
     };
 
+    window.toggleOracleInfo = () => {
+        const g = document.getElementById('oracle-glossary');
+        g.style.display = g.style.display === 'none' ? 'block' : 'none';
+    };
+
+    const PRESET_REAL_DATA = [
+        { score: '1 - 0', winner: 'Arsenal' },   // Ars vs City
+        { score: '0 - 0', winner: 'Empate' },    // Liv vs Che
+        { score: '2 - 2', winner: 'Empate' },    // Utd vs Tot
+        { score: '1 - 3', winner: 'Newcastle' }, // Villa vs New
+        { score: '0 - 0', winner: 'Empate' },    // Bri vs Bre
+        { score: '3 - 1', winner: 'Fulham' }     // Ful vs Bou
+    ];
+
     const initOracleListeners = () => {
         ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach(id => {
             const el = document.getElementById(id);
@@ -5879,6 +5949,7 @@ class CinematicEngine {
         });
         document.getElementById('oracle-fixture-sel').onchange = (e) => {
             const idx = e.target.value;
+            window._lastPresetIdx = idx; // Store to show real result later
             const names = [
                 ['Arsenal', 'Man City'], ['Liverpool', 'Chelsea'], ['Man Utd', 'Tottenham'],
                 ['Aston Villa', 'Newcastle'], ['Brighton', 'Brentford'], ['Fulham', 'Bournemouth']
@@ -5940,9 +6011,16 @@ class CinematicEngine {
                 const modelMatch = outcome === modelExpected;
                 const modelResultName = modelExpected === 'H' ? 'Victoria Local' : (modelExpected === 'A' ? 'Victoria Visita' : 'Empate');
                 
-                document.getElementById('oracle-result-score').innerHTML = `<span style="color:var(--pl-green)">${teamH}</span> ${h} - ${a} <span style="color:var(--pl-pink)">${teamA}</span>`;
+                const winnerName = outcome === 'H' ? `Ganó ${teamH}` : (outcome === 'A' ? `Ganó ${teamA}` : 'Empate');
+                document.getElementById('oracle-result-score').innerHTML = `<div style="font-size:12px;color:var(--pl-green);margin-bottom:10px">${winnerName}</div><span style="color:var(--pl-green)">${teamH}</span> ${h} - ${a} <span style="color:var(--pl-pink)">${teamA}</span>`;
                 
                 let verdict = `<b>Proyección Táctica Final:</b> El modelo Lasso estimaba <b>${m2.toFixed(2)} goles</b> (Simulación: ${h+a}).<br>`;
+                
+                if(window._lastPresetIdx !== undefined && window._lastPresetIdx !== "") {
+                    const real = PRESET_REAL_DATA[window._lastPresetIdx];
+                    verdict += `<div style="margin:10px 0;padding:8px;background:rgba(255,255,255,0.05);border-radius:6px;font-size:11px">⚽ <b>Dato Real:</b> En la vida real este partido quedó <b>${real.score}</b> (${real.winner}).</div>`;
+                }
+
                 if(modelMatch) {
                     verdict += `<span style="color:var(--pl-green)">✅ EL MODELO ACERTÓ:</span> Se cumplió la predicción de <b>${modelResultName}</b> del modelo LogReg.`;
                 } else {
