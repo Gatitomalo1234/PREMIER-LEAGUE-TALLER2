@@ -4142,6 +4142,11 @@ class CinematicEngine {
     renderTab(nodeId, tabName) {
         const body=document.getElementById('ws-body');
         body.innerHTML=WS[nodeId][tabName]||'';
+        
+        // Disparar animación Premier si es el Laboratorio
+        if(tabName === 'predictions' && typeof runPLIntro === 'function') {
+            setTimeout(() => runPLIntro(), 100);
+        }
 
         // Slide-in transition
         body.style.opacity='0'; body.style.transform='translateX(18px)';
@@ -4392,17 +4397,10 @@ class CinematicEngine {
             tab.onclick=()=>{
                 if(this.activeNodeIdx<0) return;
                 const tabName = tab.dataset.tab;
+                console.log("Cambiando a pestaña:", tabName);
                 document.querySelectorAll('.ws-tab').forEach(t=>t.classList.remove('active'));
                 tab.classList.add('active');
-                
-                // Show intro animation ONLY when entering Laboratorio (predictions)
-                if(tabName === 'predictions' && typeof runPLIntro === 'function') {
-                    this.renderTab(DATA[this.activeNodeIdx].id, tabName);
-                    // Pequeño delay para dejar que el HTML se inyecte antes de la animación
-                    setTimeout(() => runPLIntro(), 50);
-                } else {
-                    this.renderTab(DATA[this.activeNodeIdx].id, tabName);
-                }
+                this.renderTab(DATA[this.activeNodeIdx].id, tabName);
             };
         });
     }
