@@ -6113,6 +6113,17 @@ class CinematicEngine {
         unlockAudio();
     }, {once:true});
     
+    // ── Global Tab Click Listener (Fail-safe) ──
+    document.addEventListener('click', (e) => {
+        const tab = e.target.closest('.ws-tab');
+        if (tab && tab.dataset.tab === 'predictions') {
+            console.log("Laboratorio detectado globalmente");
+            if (typeof runPLIntro === 'function') {
+                setTimeout(() => runPLIntro(), 50);
+            }
+        }
+    });
+
     // Sistema de partículas Premier League movido al Laboratorio (predictions tab)
 
 })();
