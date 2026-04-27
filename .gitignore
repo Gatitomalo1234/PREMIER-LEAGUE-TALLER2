@@ -1,0 +1,10 @@
+env/
+.env
+__pycache__/
+*.DS_Store
+.ipynb_checkpoints
+.gemini/
+.venv 2/
+.claude/
+.data/
+
