@@ -634,84 +634,49 @@
 .live-conn-line{height:2px;background:linear-gradient(90deg,rgba(255,68,255,0),rgba(255,68,255,.6),rgba(255,204,0,.6),rgba(255,68,255,0));border-radius:2px;margin:10px 0}
 .live-node-card{padding:14px 16px;border-radius:10px;border:1px solid;display:flex;align-items:center;gap:12px}
 
-/* ── LIVE MATCH ORACLE PREMIUM ────────────────────── */
-#oracle-flash { position:fixed; inset:0; background:rgba(0,255,255,0.15); pointer-events:none; opacity:0; z-index:9999; }
-#oracle-processing { position:absolute; inset:0; background:rgba(2,3,9,0.92); z-index:100; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(12px); border-radius:18px; border:1px solid rgba(0,255,255,0.1); }
-.scan-line { position:absolute; width:100%; height:3px; background:linear-gradient(90deg,transparent,var(--cyan),transparent); top:0; animation:scan 1.5s ease-in-out infinite; opacity:0.5; }
-@keyframes scan { 0%{top:0%} 100%{top:100%} }
+/* ── LIVE MATCH ORACLE: PREMIER TACTICAL ANALYST ────────────────────── */
+:root { --pl-purple: #3d195b; --pl-green: #00ff85; --pl-pink: #ff005a; }
 
-#oracle-scoreboard { padding:14px 20px; border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); margin-bottom:12px; text-align:center; position:relative; overflow:hidden; box-shadow:0 4px 20px rgba(0,0,0,0.2); }
-#oracle-fixture-sel { background:rgba(0,0,0,0.6); border:1px solid rgba(0,255,255,0.25); color:var(--cyan); font-size:12px; font-weight:700; padding:8px 14px; border-radius:10px; cursor:pointer; font-family:var(--font-display); outline:none; transition:all 0.3s; }
-#oracle-fixture-sel:hover { border-color:var(--cyan); box-shadow:0 0 15px rgba(0,255,255,0.2); }
+#oracle-flash { position:fixed; inset:0; background:rgba(0,255,133,0.1); pointer-events:none; opacity:0; z-index:9999; }
+#oracle-processing { position:absolute; inset:0; background:rgba(15,3,25,0.96); z-index:100; display:none; flex-direction:column; align-items:center; justify-content:center; backdrop-filter:blur(15px); border-radius:18px; border:1px solid rgba(0,255,133,0.15); }
+.pitch-lines { position:absolute; inset:0; background-image: 
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events:none; }
 
-#oracle-inputs { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:15px; }
-.oracle-slider-group { padding:12px 16px; border-radius:12px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.oracle-slider-group:hover { border-color:rgba(0,255,255,0.3); background:rgba(255,255,255,0.04); transform:translateY(-1px); }
-.oracle-slider-label { display:flex; justify-content:space-between; font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:8px; letter-spacing:0.1em; font-weight:700; text-transform:uppercase; }
-.oracle-feat-tag { font-size:8px; color:var(--cyan); opacity:0.7; margin-left:6px; font-family:monospace; background:rgba(0,255,255,0.1); padding:1px 4px; border-radius:3px; }
-.oracle-slider-val { font-size:13px; color:#fff; font-weight:800; font-family:var(--font-display); text-shadow:0 0 8px rgba(255,255,255,0.2); }
-.oracle-slider { width:100%; accent-color:var(--cyan); cursor:pointer; height:4px; opacity:0.8; transition:opacity 0.2s; }
-.oracle-slider:hover { opacity:1; }
+#oracle-scoreboard { padding:20px; border-radius:14px; background:var(--pl-purple); border:1px solid rgba(255,255,255,0.1); margin-bottom:15px; text-align:center; position:relative; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+#oracle-fixture-sel { background:rgba(255,255,255,0.05); border:1px solid var(--pl-green); color:var(--pl-green); font-size:13px; font-weight:800; padding:10px 18px; border-radius:8px; cursor:pointer; font-family:var(--font-display); outline:none; transition:all 0.3s; width:100%; text-transform:uppercase; letter-spacing:0.05em; }
 
-#oracle-m3-panel, #oracle-m2-panel { padding:18px; border-radius:14px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07); margin-bottom:12px; position:relative; }
-.oracle-panel-label { font-size:9px; letter-spacing:0.3em; color:rgba(255,255,255,0.35); font-weight:800; margin-bottom:15px; text-transform:uppercase; display:flex; align-items:center; gap:8px; }
-.oracle-panel-label::after { content:''; flex:1; height:1px; background:rgba(255,255,255,0.05); }
+.tactical-section { margin-bottom:20px; }
+.tactical-title { font-size:9px; font-weight:900; letter-spacing:0.25em; color:rgba(255,255,255,0.3); text-transform:uppercase; margin-bottom:12px; display:flex; align-items:center; gap:10px; }
+.tactical-title::after { content:''; flex:1; height:1px; background:linear-gradient(90deg, rgba(255,255,255,0.1), transparent); }
 
-.oracle-bar-row { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
-.oracle-bar-lbl { font-size:10px; font-weight:800; width:55px; text-align:right; color:rgba(255,255,255,0.6); letter-spacing:0.05em; }
-.oracle-bar-track { flex:1; height:10px; background:rgba(255,255,255,0.04); border-radius:5px; overflow:hidden; position:relative; box-shadow:inset 0 1px 3px rgba(0,0,0,0.3); }
-.oracle-bar-fill { height:100%; width:0%; border-radius:5px; transition:width 0.8s cubic-bezier(0.19, 1, 0.22, 1); position:relative; }
-.oracle-bar-fill::after { content:''; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent); animation:shine 2s infinite; }
-@keyframes shine { 0%{transform:translateX(-100%)} 100%{transform:translateX(100%)} }
-.oracle-bar-pct { font-size:13px; font-weight:800; width:45px; text-align:right; font-family:var(--font-display); }
+.oracle-inputs-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.oracle-slider-group { padding:14px; border-radius:12px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); transition:all 0.3s; }
+.oracle-slider-group:hover { background:rgba(255,255,255,0.05); border-color:var(--pl-green); transform:translateY(-2px); }
+.oracle-slider-label { display:flex; justify-content:space-between; font-size:9px; color:rgba(255,255,255,0.5); margin-bottom:8px; font-weight:800; text-transform:uppercase; }
+.oracle-slider-val { font-size:14px; color:#fff; font-weight:900; font-family:var(--font-display); }
+.oracle-slider { width:100%; accent-color:var(--pl-green); cursor:pointer; height:4px; }
 
-#oracle-m2-wrap { display:flex; align-items:center; gap:25px; }
-#oracle-m2-svg { width:130px; filter:drop-shadow(0 0 12px rgba(0,255,255,0.15)); }
-#oracle-m2-msg, #oracle-m3-msg { font-size:11px; color:rgba(255,255,255,0.5); line-height:1.7; font-style:italic; border-left:2px solid rgba(0,255,255,0.15); padding-left:12px; }
+#oracle-results-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:15px; margin-bottom:15px; }
+#oracle-m3-panel, #oracle-m2-panel { padding:20px; border-radius:16px; background:rgba(61,25,91,0.3); border:1px solid rgba(255,255,255,0.08); position:relative; }
 
-#oracle-sim-btn { width:100%; padding:16px; border-radius:14px; border:none; background:linear-gradient(135deg, var(--cyan), #0077ff); color:#000; font-size:14px; font-weight:900; letter-spacing:0.2em; cursor:pointer; margin-bottom:15px; transition:all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); font-family:var(--font-display); box-shadow:0 0 30px rgba(0,255,255,0.25); }
-#oracle-sim-btn:hover { transform:translateY(-3px) scale(1.01); box-shadow:0 12px 40px rgba(0,255,255,0.45); filter:brightness(1.15); }
-#oracle-sim-btn:active { transform:translateY(0) scale(0.98); }
+.oracle-bar-row { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+.oracle-bar-lbl { font-size:9px; font-weight:900; width:50px; color:rgba(255,255,255,0.5); }
+.oracle-bar-track { flex:1; height:8px; background:rgba(255,255,255,0.05); border-radius:4px; overflow:hidden; }
+.oracle-bar-fill { height:100%; width:0%; transition:width 1s cubic-bezier(0.23, 1, 0.32, 1); }
 
-#oracle-result-panel { padding:25px; border-radius:18px; background:rgba(0,255,255,0.035); border:1px solid rgba(0,255,255,0.2); box-shadow:inset 0 0 50px rgba(0,255,255,0.03), 0 10px 40px rgba(0,0,0,0.4); margin-top:10px; }
-#oracle-result-score { font-size:38px; font-weight:200; text-align:center; color:#fff; padding:20px 0; font-family:var(--font-display); letter-spacing:0.15em; text-shadow:0 0 20px rgba(255,255,255,0.2); }
-#oracle-timeline { margin:15px 0; display:flex; flex-direction:column; gap:10px; }
-.oracle-evt { display:flex; align-items:center; gap:15px; padding:12px 18px; border-radius:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); font-size:11px; opacity:0; transform:translateY(15px); transition:all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
-.oracle-evt.vis { opacity:1; transform:none; }
-.oracle-evt-min { font-weight:900; color:var(--cyan); font-size:13px; font-family:monospace; }
-.oracle-evt-icon { font-size:16px; filter:drop-shadow(0 0 5px currentColor); }
-.oracle-evt-body { flex:1; font-weight:600; letter-spacing:0.02em; }
-.oracle-evt-delta { font-size:10px; opacity:0.7; font-family:monospace; background:rgba(0,0,0,0.2); padding:2px 6px; border-radius:4px; }
+#oracle-sim-btn { width:100%; padding:20px; border-radius:12px; border:none; background:var(--pl-green); color:var(--pl-purple); font-size:15px; font-weight:900; letter-spacing:0.15em; cursor:pointer; margin-bottom:20px; transition:all 0.4s; font-family:var(--font-display); text-transform:uppercase; box-shadow:0 0 40px rgba(0,255,133,0.2); }
+#oracle-sim-btn:hover { transform:scale(1.02); box-shadow:0 15px 50px rgba(0,255,133,0.4); }
 
-#oracle-verdict { margin:20px 0; padding:18px; border-radius:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.12); font-size:12px; line-height:1.7; position:relative; overflow:hidden; }
-#oracle-verdict::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--cyan); box-shadow:0 0 15px var(--cyan); }
-.oracle-ev-badge { display:inline-block; padding:3px 8px; border-radius:5px; font-size:10px; font-weight:900; margin-left:10px; text-transform:uppercase; letter-spacing:0.05em; }
-.ev-pos { background:rgba(0,255,136,0.15); color:#00ff88; border:1px solid rgba(0,255,136,0.3); box-shadow:0 0 10px rgba(0,255,136,0.1); }
-.ev-neg { background:rgba(255,85,85,0.15); color:#ff5555; border:1px solid rgba(255,85,85,0.3); }
+#oracle-result-panel { padding:30px; border-radius:20px; background:var(--pl-purple); border:2px solid var(--pl-green); margin-top:10px; position:relative; }
+#oracle-result-score { font-size:52px; font-weight:900; text-align:center; color:#fff; font-family:var(--font-display); margin-bottom:10px; text-shadow:0 0 20px rgba(0,255,133,0.3); }
 
-#oracle-actions { display:flex; gap:12px; margin-top:15px; }
-.oracle-action-btn { flex:1; padding:13px; border-radius:12px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:rgba(255,255,255,0.8); font-size:12px; font-weight:700; cursor:pointer; transition:all 0.3s; text-transform:uppercase; letter-spacing:0.1em; }
-.oracle-action-btn:hover { background:rgba(255,255,255,0.12); color:#fff; border-color:rgba(255,255,255,0.4); transform:translateY(-1px); }
+.oracle-neural-tag { font-size:7px; padding:2px 5px; border-radius:4px; font-weight:900; margin-left:6px; letter-spacing:0.05em; vertical-align:middle; text-transform:uppercase; border:1px solid rgba(255,255,255,0.2); }
+.tag-m2 { color:var(--pl-green); }
+.tag-m3 { color:var(--pl-pink); }
 
-/* ── KNOWLEDGE VAULT & ANIMATION STATES ──────────────── */
-.oracle-neural-tag { font-size:7px; padding:2px 5px; border-radius:4px; font-weight:900; margin-left:6px; letter-spacing:0.05em; vertical-align:middle; text-transform:uppercase; }
-.tag-m2 { background:rgba(0,255,255,0.15); color:var(--cyan); border:1px solid rgba(0,255,255,0.3); }
-.tag-m3 { background:rgba(255,68,255,0.15); color:#ff44ff; border:1px solid rgba(255,68,255,0.3); }
-
-#oracle-knowledge-vault { margin-top:30px; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; }
-.vault-header { display:flex; align-items:center; gap:10px; margin-bottom:15px; }
-.vault-title { font-size:10px; letter-spacing:0.4em; color:rgba(255,255,255,0.3); font-weight:800; text-transform:uppercase; }
-
-.vault-card { background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); border-radius:12px; padding:15px; margin-bottom:10px; cursor:pointer; transition:all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-.vault-card:hover { background:rgba(255,255,255,0.04); border-color:rgba(0,255,255,0.2); }
-.vault-card-head { display:flex; justify-content:space-between; align-items:center; }
-.vault-card-title { font-size:12px; font-weight:700; color:rgba(255,255,255,0.8); }
-.vault-card-body { max-height:0; overflow:hidden; transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity:0; }
-.vault-card.open .vault-card-body { max-height:200px; opacity:1; padding-top:12px; }
-.vault-card-desc { font-size:11px; color:rgba(255,255,255,0.45); line-height:1.6; }
-.vault-formula { margin-top:8px; padding:8px; background:rgba(0,0,0,0.2); border-radius:6px; font-family:monospace; font-size:10px; color:var(--cyan); border-left:2px solid var(--cyan); }
-
-.boot-hidden { opacity:0; transform:translateY(20px); }
+.boot-hidden { opacity:0; transform:translateY(15px); }
 </style>
 </head>
 <body>
@@ -3654,88 +3619,111 @@ const WS = {
 </div>`,
         predictions: `<div id="oracle-flash"></div>
 <div id="oracle-processing">
-  <div class="scan-line"></div>
-  <div class="live-pulse" style="font-size:32px;margin-bottom:15px">🔮</div>
-  <div style="font-size:9px;letter-spacing:0.4em;color:var(--cyan);font-weight:800;margin-bottom:5px">QUANTUM PROCESSING</div>
-  <div style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace">CALIBRATING NEURAL WEIGHTS...</div>
+  <div class="pitch-lines"></div>
+  <div class="live-pulse" style="font-size:42px;margin-bottom:20px">⚽</div>
+  <div style="font-size:10px;letter-spacing:0.5em;color:var(--pl-green);font-weight:900;margin-bottom:8px">ANALIZANDO PROYECCIÓN TÁCTICA</div>
+  <div id="proc-status" style="font-size:11px;color:rgba(255,255,255,0.4);font-family:monospace">CALIBRANDO LASSO WEIGHTS...</div>
 </div>
 
 <div id="oracle-scoreboard" class="boot-hidden">
-  <div style="font-size:7px;letter-spacing:0.35em;color:rgba(0,255,255,0.4);font-weight:800;margin-bottom:8px">PREMIER LEAGUE LIVE ORACLE · M2 + M3</div>
-  <div id="oracle-fixture-row">
-    <select id="oracle-fixture-sel">
-      <option value="0">Arsenal vs Man City (J24)</option>
-      <option value="1">Liverpool vs Chelsea (J24)</option>
-      <option value="2">Man Utd vs Tottenham (J24)</option>
-      <option value="3">Aston Villa vs Newcastle (J24)</option>
-      <option value="4">Brighton vs Brentford (J24)</option>
-      <option value="5">Fulham vs Bournemouth (J24)</option>
-    </select>
+  <div style="font-size:8px;letter-spacing:0.4em;color:rgba(255,255,255,0.4);font-weight:900;margin-bottom:12px">PREMIER LEAGUE · TACTICAL MATCH ORACLE</div>
+  <select id="oracle-fixture-sel">
+    <option value="0">Arsenal vs Man City (Emirates)</option>
+    <option value="1">Liverpool vs Chelsea (Anfield)</option>
+    <option value="2">Man Utd vs Tottenham (Old Trafford)</option>
+    <option value="3">Aston Villa vs Newcastle (Villa Park)</option>
+    <option value="4">Brighton vs Brentford (Amex)</option>
+    <option value="5">Fulham vs Bournemouth (Cottage)</option>
+  </select>
+</div>
+
+<!-- BLOCK 1: EL MERCADO -->
+<div class="tactical-section boot-hidden">
+  <div class="tactical-title">Contexto de Mercado (Odds)</div>
+  <div class="oracle-inputs-grid">
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>CUOTA LOCAL<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
+      <input type="range" class="oracle-slider" id="sl-b365h" min="1.10" max="10.0" step="0.05" value="2.40">
+    </div>
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>CUOTA VISITA<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
+      <input type="range" class="oracle-slider" id="sl-b365a" min="1.10" max="10.0" step="0.05" value="3.10">
+    </div>
   </div>
 </div>
 
-<div id="oracle-inputs">
-  <div class="oracle-slider-group boot-hidden">
-    <div class="oracle-slider-label"><span>CUOTA LOCAL<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">b365h</span></span><span id="sv-b365h" class="oracle-slider-val">2.40</span></div>
-    <input type="range" class="oracle-slider" id="sl-b365h" min="1.30" max="9.00" step="0.05" value="2.40">
-  </div>
-  <div class="oracle-slider-group boot-hidden">
-    <div class="oracle-slider-label"><span>CUOTA VISITA<span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">b365a</span></span><span id="sv-b365a" class="oracle-slider-val">3.10</span></div>
-    <input type="range" class="oracle-slider" id="sl-b365a" min="1.30" max="9.00" step="0.05" value="3.10">
-  </div>
-  <div class="oracle-slider-group boot-hidden">
-    <div class="oracle-slider-label"><span>PTS RECIENTES (3J)<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">home_pts</span></span><span id="sv-pts" class="oracle-slider-val">6 pts</span></div>
-    <input type="range" class="oracle-slider" id="sl-pts" min="0" max="9" step="1" value="6">
-  </div>
-  <div class="oracle-slider-group boot-hidden">
-    <div class="oracle-slider-label"><span>GOLES VISITA/P<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span><span class="oracle-feat-tag">away_gf</span></span><span id="sv-ga" class="oracle-slider-val">1.20 /p</span></div>
-    <input type="range" class="oracle-slider" id="sl-ga" min="0.5" max="3.5" step="0.1" value="1.20">
-  </div>
-</div>
-
-<div id="oracle-m3-panel" class="boot-hidden">
-  <div class="oracle-panel-label">M3 — Probabilidades de Resultado</div>
-  <div class="oracle-bar-row">
-    <div class="oracle-bar-lbl">LOCAL</div>
-    <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-h" style="background:var(--cyan);box-shadow:0 0 10px rgba(0,255,255,0.3)"></div></div>
-    <div class="oracle-bar-pct" id="m3-pct-h" style="color:var(--cyan)">—</div>
-  </div>
-  <div class="oracle-bar-row">
-    <div class="oracle-bar-lbl">EMPATE</div>
-    <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-d" style="background:#ffcc00;box-shadow:0 0 10px rgba(255,204,0,0.3)"></div></div>
-    <div class="oracle-bar-pct" id="m3-pct-d" style="color:#ffcc00">—</div>
-  </div>
-  <div class="oracle-bar-row">
-    <div class="oracle-bar-lbl">VISITA</div>
-    <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-a" style="background:#ff44ff;box-shadow:0 0 10px rgba(255,68,255,0.3)"></div></div>
-    <div class="oracle-bar-pct" id="m3-pct-a" style="color:#ff44ff">—</div>
-  </div>
-  <div id="oracle-m3-msg"></div>
-</div>
-
-<div id="oracle-m2-panel" class="boot-hidden">
-  <div class="oracle-panel-label">M2 — Goles Totales Esperados</div>
-  <div id="oracle-m2-wrap">
-    <svg id="oracle-m2-svg" viewBox="0 0 120 70">
-      <path d="M10,65 A50,50 0 0,1 110,65" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="6" stroke-linecap="round"/>
-      <path id="oracle-m2-arc" d="M10,65 A50,50 0 0,1 110,65" fill="none" stroke="var(--cyan)" stroke-width="7" stroke-linecap="round"
-        stroke-dasharray="157" stroke-dashoffset="157"/>
-      <text id="oracle-m2-val" x="60" y="60" text-anchor="middle" fill="#fff" font-size="24" font-weight="700" font-family="var(--font-display)">—</text>
-      <text x="60" y="72" text-anchor="middle" fill="rgba(255,255,255,.3)" font-size="7" letter-spacing="0.1em">GOALS</text>
-    </svg>
-    <div id="oracle-m2-msg"></div>
+<!-- BLOCK 2: FORTALEZA LOCAL -->
+<div class="tactical-section boot-hidden">
+  <div class="tactical-title">Análisis de Fortaleza Local</div>
+  <div class="oracle-inputs-grid">
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>POTENCIAL GOLEADOR (FTHG)<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-fthg" class="oracle-slider-val">1.60</span></div>
+      <input type="range" class="oracle-slider" id="sl-fthg" min="0.5" max="4.0" step="0.1" value="1.60">
+    </div>
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>INFLUENCIA/MOMENTUM<span class="oracle-neural-tag tag-m2">M2</span><span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-inf" class="oracle-slider-val">75.0</span></div>
+      <input type="range" class="oracle-slider" id="sl-inf" min="0" max="150" step="1" value="75">
+    </div>
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>DÍAS DE DESCANSO<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-rest" class="oracle-slider-val">7 d</span></div>
+      <input type="range" class="oracle-slider" id="sl-rest" min="2" max="15" step="1" value="7">
+    </div>
   </div>
 </div>
 
-<button id="oracle-sim-btn" onclick="oracleSimulate()" class="boot-hidden">⚡ SIMULAR PARTIDO</button>
+<!-- BLOCK 3: AMENAZA VISITANTE -->
+<div class="tactical-section boot-hidden">
+  <div class="tactical-title">Análisis de Amenaza Visitante</div>
+  <div class="oracle-inputs-grid">
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>CAPACIDAD ASISTENCIA (AST)<span class="oracle-neural-tag tag-m2">M2</span></span><span id="sv-ast" class="oracle-slider-val">1.20</span></div>
+      <input type="range" class="oracle-slider" id="sl-ast" min="0.2" max="3.0" step="0.1" value="1.20">
+    </div>
+    <div class="oracle-slider-group">
+      <div class="oracle-slider-label"><span>GOLES RECIENTES (GF)<span class="oracle-neural-tag tag-m3">M3</span></span><span id="sv-gf" class="oracle-slider-val">1.40</span></div>
+      <input type="range" class="oracle-slider" id="sl-gf" min="0.0" max="4.5" step="0.1" value="1.40">
+    </div>
+  </div>
+</div>
+
+<div id="oracle-results-grid" class="boot-hidden">
+  <div id="oracle-m3-panel">
+    <div class="tactical-title">Probabilidad LogReg</div>
+    <div class="oracle-bar-row">
+      <div class="oracle-bar-lbl">LOCAL</div>
+      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-h" style="background:var(--pl-green)"></div></div>
+      <div id="m3-pct-h" style="font-weight:900;color:var(--pl-green);font-size:12px;width:40px">—</div>
+    </div>
+    <div class="oracle-bar-row">
+      <div class="oracle-bar-lbl">EMPATE</div>
+      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-d" style="background:rgba(255,255,255,0.4)"></div></div>
+      <div id="m3-pct-d" style="font-weight:900;color:#fff;font-size:12px;width:40px">—</div>
+    </div>
+    <div class="oracle-bar-row">
+      <div class="oracle-bar-lbl">VISITA</div>
+      <div class="oracle-bar-track"><div class="oracle-bar-fill" id="m3-bar-a" style="background:var(--pl-pink)"></div></div>
+      <div id="m3-pct-a" style="font-weight:900;color:var(--pl-pink);font-size:12px;width:40px">—</div>
+    </div>
+  </div>
+  
+  <div id="oracle-m2-panel">
+    <div class="tactical-title">Lasso Goals</div>
+    <div style="text-align:center;padding:10px 0">
+      <div id="oracle-m2-val" style="font-size:36px;font-weight:900;color:var(--pl-green);line-height:1">0.00</div>
+      <div style="font-size:8px;color:rgba(255,255,255,0.3);margin-top:5px;letter-spacing:0.2em">EXPECTED GOALS</div>
+    </div>
+  </div>
+</div>
+
+<button id="oracle-sim-btn" onclick="oracleSimulate()" class="boot-hidden">INICIAR SIMULACIÓN TÁCTICA</button>
 
 <div id="oracle-result-panel" style="display:none">
   <div id="oracle-result-score"></div>
   <div id="oracle-timeline"></div>
-  <div id="oracle-verdict"></div>
-  <div id="oracle-actions">
-    <button class="oracle-action-btn" onclick="oracleSimulate()">🔄 Otra simulación</button>
-    <button class="oracle-action-btn" onclick="oracleReset()">✏️ Cambiar escenario</button>
+  <div id="oracle-verdict" style="margin:20px 0;padding:15px;background:rgba(255,255,255,0.03);border-left:4px solid var(--pl-green);font-size:12px;line-height:1.6"></div>
+  <div style="display:flex;gap:10px">
+    <button class="oracle-action-btn" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;cursor:pointer" onclick="oracleSimulate()">🔄 RE-SIMULAR</button>
+    <button class="oracle-action-btn" style="flex:1;padding:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;border-radius:8px;cursor:pointer" onclick="oracleReset()">✏️ AJUSTAR TÁCTICA</button>
   </div>
 </div>
 
@@ -5826,250 +5814,123 @@ class CinematicEngine {
     setTimeout(()=>{ runPLIntro(revealInterface); }, 80);
   };
 
-    /* ── LIVE MATCH ORACLE LOGIC (PREMIUM) ──────────────── */
-    const M3_COEFS = [[0.58, -0.42, 0.15, -0.1], [-0.1, 0.2, -0.1, 0.3], [-0.48, 0.22, -0.05, -0.2]];
-    const M3_INTERCEPTS = [-1.011, -0.672, 1.683];
-    const M3_SCALER = { means: [2.5, 3.5, 4.5, 1.2], scales: [1.1, 1.5, 2.8, 0.6] };
+    /* ── LIVE MATCH ORACLE: PREMIER TACTICAL ANALYST ──────────────── */
+    const m3Predict = (h_odds, a_odds, h_inf, a_gf) => {
+        const h_scaled = (1/h_odds);
+        const a_scaled = (1/a_odds);
+        const p_home = -1.011 + (h_scaled * 4.2) + (h_inf * 0.005);
+        const p_draw = -0.672 + (h_scaled * 1.1) + (a_scaled * 1.1);
+        const p_away = 1.683 + (a_scaled * 4.8) + (a_gf * 0.15);
+        const expH = Math.exp(p_home), expD = Math.exp(p_draw), expA = Math.exp(p_away);
+        const sum = expH + expD + expA;
+        return { H: expH/sum, D: expD/sum, A: expA/sum };
+    };
 
-    function m3Predict(b365h, b365a, pts, ga) {
-        const x = [b365h, b365a, pts, ga];
-        const xs = x.map((v, i) => (v - M3_SCALER.means[i]) / M3_SCALER.scales[i]);
-        let logits = M3_INTERCEPTS.map((inter, i) => {
-            let s = inter;
-            for(let j=0; j<4; j++) s += xs[j] * M3_COEFS[i][j];
-            return s;
-        });
-        const maxL = Math.max(...logits);
-        const exps = logits.map(l => Math.exp(l - maxL));
-        const sum = exps.reduce((a, b) => a + b, 0);
-        return { A: exps[0]/sum, D: exps[1]/sum, H: exps[2]/sum };
-    }
+    const m2Predict = (h_fthg, h_inf, h_rest, a_ast) => {
+        let val = 1.383;
+        val += (h_inf * 0.008);   
+        val += (a_ast * 0.126);   
+        val += (h_fthg * 0.18);   
+        val += (h_rest * -0.015); 
+        return Math.max(0, val);
+    };
 
-    function m2Predict(b365h, pts, ga) {
-        // Calibrated Proxies
-        const influence = pts * 12.5; 
-        const ast = ga * 2.8; 
-        const fthg = 1.65 / Math.sqrt(b365h);
-        const rest = 7;
-        
-        // Lasso Model Equation (M2)
-        const lambda = 1.383 + (influence * 0.008) + (ast * 0.045) + (fthg * 0.22) + (rest * -0.015);
-        return Math.max(0.5, lambda);
-    }
+    const updateOraclePreview = () => {
+        const h_odds = parseFloat(document.getElementById('sl-b365h').value);
+        const a_odds = parseFloat(document.getElementById('sl-b365a').value);
+        const h_fthg = parseFloat(document.getElementById('sl-fthg').value);
+        const h_inf = parseFloat(document.getElementById('sl-inf').value);
+        const h_rest = parseFloat(document.getElementById('sl-rest').value);
+        const a_ast = parseFloat(document.getElementById('sl-ast').value);
+        const a_gf = parseFloat(document.getElementById('sl-gf').value);
 
-    window.oracleSimulate = async function() {
-        const btn = document.getElementById('oracle-sim-btn');
-        const proc = document.getElementById('oracle-processing');
-        const resPanel = document.getElementById('oracle-result-panel');
-        const flash = document.getElementById('oracle-flash');
-        
-        // 1. Quantum Processing Phase
-        btn.disabled = true;
-        proc.style.display = 'flex';
-        gsap.to(proc, { opacity: 1, duration: 0.3 });
-        
-        // Trigger 3D Engine Pulse
-        if (window.app) window.app.triggerOraclePulse();
-        
-        // Sound: Crowd start
-        playAudio('crowd', 0.2);
+        document.getElementById('sv-b365h').textContent = h_odds.toFixed(2);
+        document.getElementById('sv-b365a').textContent = a_odds.toFixed(2);
+        document.getElementById('sv-fthg').textContent = h_fthg.toFixed(2);
+        document.getElementById('sv-inf').textContent = h_inf.toFixed(1);
+        document.getElementById('sv-rest').textContent = h_rest + ' d';
+        document.getElementById('sv-ast').textContent = a_ast.toFixed(2);
+        document.getElementById('sv-gf').textContent = a_gf.toFixed(2);
 
-        await new Promise(r => setTimeout(r, 1200));
+        const m2 = m2Predict(h_fthg, h_inf, h_rest, a_ast);
+        const m3 = m3Predict(h_odds, a_odds, h_inf, a_gf);
 
-        // 2. Reveal Simulation
-        gsap.to(proc, { opacity: 0, duration: 0.4, onComplete: () => proc.style.display = 'none' });
-        resPanel.style.display = 'block';
-        
-        const b365h = parseFloat(document.getElementById('sl-b365h').value);
-        const b365a = parseFloat(document.getElementById('sl-b365a').value);
-        const pts = parseFloat(document.getElementById('sl-pts').value);
-        const ga = parseFloat(document.getElementById('sl-ga').value);
-        
-        const m3 = m3Predict(b365h, b365a, pts, ga);
-        const lambda = m2Predict(b365h, pts, ga);
-        
-        // Poisson sampling for total goals
-        const totalGoals = poissonSample(lambda);
-        
-        // Weighted pick for result
-        const rand = Math.random();
-        let result = 'D';
-        if (rand < m3.H) result = 'H';
-        else if (rand < m3.H + m3.A) result = 'A';
-        
-        // Generate Score
-        let gh = 0, ga_score = 0;
-        if (result === 'H') { gh = Math.max(1, Math.ceil(totalGoals * 0.7)); ga_score = Math.max(0, totalGoals - gh); }
-        else if (result === 'A') { ga_score = Math.max(1, Math.ceil(totalGoals * 0.7)); gh = Math.max(0, totalGoals - ga_score); }
-        else { gh = Math.floor(totalGoals / 2); ga_score = gh; }
-        
-        if (result === 'H' && gh <= ga_score) gh = ga_score + 1;
-        if (result === 'A' && ga_score <= gh) ga_score = gh + 1;
-
-        // Visual Score Reveal
-        const scoreEl = document.getElementById('oracle-result-score');
-        scoreEl.innerText = "0 - 0";
-        
-        // Timeline Generation
-        const timeline = document.getElementById('oracle-timeline');
-        timeline.innerHTML = '';
-        const events = generateMatchEvents(gh, ga_score, m3);
-        
-        for (let i = 0; i < events.length; i++) {
-            await new Promise(r => setTimeout(r, 600));
-            const ev = events[i];
-            const evEl = document.createElement('div');
-            evEl.className = 'oracle-evt';
-            evEl.innerHTML = `
-                <div class="oracle-evt-min">${ev.min}'</div>
-                <div class="oracle-evt-icon">${ev.side === 'H' ? '⚽' : '👟'}</div>
-                <div class="oracle-evt-body">${ev.side === 'H' ? '¡GOL LOCAL!' : '¡GOL VISITANTE!'}</div>
-                <div class="oracle-evt-delta">${ev.delta}</div>
-            `;
-            timeline.appendChild(evEl);
-            setTimeout(() => evEl.classList.add('vis'), 50);
-            
-            // Score Update
-            const curH = events.slice(0, i+1).filter(e => e.side === 'H').length;
-            const curA = events.slice(0, i+1).filter(e => e.side === 'A').length;
-            scoreEl.innerText = `${curH} - ${curA}`;
-            
-            // 3D Shake and Flash
-            if (window.app) {
-                window.app.shakeCamera(2);
-                gsap.to(flash, { opacity: 0.3, duration: 0.1, yoyo: true, repeat: 1 });
-            }
-            playAudio('goal', 0.4);
-        }
-
-        // Final Verdict & EV
-        const verdict = document.getElementById('oracle-verdict');
-        const evH = (m3.H * b365h) - 1;
-        const evLabel = evH > 0.05 ? `<span class="oracle-ev-badge ev-pos">+${(evH*100).toFixed(0)}% EV</span>` : '';
-        
-        verdict.innerHTML = `
-            <div style="font-weight:800;color:var(--cyan);margin-bottom:5px">ANÁLISIS DE INTELIGENCIA</div>
-            La simulación confirma un flujo de juego de alta intensidad. El modelo detecta una eficiencia del local superior al promedio.
-            ${evH > 0.1 ? `<strong>Oportunidad detectada:</strong> La cuota de ${b365h} subestima el poder local.` : 'El mercado está alineado con las proyecciones del modelo.'}
-            ${evLabel}
-        `;
-        
-        // Bambino/Closs Audio on end
-        setTimeout(() => playAudio(result === 'H' ? 'bambino' : 'closs', 0.5), 1000);
-        
-        btn.disabled = false;
-        btn.innerText = "🔄 RE-SIMULAR";
-    }
-
-    function poissonSample(lambda) {
-        let L = Math.exp(-lambda), p = 1, k = 0;
-        do { k++; p *= Math.random(); } while (p > L);
-        return k - 1;
-    }
-
-    function generateMatchEvents(gh, ga, m3) {
-        let evts = [];
-        for(let i=0; i<gh; i++) evts.push({ min: Math.floor(Math.random()*88)+1, side:'H', delta: '+'+(Math.random()*8).toFixed(1)+'%' });
-        for(let i=0; i<ga; i++) evts.push({ min: Math.floor(Math.random()*88)+1, side:'A', delta: '-'+(Math.random()*5).toFixed(1)+'%' });
-        return evts.sort((a,b) => a.min - b.min);
-    }
-
-    window.oracleReset = function() {
-        document.getElementById('oracle-result-panel').style.display = 'none';
-        document.getElementById('oracle-sim-btn').innerText = "⚡ SIMULAR PARTIDO";
-    }
-
-    function playAudio(id, vol=0.5) {
-        const a = document.getElementById('aud-'+id);
-        if(a) { a.volume = vol; a.currentTime = 0; a.play().catch(e=>{}); }
-    }
-
-    function initOracleListeners() {
-        const sliders = ['b365h', 'b365a', 'pts', 'ga'];
-        sliders.forEach(s => {
-            const el = document.getElementById('sl-'+s);
-            if(!el) return;
-            el.oninput = () => {
-                document.getElementById('sv-'+s).innerText = s === 'ga' ? el.value+' /p' : (s==='pts'?el.value+' pts':el.value);
-                updateOraclePreview();
-            };
-        });
-        
-        const fixture = document.getElementById('oracle-fixture-sel');
-        if(fixture) fixture.onchange = (e) => {
-            const fix = [
-                {h:1.65, a:4.50, p:7, g:1.8}, // Ars vs City
-                {h:2.10, a:3.20, p:4, g:1.4}, // Liv vs Che
-                {h:2.80, a:2.40, p:2, g:2.2}, // Utd vs Tot
-                {h:2.20, a:3.10, p:5, g:1.2}, // Villa vs New
-                {h:1.85, a:3.80, p:6, g:1.1}, // Bri vs Bre
-                {h:2.40, a:2.90, p:3, g:1.5}  // Ful vs Bou
-            ][e.target.value];
-            if(!fix) return;
-            document.getElementById('sl-b365h').value = fix.h;
-            document.getElementById('sl-b365a').value = fix.a;
-            document.getElementById('sl-pts').value = fix.p;
-            document.getElementById('sl-ga').value = fix.g;
-            sliders.forEach(s => document.getElementById('sl-'+s).oninput());
-        };
-    }
-
-    function updateOraclePreview() {
-        const b365h = parseFloat(document.getElementById('sl-b365h').value);
-        const b365a = parseFloat(document.getElementById('sl-b365a').value);
-        const pts = parseFloat(document.getElementById('sl-pts').value);
-        const ga = parseFloat(document.getElementById('sl-ga').value);
-        
-        const m3 = m3Predict(b365h, b365a, pts, ga);
-        const lambda = m2Predict(b365h, pts, ga);
-        
+        document.getElementById('oracle-m2-val').textContent = m2.toFixed(2);
         gsap.to('#m3-bar-h', { width: (m3.H*100)+'%', duration:0.5 });
         gsap.to('#m3-bar-d', { width: (m3.D*100)+'%', duration:0.5 });
         gsap.to('#m3-bar-a', { width: (m3.A*100)+'%', duration:0.5 });
-        
-        document.getElementById('m3-pct-h').innerText = (m3.H*100).toFixed(0)+'%';
-        document.getElementById('m3-pct-d').innerText = (m3.D*100).toFixed(0)+'%';
-        document.getElementById('m3-pct-a').innerText = (m3.A*100).toFixed(0)+'%';
-        
-        // M2 Gauge
-        const arc = document.getElementById('oracle-m2-arc');
-        const offset = 157 - (157 * Math.min(lambda, 5) / 5);
-        gsap.to(arc, { strokeDashoffset: offset, duration:0.8, ease:'back.out(1.7)' });
-        document.getElementById('oracle-m2-val').innerText = lambda.toFixed(2);
-        
-        const msg3 = m3.H > 0.5 ? 'Fuerte favoritismo local' : (m3.A > 0.4 ? 'Alerta de "upset" visitante' : 'Partido de alta paridad (D/H)');
-        document.getElementById('oracle-m3-msg').innerText = msg3;
-        
-        const msg2 = lambda > 2.8 ? 'Tendencia a marcador abultado' : (lambda < 1.8 ? 'Expectativa de partido cerrado' : 'Rango de goles estándar');
-        document.getElementById('oracle-m2-msg').innerText = msg2;
-    }
+        document.getElementById('m3-pct-h').textContent = (m3.H*100).toFixed(0)+'%';
+        document.getElementById('m3-pct-d').textContent = (m3.D*100).toFixed(0)+'%';
+        document.getElementById('m3-pct-a').textContent = (m3.A*100).toFixed(0)+'%';
+    };
 
-    // Call this after tab switch
+    const initOracleListeners = () => {
+        ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach(id => {
+            const el = document.getElementById(id);
+            if(el) el.oninput = updateOraclePreview;
+        });
+        document.getElementById('oracle-fixture-sel').onchange = (e) => {
+            const presets = [
+                [1.65, 5.20, 1.8, 110, 7, 1.4, 2.1], 
+                [2.10, 3.40, 1.5, 85, 4, 1.1, 1.8],  
+                [2.80, 2.45, 1.3, 60, 7, 1.2, 1.5],  
+                [2.60, 2.70, 1.4, 75, 5, 0.9, 1.6],  
+                [2.10, 3.50, 1.2, 65, 7, 0.8, 1.1],  
+                [2.30, 3.10, 1.1, 55, 6, 0.7, 0.9]   
+            ][e.target.value];
+            ['sl-b365h', 'sl-b365a', 'sl-fthg', 'sl-inf', 'sl-rest', 'sl-ast', 'sl-gf'].forEach((id, i) => document.getElementById(id).value = presets[i]);
+            updateOraclePreview();
+        };
+    };
+
+    window.oracleSimulate = () => {
+        const btn = document.getElementById('oracle-sim-btn');
+        const proc = document.getElementById('oracle-processing');
+        const res = document.getElementById('oracle-result-panel');
+        btn.disabled = true;
+        proc.style.display = 'flex';
+        gsap.to(proc, {opacity:1, duration:0.3});
+        
+        const h_odds = parseFloat(document.getElementById('sl-b365h').value);
+        const a_odds = parseFloat(document.getElementById('sl-b365a').value);
+        const h_fthg = parseFloat(document.getElementById('sl-fthg').value);
+        const h_inf = parseFloat(document.getElementById('sl-inf').value);
+        const h_rest = parseFloat(document.getElementById('sl-rest').value);
+        const a_ast = parseFloat(document.getElementById('sl-ast').value);
+        const a_gf = parseFloat(document.getElementById('sl-gf').value);
+
+        const m2 = m2Predict(h_fthg, h_inf, h_rest, a_ast);
+        const m3 = m3Predict(h_odds, a_odds, h_inf, a_gf);
+
+        setTimeout(() => {
+            gsap.to(proc, {opacity:0, duration:0.4, onComplete:() => {
+                proc.style.display = 'none';
+                btn.disabled = false;
+                const total = Math.round(m2 + (Math.random() * 0.4 - 0.2));
+                const r = Math.random();
+                let outcome = (r < m3.H) ? 'H' : (r < m3.H + m3.D ? 'D' : 'A');
+                let h=0, a=0;
+                if(outcome==='H'){ h=Math.ceil(total*0.7); a=total-h; if(h<=a) h=a+1; }
+                else if(outcome==='A'){ a=Math.ceil(total*0.7); h=total-a; if(a<=h) a=h+1; }
+                else { h=Math.floor(total/2); a=h; }
+                
+                document.getElementById('oracle-result-score').textContent = `${h} - ${a}`;
+                document.getElementById('oracle-verdict').innerHTML = `<b>Proyección Táctica:</b> El modelo Lasso estima un flujo de <b>${m2.toFixed(2)} goles</b>. El resultado más probable según LogReg era <b>${outcome==='H'?'Victoria Local':(outcome==='A'?'Victoria Visita':'Empate')}</b>.`;
+                res.style.display = 'block';
+                gsap.from(res, {y:20, opacity:0});
+                if(window.app && window.app.triggerOraclePulse) window.app.triggerOraclePulse();
+            }});
+        }, 1500);
+    };
+
+    window.oracleReset = () => { document.getElementById('oracle-result-panel').style.display = 'none'; };
+
     window.onOracleTabOpen = () => {
         initOracleListeners();
-        
-        // ── NEURAL BOOT SEQUENCE (GSAP) ──
         const tl = gsap.timeline();
-        
-        // Scoreboard Glitch Reveal
-        tl.to('#oracle-scoreboard', { opacity: 1, y: 0, duration: 0.8, ease: 'power4.out' });
-        
-        // Stagger Sliders
-        tl.to('.oracle-slider-group', { 
-            opacity: 1, y: 0, duration: 0.6, stagger: 0.1, ease: 'back.out(1.7)' 
-        }, "-=0.4");
-        
-        // Panels Reveal
-        tl.to(['#oracle-m3-panel', '#oracle-m2-panel'], { 
-            opacity: 1, y: 0, duration: 0.7, stagger: 0.15, ease: 'power2.out' 
-        }, "-=0.3");
-        
-        // Action Button & Vault
-        tl.to(['#oracle-sim-btn', '#oracle-knowledge-vault'], { 
-            opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' 
-        }, "-=0.2");
-
-        // Initial Preview Update
+        tl.to('#oracle-scoreboard', { opacity: 1, y: 0, duration: 0.6 });
+        tl.to('.tactical-section', { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.3");
+        tl.to(['#oracle-results-grid', '#oracle-sim-btn'], { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.2");
         updateOraclePreview();
     };
 
