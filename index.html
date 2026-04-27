@@ -4397,7 +4397,9 @@ class CinematicEngine {
                 
                 // Show intro animation ONLY when entering Laboratorio (predictions)
                 if(tabName === 'predictions' && typeof runPLIntro === 'function') {
-                    runPLIntro(() => this.renderTab(DATA[this.activeNodeIdx].id, tabName));
+                    this.renderTab(DATA[this.activeNodeIdx].id, tabName);
+                    // Pequeño delay para dejar que el HTML se inyecte antes de la animación
+                    setTimeout(() => runPLIntro(), 50);
                 } else {
                     this.renderTab(DATA[this.activeNodeIdx].id, tabName);
                 }
